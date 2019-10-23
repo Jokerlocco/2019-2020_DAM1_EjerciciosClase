@@ -22,6 +22,6 @@ class Hexagon
             }
 
         }
-        while (radius != 0)
+        while (radius != 0);
     }
 }
