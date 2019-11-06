@@ -4,7 +4,7 @@ using System;
 
 class FindDuplicateNumber
 {
-    public static void Main()
+    static void Main()
     {
         Console.Write("Enter a few numbers: ");
         string[] sentence = Console.ReadLine().Split();
