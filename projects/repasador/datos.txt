@@ -11,3 +11,11 @@ Mina
 4
 22
 3
+
+"Console.Write("2"+"2");" escribiría
+0
+2
+4
+22
+4
+
