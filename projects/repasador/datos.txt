@@ -1,0 +1,13 @@
+En un programa en C#, debe existir un bloque llamado
+main
+Main
+mina
+Mina
+2
+
+"Console.Write(2+2);" escribiría
+0
+2
+4
+22
+3
