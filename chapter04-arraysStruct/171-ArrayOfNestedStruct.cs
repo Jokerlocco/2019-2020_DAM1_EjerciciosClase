@@ -1,13 +1,18 @@
-// Daniel García - "struct" example
-
 using System;
 
 class StructExample
 {
+    struct birthday
+    {
+        public byte day;
+        public byte month;
+        public ushort year;
+    }
+    
     struct person
     {
         public string name;
-        public byte age;
+        public birthday bday;
     }
         
     static void Main()
@@ -20,8 +25,12 @@ class StructExample
         {
             Console.Write("Name of the person #{0}: ", i+1);
             persons[i].name = Console.ReadLine();
-            Console.Write("Age of the person #{0}: ", i+2);
-            persons[i].age = Convert.ToByte(Console.ReadLine());
+            Console.Write("Day of birth (1-31) of the person #{0}: ", i+1);
+            persons[i].bday.day = Convert.ToByte(Console.ReadLine());
+            Console.Write("Month of birth (1-31) of the person #{0}: ", i+1);
+            persons[i].bday.month = Convert.ToByte(Console.ReadLine());
+            Console.Write("Year of birth (1-31) of the person #{0}: ", i+1);
+            persons[i].bday.year = Convert.ToUInt16(Console.ReadLine());
         }
         
         // Displaying the data
@@ -29,14 +38,16 @@ class StructExample
         for (int i = 0; i < MAX; i++)
         {
             Console.WriteLine(persons[i].name);
-            Console.WriteLine(persons[i].age);
+            Console.WriteLine(persons[i].bday.day + "/" + 
+                persons[i].bday.month + "/" + persons[i].bday.year);
         }
         
         // Alternate way to display the data
         foreach(person p in persons)
         {
             Console.WriteLine(p.name);
-            Console.WriteLine(p.age);
+            Console.WriteLine(p.bday.day + "/" + 
+                p.bday.month + "/" + p.bday.year);
         }        
     }    
 }
