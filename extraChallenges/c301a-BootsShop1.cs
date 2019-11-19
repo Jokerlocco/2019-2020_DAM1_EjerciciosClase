@@ -66,7 +66,7 @@ Para el dato de entrada siguiente escriba un programa que halle la respuesta.
 10
 5 2 1 4 7 9 1 1 3 4
 2 5 1 3 4 6 3 2 2 5
-
+    
 La respuesta que debes entregar es:
 
 5
@@ -76,80 +76,50 @@ La respuesta que debes entregar es:
 
 using System;
 
-class TiendaDeBotas2
+class TiendaDeBotas3
 {
     static void Main()
     {
-        int nBotas,contador,posicion=0,pos;
+        int nBotas,contador,posicion=0,nPosDistintos;
         bool encontrado;
-        int[] tallaD,tallaI,registro;
+        int[] registro;
         string inputTallaI,inputTallaD;
-        string[] lineaTallaI, lineaTallaD;
+        string[] tallaI,tallaD;
 
         nBotas = Convert.ToInt32(Console.ReadLine());
 
-        Console.WriteLine();
-
-        tallaD = new int[nBotas];
-        tallaI = new int[nBotas];
         registro = new int[nBotas];
 
-        for(int i=0 ; i<nBotas ; i++)
-        {
-            registro[i] = -1;
-        }
-
         inputTallaI = Console.ReadLine();
-
-        lineaTallaI = inputTallaI.Split();
-        if(lineaTallaI.Length != nBotas)
-            Console.WriteLine("Input incorrecto");
-
-        for(int i=0 ; i<nBotas ; i++)
-        {
-            tallaI[i] = Convert.ToInt32(lineaTallaI[i]);
-        }
-
-        Console.WriteLine();
+        tallaI = inputTallaI.Split();
 
         inputTallaD = Console.ReadLine();
-
-        lineaTallaD = inputTallaD.Split();
-        if(lineaTallaD.Length != nBotas)
-            Console.WriteLine("Input incorrecto");
+        tallaD = inputTallaD.Split();
 
         for(int i=0 ; i<nBotas ; i++)
         {
-            tallaD[i] = Convert.ToInt32(lineaTallaD[i]);
-        }
-
-        for(int i=0 ; i<nBotas ; i++)
-        {
-            encontrado=false;
-            contador=0;
+            encontrado = false;
+            contador = 0;
             while(!encontrado && contador<nBotas)
             {
                 if(tallaI[i]==tallaD[contador])
                 {
-                    pos=0;
-                    foreach(int n in registro)
+                    nPosDistintos = 0;
+                    for(int n=0 ; n<posicion ;n++)
                     {
-                        if(n != contador)
-                            pos++;
+                        if(registro[n] != contador)
+                            nPosDistintos++;
                     }
-                    if(pos==nBotas)
+                    if(nPosDistintos==posicion)
                     {
                         registro[posicion] = contador;
                         posicion++;
-                        encontrado=true;
+                        encontrado = true;
                     }
                 }
                 contador++;
             }
         }
-
-        Console.WriteLine();
-
         Console.WriteLine(nBotas-posicion);
     }
 }
