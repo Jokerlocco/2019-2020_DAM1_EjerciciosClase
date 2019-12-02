@@ -13,7 +13,7 @@ class CountLetter2
         return count;
     }
 
-    public static void Main()
+    static void Main()
     {
         int amount = Count("madagascar", 'a');
         Console.WriteLine(amount);
