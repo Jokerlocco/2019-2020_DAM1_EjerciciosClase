@@ -1,7 +1,7 @@
 // Araceli Yáñez Muñoz
 using System;
 
-public class FunctionCountVS
+class FunctionCountVS
 {
     static void CountVS(string text, ref int vowel, ref int spc)
     {
