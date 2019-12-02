@@ -11,7 +11,7 @@ class Centered
         Console.WriteLine(text);
     }
 
-    public static void Main()
+    static void Main()
     {
         DisplayCentered("Hello");
     }
