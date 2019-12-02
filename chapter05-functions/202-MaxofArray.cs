@@ -1,8 +1,8 @@
 using System;
 
-public class ArrayMax
+class ArrayMax
 {
-    public static int  MaxOfArray(int[] numbers)
+    static int  MaxOfArray(int[] numbers)
     {
         int max = numbers[0];
         for (int i = 0; i < numbers.Length; i++)
@@ -15,7 +15,7 @@ public class ArrayMax
         return max;
     }
     
-    public static void Main()
+    static void Main()
     {
         int[] data = { 10, 20, 5, 2 };
         Console.WriteLine(
