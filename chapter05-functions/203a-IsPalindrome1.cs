@@ -17,7 +17,7 @@ class Palindrome1
             return false;
     }
     
-    public static void Main()
+    static void Main()
     {
         bool result = IsPalindrome("radar");
         Console.WriteLine("radar -> " + result);

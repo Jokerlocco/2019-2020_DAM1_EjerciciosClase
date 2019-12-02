@@ -2,7 +2,7 @@ using System;
 
 class Palindrome
 {
-    static bool IsPalindrome(string text)
+    bool IsPalindrome(string text)
     {
         char[] letters = text.ToCharArray();
         Array.Reverse(letters);
@@ -11,7 +11,7 @@ class Palindrome
         return text == textReversed;
     }
 
-    public static void Main()
+    static void Main()
     {
         bool result = IsPalindrome("radar");
         Console.WriteLine("radar -> " + result);

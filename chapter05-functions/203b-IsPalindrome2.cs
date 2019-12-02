@@ -14,7 +14,7 @@ class Palindrome2
         return text == textReversed;
     }
     
-    public static void Main()
+    static void Main()
     {
         bool result = IsPalindrome("radar");
         Console.WriteLine("radar -> " + result);
