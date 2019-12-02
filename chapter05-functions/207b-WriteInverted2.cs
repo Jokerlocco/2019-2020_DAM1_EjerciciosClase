@@ -12,7 +12,7 @@ class FunctionWriteInverted2
         Console.WriteLine(inverted);
     }
 
-    public static void Main()
+    static void Main()
     {
         WriteInverted("Hola");
     }
