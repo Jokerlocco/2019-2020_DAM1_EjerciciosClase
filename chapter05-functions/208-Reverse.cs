@@ -12,7 +12,7 @@ class FunctionReverse
         return reversed;
     }
 
-    public static void Main()
+    static void Main()
     {
         Console.WriteLine(  Reverse("Hola")  );
         
