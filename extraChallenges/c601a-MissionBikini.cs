@@ -73,7 +73,7 @@ class dieta
                      array[i]= aux;
                 }
                 else if(array[j].peso == array[i].peso &&
-                    array[j].peso < array[j].peso)
+                    array[j].altura < array[j].altura)
                 {
                      imc aux = array[j];
                      array[j]=array[i];
