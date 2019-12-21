@@ -11,9 +11,14 @@ namespace SpaceHawks
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
         Texture2D spaceship;
         Vector2 shipPosition;
         float shipSpeed;
+
+        Texture2D enemy;
+        Vector2 enemyPosition;
+        Vector2 enemySpeed;
 
         public Game1()
         {
@@ -40,12 +45,15 @@ namespace SpaceHawks
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             spaceship = Content.Load<Texture2D>("nave");
             shipPosition = new Vector2(300, 400);
             shipSpeed = 200;
+
+            enemy = Content.Load<Texture2D>("enemigo1a");
+            enemyPosition = new Vector2(50, 70);
+            enemySpeed = new Vector2(150, 50);
         }
 
         /// <summary>
@@ -69,6 +77,7 @@ namespace SpaceHawks
                     || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            // Player movement
             var keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.Left))
                 shipPosition.X -= shipSpeed * 
@@ -76,6 +85,17 @@ namespace SpaceHawks
             if (keyboardState.IsKeyDown(Keys.Right))
                 shipPosition.X += shipSpeed *
                     (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            // Enemy movement
+            enemyPosition.X += enemySpeed.X *
+                (float)gameTime.ElapsedGameTime.TotalSeconds;
+            enemyPosition.Y += enemySpeed.Y *
+                (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if ((enemyPosition.X < 20) || (enemyPosition.X > 700))
+                enemySpeed.X = -enemySpeed.X;
+            if ((enemyPosition.Y < 20) || (enemyPosition.Y > 400))
+                enemySpeed.Y = -enemySpeed.Y;
 
             base.Update(gameTime);
         }
@@ -93,6 +113,11 @@ namespace SpaceHawks
                 new Rectangle(
                     (int) shipPosition.X, (int)shipPosition.Y, 
                     spaceship.Width, spaceship.Height),
+                Color.White);
+            spriteBatch.Draw(enemy,
+                new Rectangle(
+                    (int)enemyPosition.X, (int)enemyPosition.Y,
+                    enemy.Width, enemy.Height),
                 Color.White);
             spriteBatch.End();
 
