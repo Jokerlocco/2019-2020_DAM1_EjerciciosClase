@@ -12,6 +12,7 @@ namespace SpaceHawks
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D spaceship;
+        Vector2 shipPosition;
 
         public Game1()
         {
@@ -42,6 +43,7 @@ namespace SpaceHawks
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             spaceship = Content.Load<Texture2D>("nave");
+            shipPosition = new Vector2(300, 400);
         }
 
         /// <summary>
@@ -65,7 +67,11 @@ namespace SpaceHawks
                     || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            var keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.Left))
+                shipPosition.X -= 2;
+            if (keyboardState.IsKeyDown(Keys.Right))
+                shipPosition.X += 2;
 
             base.Update(gameTime);
         }
@@ -80,7 +86,9 @@ namespace SpaceHawks
 
             spriteBatch.Begin();
             spriteBatch.Draw(spaceship,
-                new Rectangle(300, 400, 96, 48),
+                new Rectangle(
+                    (int) shipPosition.X, (int)shipPosition.Y, 
+                    spaceship.Width, spaceship.Height),
                 Color.White);
             spriteBatch.End();
 
