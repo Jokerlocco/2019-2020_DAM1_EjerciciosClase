@@ -13,6 +13,7 @@ namespace SpaceHawks
         SpriteBatch spriteBatch;
         Texture2D spaceship;
         Vector2 shipPosition;
+        float shipSpeed;
 
         public Game1()
         {
@@ -44,6 +45,7 @@ namespace SpaceHawks
 
             spaceship = Content.Load<Texture2D>("nave");
             shipPosition = new Vector2(300, 400);
+            shipSpeed = 200;
         }
 
         /// <summary>
@@ -69,9 +71,11 @@ namespace SpaceHawks
 
             var keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.Left))
-                shipPosition.X -= 2;
+                shipPosition.X -= shipSpeed * 
+                    (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (keyboardState.IsKeyDown(Keys.Right))
-                shipPosition.X += 2;
+                shipPosition.X += shipSpeed *
+                    (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             base.Update(gameTime);
         }
