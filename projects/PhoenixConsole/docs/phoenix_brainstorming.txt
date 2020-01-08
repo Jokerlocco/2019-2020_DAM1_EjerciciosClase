@@ -1,0 +1,34 @@
+
+El jugador maneja una nave
+La nave está en la parte inferior y se mueve a derecha e izquierda
+Los enemigos disparan hacia abajo, de forma aleatoria
+Hay 5 niveles de enemigos
+Los 4 primeros niveles tienen enemigos distintos
+Los enemigos de los niveles 1, 2 y 5 se pueden mover en bloque a derecha e izquierda
+Los enemigos de los niveles 3 y 4 se pueden mover a derecha e izquierda pero no todos a la vez
+El nivel 5 tiene enemigos del nivel 2 y una nave nodriza, que contiene al enemigo jefe
+Los enemigos pueden salir aleatoriamente del bloque y atacar
+Si un enemigo llega a la parte inferior, vuelve a aparecer en su sitio un instante después
+Si un enemigo choca con nuestra nave, se pierde una vida (excepto si está activado el escudo)
+Al perder una vida, el nivel sigue sólo con los enemigos que quedaban.
+La nave dispara hacia arriba
+Sólo puede haber un disparo de la nave a la vez
+La nave tiene un escudo
+El escudo sólo se puede activar cada x segundos
+Si un disparo del enemigo alcanza la nave, explota y se pierde una vida, excepto si el escudo está activado
+El escudo dura X segundos
+Si un disparo de la nave alcanza a un enemigo, éste explota y desaparece
+Si un disparo impacta con otro disparo, ambos desaparecen
+Puede haber varios disparos enemigos a la vez en pantalla
+Los enemigos disparan entre 1 y 3 disparos seguidos
+Cada disparo de nuestra nave rompe un trozo de la nave nodriza final (nivel 5)
+Si nuestros disparos alcanzan al enemigo jefe que está dentro de la nave nodriza, se supera el nivel 5 (aunque queden otros enemigos en el nivel)
+La nave nodriza final (nivel 5) va bajando poco a poco
+El fondo muestra un cielo de estrellas que se mueve hacia abajo
+Existe un marcador que indica puntuación, vidas y mejor puntuación
+Existe modo de 2 jugadores, en el que los turnos se alternan al perder una vida
+Cada enemigo tiene un cierto valor en puntos, que se incrementa en ciertos momentos (ataque)
+La partida acaba al perder 3 vidas
+Al arrancar el juego, aparece una pantalla de presentación
+Hay una pantalla de ayuda que muestra la puntuación que nos da cada enemigo
+Hay una pantalla de Demo
