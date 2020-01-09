@@ -1,0 +1,15 @@
+Tasks for PhoenixConsole 0.05
+
+- EnemyLevel1 to EnemyLevel4, FinalBoss: symbol + Update
+- Game: Functions for gameLoop; continuous movement
+- HelpScreen: display some help
+- Mothership: draw
+- MovingBackground: draw and update
+- Scoreboard: add points, lose lives, reset, draw
+- Shot, PlayerShot, EnemyShot: implement, update, draw
+- Spaceship: Should not move when Shield is activated
+- Sprite, Shield: support for sprites several chars wide
+- Stage: decide behaviour
+- WelcomeScreen: Loop until ESC. Animation with Phoenix name
+
+- All classes inheriting from Sprite: constructors not using the empty one
