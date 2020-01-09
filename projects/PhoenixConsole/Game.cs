@@ -4,18 +4,21 @@ class Game
 {
     public void Run()
     {
+        ConsoleKeyInfo userkey;
         Spaceship ship = new Spaceship();
-        while (true)  //   ;-)
+        while (true)
         {
+            Console.Clear();
             ship.Draw();
-            string key = Console.ReadLine();
-            switch (key)
+            userkey = Console.ReadKey(true);
+            switch (userkey.Key)
             {
-                case "a": ship.MoveLeft(); break;
-                case "d": ship.MoveRight(); break;
-                case "esc": return;
+                case ConsoleKey.A: ship.MoveLeft(); break;
+                case ConsoleKey.D: ship.MoveRight(); break;
+                case ConsoleKey.Escape: return;
+
             }
         }
+
     }
 }
-

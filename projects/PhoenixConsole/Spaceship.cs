@@ -1,4 +1,6 @@
-﻿class Spaceship : Sprite
+﻿using System;
+
+class Spaceship : Sprite
 {
     public Spaceship()
     {
@@ -9,12 +11,13 @@
 
     public void MoveLeft()
     {
-        x--;
+        if (x >= 1)
+            x--;
     }
 
     public void MoveRight()
     {
-        x++;
+        if (x <= 78)
+            x++;
     }
 }
-
