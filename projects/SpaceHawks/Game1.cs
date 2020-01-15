@@ -100,6 +100,16 @@ namespace SpaceHawks
             if ((enemyPosition.Y < 20) || (enemyPosition.Y > 400))
                 enemySpeed.Y = -enemySpeed.Y;
 
+            //Collisions checking
+            Rectangle spaceshipRect = new Rectangle(
+                (int)shipPosition.X, (int)shipPosition.Y,
+                spaceship.Width, spaceship.Height);
+            Rectangle enemyRect = new Rectangle(
+                    (int)enemyPosition.X, (int)enemyPosition.Y,
+                    enemy.Width, enemy.Height);
+            if (spaceshipRect.Intersects(enemyRect))
+                Exit();
+
             base.Update(gameTime);
         }
 
