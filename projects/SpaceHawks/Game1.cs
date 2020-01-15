@@ -24,6 +24,9 @@ namespace SpaceHawks
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferWidth = 960;
+            graphics.PreferredBackBufferHeight = 600;
+            graphics.ApplyChanges();
         }
 
         /// <summary>
@@ -49,7 +52,7 @@ namespace SpaceHawks
 
             spaceship = Content.Load<Texture2D>("nave");
             shipPosition = new Vector2(300, 400);
-            shipSpeed = 200;
+            shipSpeed = 240;
 
             enemy = Content.Load<Texture2D>("enemigo1a");
             enemyPosition = new Vector2(50, 70);
