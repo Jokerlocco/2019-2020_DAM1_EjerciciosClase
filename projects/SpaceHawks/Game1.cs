@@ -20,6 +20,8 @@ namespace SpaceHawks
         Vector2 enemyPosition;
         Vector2 enemySpeed;
 
+        SpriteFont font;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -57,6 +59,8 @@ namespace SpaceHawks
             enemy = Content.Load<Texture2D>("enemigo1a");
             enemyPosition = new Vector2(50, 70);
             enemySpeed = new Vector2(150, 50);
+
+            font = Content.Load<SpriteFont>("Arial");
         }
 
         /// <summary>
@@ -122,11 +126,18 @@ namespace SpaceHawks
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
+
+            spriteBatch.DrawString(font,
+                "Hello",
+                new Vector2(400, 50),
+                Color.Crimson);
+
             spriteBatch.Draw(spaceship,
                 new Rectangle(
                     (int) shipPosition.X, (int)shipPosition.Y, 
                     spaceship.Width, spaceship.Height),
                 Color.White);
+
             spriteBatch.Draw(enemy,
                 new Rectangle(
                     (int)enemyPosition.X, (int)enemyPosition.Y,
