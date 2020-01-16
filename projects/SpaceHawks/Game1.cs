@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace SpaceHawks
 {
@@ -21,6 +23,8 @@ namespace SpaceHawks
         Vector2 enemySpeed;
 
         SpriteFont font;
+        Song music;
+        SoundEffect fireSound;
 
         public Game1()
         {
@@ -61,7 +65,12 @@ namespace SpaceHawks
             enemySpeed = new Vector2(150, 50);
 
             font = Content.Load<SpriteFont>("Arial");
+            music = Content.Load<Song>("spaceHawks-levelTick");
+            fireSound = Content.Load<SoundEffect>("spaceHawks-fire");
+            MediaPlayer.Play(music);
+            MediaPlayer.IsRepeating = true;
         }
+
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -113,6 +122,11 @@ namespace SpaceHawks
                     enemy.Width, enemy.Height);
             if (spaceshipRect.Intersects(enemyRect))
                 Exit();
+
+            // Fire !!!
+            if (keyboardState.IsKeyDown(Keys.Space))
+                fireSound.CreateInstance().Play();
+
 
             base.Update(gameTime);
         }
