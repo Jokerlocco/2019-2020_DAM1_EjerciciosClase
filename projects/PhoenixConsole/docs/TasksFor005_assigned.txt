@@ -1,0 +1,15 @@
+Tasks for PhoenixConsole 0.05
+
+- EnemyLevel1 to EnemyLevel4, FinalBoss: symbol + Update -> Berenguer, Conde, Bueno, Cánovas
+- Game: Functions for gameLoop; continuous movement -> Álvaro, A.Martínez
+- HelpScreen: display some help -> D.García, Yáñez
+- Mothership: draw -> López, Francés
+- MovingBackground: draw and update -> A.García, Martínez
+- Scoreboard: add points, lose lives, reset, draw -> Gumpert, Arques
+- Shot, PlayerShot, EnemyShot: implement, update, draw -> Jiménez, Ferrándiz
+- Spaceship: Should not move when Shield is activated -> Vigara, González
+- Sprite, Shield: support for sprites several chars wide
+- Stage: decide behaviour 
+- WelcomeScreen: Loop until ESC. Animation with Phoenix name -> Valera, J.Martínez
+
+- All classes inheriting from Sprite: constructors not using the empty one
