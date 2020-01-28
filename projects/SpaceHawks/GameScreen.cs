@@ -1,12 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 namespace SpaceHawks
 {
-    public class Game1 : Game
+    class GameScreen
     {
         const int AMOUNT_OF_ENEMIES = 30;
         GraphicsDeviceManager graphics;
@@ -19,20 +20,16 @@ namespace SpaceHawks
         SpriteFont font;
         Song music;
 
-        public Game1()
+        public bool Finished { get; set; }
+
+        public GameScreen(int maxX, int maxY)
         {
-            graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferWidth = 960;
-            graphics.PreferredBackBufferHeight = 600;
-            graphics.ApplyChanges();
+            Finished = false;
         }
 
 
-        protected override void LoadContent()
+        public void LoadContent(ContentManager Content)
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
             ship = new Spaceship(Content);
             shot = new Shot(Content);
 
@@ -53,18 +50,11 @@ namespace SpaceHawks
         }
 
 
-        protected override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back
-                    == ButtonState.Pressed
-                    || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
             CheckInput(gameTime);
             MoveElements(gameTime);
             CheckCollisions();
-
-            base.Update(gameTime);
         }
 
         private void CheckCollisions()
@@ -77,7 +67,7 @@ namespace SpaceHawks
                     shot.Active = false;
                 }
                 if (ship.CollidesWith(enemies[i]))
-                    Exit();
+                    Finished = true;
             }
         }
 
@@ -116,11 +106,8 @@ namespace SpaceHawks
                 shot.Start(ship.X + 30, ship.Y - 15);
         }
 
-        protected override void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-            spriteBatch.Begin();
-
             spriteBatch.DrawString(font,
                 "Hello",
                 new Vector2(400, 50),
@@ -130,9 +117,6 @@ namespace SpaceHawks
             for (int i = 0; i < AMOUNT_OF_ENEMIES; i++)
                 enemies[i].Draw(spriteBatch);
             shot.Draw(spriteBatch);
-            spriteBatch.End();
-
-            base.Draw(gameTime);
         }
     }
 }
