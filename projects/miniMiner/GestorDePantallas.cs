@@ -83,5 +83,10 @@ namespace MiniMiner
             spriteBatch.End();
             base.Draw(gameTime);
         }
+
+        public void Terminar()
+        {
+            Exit();
+        }
     }
 }

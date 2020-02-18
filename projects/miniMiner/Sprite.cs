@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace MiniMiner
 {
@@ -13,6 +12,12 @@ namespace MiniMiner
         public float VelocY { get; set; }
         public bool Activo { get; set; }
         private Texture2D imagen;
+        int cantidadDeFotogramas;
+        private Texture2D[] secuencia;
+        int fotogramaActual;
+        int tiempoEnCadaFotograma;
+        int tiempoHastaSiguienteFotograma;
+        bool haySecuencia;
 
         public Sprite(int x, int y, string nombreImagen, ContentManager Content)
         {
@@ -20,6 +25,25 @@ namespace MiniMiner
             Y = y;
             imagen = Content.Load<Texture2D>(nombreImagen);
             Activo = true;
+            haySecuencia = false;
+        }
+
+        public Sprite(int x, int y, string[] imagenes, ContentManager Content)
+        {
+            X = x;
+            Y = y;
+            Activo = true;
+            cantidadDeFotogramas = imagenes.Length;
+            secuencia = new Texture2D[cantidadDeFotogramas];
+            for (int i = 0; i < cantidadDeFotogramas; i++)
+            {
+                secuencia[i] = Content.Load<Texture2D>(imagenes[i]);
+            }
+            imagen = secuencia[0];
+            fotogramaActual = 0;
+            tiempoEnCadaFotograma = 500;
+            tiempoHastaSiguienteFotograma = tiempoEnCadaFotograma;
+            haySecuencia = true;
         }
 
         public void SetVelocidad(float vx, float vy)
@@ -51,6 +75,22 @@ namespace MiniMiner
                 otro.imagen.Width, otro.imagen.Height);
 
             return r1.Intersects(r2);
+        }
+
+        public virtual void Mover(GameTime gameTime)
+        {
+            if (haySecuencia)
+            {
+                tiempoHastaSiguienteFotograma -= gameTime.ElapsedGameTime.Milliseconds;
+                if (tiempoHastaSiguienteFotograma <= 0)
+                {
+                    fotogramaActual++;
+                    if (fotogramaActual >= cantidadDeFotogramas)
+                        fotogramaActual = 0;
+                    tiempoHastaSiguienteFotograma = tiempoEnCadaFotograma;
+                    imagen = secuencia[fotogramaActual];
+                }
+            }
         }
     }
 }

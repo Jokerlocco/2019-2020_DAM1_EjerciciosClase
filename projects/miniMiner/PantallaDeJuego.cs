@@ -9,7 +9,7 @@ namespace MiniMiner
 {
     public class PantallaDeJuego
     {
-        Sprite personaje;
+        Personaje personaje;
         public bool Terminado { get; set; }
 
         public PantallaDeJuego(int maxX, int maxY)
@@ -19,7 +19,7 @@ namespace MiniMiner
 
         public void CargarContenidos(ContentManager Content)
         {
-            personaje = new Sprite(0, 0, "personaje", Content);
+            personaje = new Personaje(Content);
         }
 
         public void Actualizar(GameTime gameTime)
@@ -39,11 +39,38 @@ namespace MiniMiner
             var estadoTeclado = Keyboard.GetState();
             var estadoGamePad = GamePad.GetState(PlayerIndex.One);
 
-            if (estadoGamePad.Buttons.Back == ButtonState.Pressed 
+            if (estadoGamePad.Buttons.Back == ButtonState.Pressed
                     || estadoTeclado.IsKeyDown(Keys.Escape))
                 Terminado = true;
 
             // ...
+            if (estadoTeclado.IsKeyDown(Keys.Right)
+                || estadoGamePad.DPad.Right > 0
+                || estadoGamePad.ThumbSticks.Left.X > 0)
+            {
+                personaje.MoverDerecha(gameTime);
+            }
+
+            if (estadoTeclado.IsKeyDown(Keys.Left)
+                || estadoGamePad.DPad.Left > 0
+                || estadoGamePad.ThumbSticks.Left.X < 0)
+            {
+                personaje.MoverIzquierda(gameTime);
+            }
+
+            if (estadoTeclado.IsKeyDown(Keys.Up)
+                || estadoGamePad.DPad.Up > 0
+                || estadoGamePad.ThumbSticks.Left.Y > 0)
+            {
+                personaje.MoverArriba(gameTime);
+            }
+
+            if (estadoTeclado.IsKeyDown(Keys.Down)
+                || estadoGamePad.DPad.Down > 0
+                || estadoGamePad.ThumbSticks.Left.Y < 0)
+            {
+                personaje.MoverAbajo(gameTime);
+            }
         }
 
         protected void ComprobarColisiones()

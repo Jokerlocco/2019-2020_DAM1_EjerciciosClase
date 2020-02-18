@@ -7,10 +7,7 @@ namespace MiniMiner
 {
     class PantallaDeBienvenida
     {
-        GraphicsDeviceManager graphics;
-        ContentManager content;
-
-        private SpriteFont font;
+        private SpriteFont fuente;
         private GestorDePantallas gestor;
 
         public PantallaDeBienvenida(GestorDePantallas gestor)
@@ -20,7 +17,7 @@ namespace MiniMiner
 
         public void CargarContenidos(ContentManager Content)
         {
-            font = Content.Load<SpriteFont>("Arial");
+            fuente = Content.Load<SpriteFont>("Arial");
         }
 
         public void Actualizar(GameTime gameTime)
@@ -29,16 +26,19 @@ namespace MiniMiner
             {
                 gestor.modoActual = GestorDePantallas.MODO.JUEGO;
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.Q))
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                gestor.Exit();
+                gestor.Terminar();
             }
         }
 
-        public void Dibujar(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Dibujar(GameTime gameTime, SpriteBatch spritebatch)
         {
-            spriteBatch.DrawString(font, "1.- Play", new Vector2(460, 240), Color.White);
-            spriteBatch.DrawString(font, "Q.- Quit", new Vector2(460, 280), Color.DimGray);
+            spritebatch.DrawString(fuente, "1. Jugar",
+                new Vector2(400, 100), Color.White);
+            spritebatch.DrawString(fuente, "S. Salir",
+                new Vector2(400, 150), Color.White);
         }
+
     }
 }
