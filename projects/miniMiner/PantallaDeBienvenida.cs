@@ -46,7 +46,7 @@ namespace MiniMiner
 
         public void CargarContenidos(ContentManager Content)
         {
-            fuente = Content.Load<SpriteFont>("Arial");
+            fuente = Content.Load<SpriteFont>("PressStart2P");
             pared = Content.Load<Texture2D>("paredNivel1");
             suelo = Content.Load<Texture2D>("sueloNivel1");
         }
