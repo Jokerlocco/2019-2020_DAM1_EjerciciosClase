@@ -10,6 +10,8 @@ namespace MiniMiner
     public class PantallaDeJuego
     {
         Personaje personaje;
+        Enemigo enemigo;
+
         public bool Terminado { get; set; }
 
         public PantallaDeJuego(int maxX, int maxY)
@@ -20,6 +22,7 @@ namespace MiniMiner
         public void CargarContenidos(ContentManager Content)
         {
             personaje = new Personaje(Content);
+            enemigo = new Enemigo(Content);
         }
 
         public void Actualizar(GameTime gameTime)
@@ -31,7 +34,7 @@ namespace MiniMiner
 
         protected void MoverElementos(GameTime gameTime)
         {
-            // ...
+            enemigo.Mover(gameTime);
         }
 
         protected void ComprobarEntrada(GameTime gameTime)
@@ -81,6 +84,7 @@ namespace MiniMiner
         public void Dibujar(GameTime gameTime, SpriteBatch spriteBatch)
         {
             personaje.Dibujar(spriteBatch);
+            enemigo.Dibujar(spriteBatch);
         }
     }
 }

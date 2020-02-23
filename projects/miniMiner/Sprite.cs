@@ -12,12 +12,19 @@ namespace MiniMiner
         public float VelocY { get; set; }
         public bool Activo { get; set; }
         private Texture2D imagen;
-        int cantidadDeFotogramas;
-        private Texture2D[] secuencia;
-        int fotogramaActual;
-        int tiempoEnCadaFotograma;
-        int tiempoHastaSiguienteFotograma;
-        bool haySecuencia;
+        protected int cantidadDeFotogramas;
+        private Texture2D[][] secuencia;
+        protected int fotogramaActual;
+        protected int tiempoEnCadaFotograma;
+        protected int tiempoHastaSiguienteFotograma;
+        protected bool haySecuencia;
+
+        protected enum direcciones
+        {
+            DERECHA, IZQUIERDA,
+            ARRIBA, ABAJO, APARECIENDO, DESAPARECENDO
+        };
+        int direccionActual = (int)direcciones.DERECHA;
 
         public Sprite(int x, int y, string nombreImagen, ContentManager Content)
         {
@@ -33,17 +40,38 @@ namespace MiniMiner
             X = x;
             Y = y;
             Activo = true;
-            cantidadDeFotogramas = imagenes.Length;
-            secuencia = new Texture2D[cantidadDeFotogramas];
-            for (int i = 0; i < cantidadDeFotogramas; i++)
-            {
-                secuencia[i] = Content.Load<Texture2D>(imagenes[i]);
-            }
-            imagen = secuencia[0];
+            secuencia = new Texture2D[sizeof(direcciones)][];
+            CargarSecuencia(0, imagenes, Content);
+            imagen = secuencia[0][0];
             fotogramaActual = 0;
             tiempoEnCadaFotograma = 500;
             tiempoHastaSiguienteFotograma = tiempoEnCadaFotograma;
+        }
+
+        public void CargarSecuencia(byte direcc, string[] imagenes, ContentManager contenido)
+        {
+            byte tamanyoSecuencia = (byte)imagenes.Length;
+            secuencia[direcc] = new Texture2D[tamanyoSecuencia];
+            for (int i = 0; i < imagenes.Length; i++)
+            {
+                secuencia[direcc][i] = contenido.Load<Texture2D>(imagenes[i]);
+            }
             haySecuencia = true;
+            cantidadDeFotogramas = imagenes.Length;
+            direccionActual = direcc;
+        }
+
+        public void CambiarDireccion(byte nuevaDir)
+        {
+            if (!haySecuencia)
+                return;
+
+            if (direccionActual != nuevaDir)
+            {
+                direccionActual = nuevaDir;
+                fotogramaActual = 0;
+                cantidadDeFotogramas = (byte)secuencia[direccionActual].Length;
+            }
         }
 
         public void SetVelocidad(float vx, float vy)
@@ -88,7 +116,7 @@ namespace MiniMiner
                     if (fotogramaActual >= cantidadDeFotogramas)
                         fotogramaActual = 0;
                     tiempoHastaSiguienteFotograma = tiempoEnCadaFotograma;
-                    imagen = secuencia[fotogramaActual];
+                    imagen = secuencia[direccionActual][fotogramaActual];
                 }
             }
         }
