@@ -1,10 +1,10 @@
 // Text file to simple HTML
-// Version 1: StreamReader + StreamWriter, OpenText + CreateText
+// Version 2: StreamReader + StreamWriter, constructors
 
 using System;
 using System.IO;
 
-public class TxtToUpper1a
+public class TxtToUpper2
 {
     public static void Main()
     {
