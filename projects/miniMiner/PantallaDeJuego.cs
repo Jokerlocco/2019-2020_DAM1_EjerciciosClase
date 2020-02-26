@@ -11,6 +11,7 @@ namespace MiniMiner
     {
         Personaje personaje;
         Enemigo enemigo;
+        Nivel01 nivel01;
 
         public bool Terminado { get; set; }
 
@@ -23,6 +24,7 @@ namespace MiniMiner
         {
             personaje = new Personaje(Content);
             enemigo = new Enemigo(Content);
+            nivel01 = new Nivel01(Content);
         }
 
         public void Actualizar(GameTime gameTime)
@@ -83,6 +85,7 @@ namespace MiniMiner
 
         public void Dibujar(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            nivel01.Dibujar(spriteBatch);
             personaje.Dibujar(spriteBatch);
             enemigo.Dibujar(spriteBatch);
         }

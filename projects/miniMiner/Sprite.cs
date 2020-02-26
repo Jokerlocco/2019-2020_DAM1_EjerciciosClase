@@ -35,6 +35,15 @@ namespace MiniMiner
             haySecuencia = false;
         }
 
+        public Sprite(int x, int y, Sprite sprite)
+        {
+            X = x;
+            Y = y;
+            imagen = sprite.imagen;
+            Activo = true;
+            haySecuencia = false;
+        }
+
         public Sprite(int x, int y, string[] imagenes, ContentManager Content)
         {
             X = x;
