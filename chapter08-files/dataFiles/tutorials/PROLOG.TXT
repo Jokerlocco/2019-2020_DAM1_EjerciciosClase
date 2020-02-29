@@ -1,0 +1,3037 @@
+
+         
+
+
+
+
+
+
+
+
+
+
+
+
+                           AUTOMATA DESIGN ASSOCIATES
+
+
+
+                                                          1570 Arran Way
+                                                          Dresher, Pa.
+                                                          19025
+                                                          (215)-646-4894
+                                                          December 14,1985
+        Dear PD user:
+
+             Here's version 1.8 of PD PROLOG. It's better, of course. And 
+        now I must ask a favor of you.
+
+             The   AAAI   fifth   national   conference   on   artificial 
+        intelligence is on August 11 to 15th, 1986 in Philadelphia. Since 
+        I live next to Philly,  I'd love to exhibit there. The problem is 
+        that  the rate is $2200 for a 10' x 10' booth,  with a $600  rate 
+        for publishers.
+
+             I  am  appealing to the coordinator of the  conference,  Ms. 
+        Claudia   Mazzetti,   for  a  publishers  rate  break  with   the 
+        justification  of my contribution to the public  domain.  I  have 
+        sent  to Ms.  Mazzetti a financial statement which shows  clearly 
+        that  I  cannot afford the standard rate.  Ms.  Mazzetti was  not 
+        particularly   impressed  with  my  request,   but  perhaps  some 
+        substantiation of my contribution will change her mind.
+
+             I  therefore  request that you  write  Ms.  Mazzetti  before 
+        February  at the below address,  and inform her of what I've done 
+        for mankind, the Byte readership, etc:
+
+                              Ms. Claudia Mazzetti
+                              Director, AAAI-86
+                              445 Burgess Drive
+                              Menlo Park, CA 94025-3496
+
+                                Sincerely yours,
+
+
+                                   Bob Morein
+                              Author, A.D.A. PROLOG
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     A.D.A PROLOG Documentation Version 1.90
+                  for the Educational and Public Domain Versions
+
+                                  January 5, 1985
+
+              Copyright Robert Morein and Automata Design Associates
+
+                                 1570 Arran Way
+                               Dresher, Pa. 19025
+
+                                 (215)-646-4894
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                      News
+
+             Release 1.90 of PD PROLOG now accesses all the memory in the 
+        machine.  The  space for programs and stack in a PC with 640k  of 
+        memory  is about 470 kbytes.  This means that it is equal to  our 
+        commercial products in basic power, though without virtual memory 
+        and the predicate extensions.
+
+             There  is a very interesting natural language parsing system 
+        by Lou Schumacher of Future Dimensions in directory "ATN".  Lou's 
+        system,  known as an augmented transition network parser, is very 
+        well documented,  since the paper he wrote on the subject is also 
+        included.  You'll  need  Volkswriter to print it  out,  but  it's 
+        readable as is.  The system requires ED PROLOG to run,  since  it 
+        makes use of the grammar rule syntax. I challenge a user to write 
+        a  grammar  rule  translator to make Lou's program  run  with  PD 
+        PROLOG.
+
+             Another project worth doing would be a simple editor written 
+        in  PROLOG.  It  would  use the  "read"  predicate,  and  display 
+        selected clauses for modification or deletion.
+
+             Simon   Blackwell's   "PIE"  Truth  Maintenance  System   is 
+        presented in revised, debugged, and enlarged form. This system is 
+        found  in  the  directory  "expert"  and  augments  the  strictly 
+        deductive  capabilities  of raw Prolog with additional  forms  of 
+        reasoning.  PIE  has a syntax that resembles colloquial  English. 
+        Wait till you see the backwards quote marks!
+
+             The predicates "batch" and "nobatch" are introduced to allow 
+        execution  of batch files without confusing messages and  prompts 
+        appearing on the screen. I've put one in Simon's "KOPS" file.
+
+
+
+                                Copyright Notice
+
+             The  public domain PD PROLOG system has been contributed  to 
+        the  public domain for unrestricted use with one  exception:  the 
+        object  code  may not be  disassembled  or  modified.  Electronic 
+        bulletin  boards  and SIG groups are urged to aid in giving  this 
+        software the widest possible distribution.
+
+             This documentation may be reproduced freely,  but it may not 
+        be  included in any other documentation without the permission of 
+        the author.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                  Introduction
+                
+        We  are pleased to present the third major version of PD  PROLOG, 
+        version 1.7.  Version 1.7 continues to refine "problems" and adds 
+        the  entertaining  feature of IBM PC video  screen  support.  The 
+        memory requirements are somewhat greater than the original, since 
+        it   is  uses  the  large  memory  model.   It   compensates   in 
+        thoroughness.  The memory requirement is about 210K bytes of TPA, 
+        and it will benefit from any available memory. 
+
+        We  hope  that you'll get some fun out of this  PROLOG.  It  will 
+        afford  you exposure to THE fifth generation language at the cost 
+        only  of  some  intellectual  effort.  The  motive  is  perfectly 
+        explicable:  We  want you to think of Automata Design  Associates 
+        for  fifth  generation  software.  It also gives us a  nice  warm 
+        feeling.
+
+        The  minimum  memory  requirement is 200 k of  transient  program 
+        area,  plus  whatever  space is needed to execute  programs  from 
+        within PROLOG.  DOS or MSDOS 2.0 are required.  The program  does 
+        not  require  IBM PC compatibility to run,  although  the  screen 
+        access routines do require compatibility.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                     Products by Automata Design Associates
+
+             Automata  Design  Associates  specializes  in  software  for 
+        artificial  intelligence  and  robotic  applications.   A  PROLOG 
+        language  system is available in various configurations.  A  LISP  
+        interpreter will be introduced in March of 1985.
+
+
+             There  are  six versions of PROLOG available  from  Automata 
+        Design Associates.  The systems run under the MSDOS or PCDOS. All 
+        of them access all available memory up to 1 megabyte.
+
+             .Public Domain PROLOG
+
+        This  serves to further the general awareness of the public about 
+        PROLOG.  It  also is an excellent adjunct to anyone learning  the 
+        language.  Most  of  the core PROLOG described  by  Clocksin  and 
+        Mellish  in  the book Programming In  PROLOG  is  implemented.  A 
+        complete  IBM PC video screen support library is included in this 
+        and  all other A.D.A.  prologs.  Trace predicates are  not.  This 
+        version is available from us for $10.00 postage paid.
+
+
+             .Educational PROLOG
+
+        At  extremely modest cost this affords an educational institution 
+        or  individual  a  PROLOG  system  which  provides  the   maximum 
+        available  programming  area  available  within  the  8086  small 
+        programming model.  Tracing,  a debugging aid,  allows monitoring 
+        a program as it runs.  User settable spy points selectively allow 
+        this.  Exhaustive  tracing  is also  available.  I/O  redirection 
+        gives some file ability.
+
+             An  "exec"  function allows the execution of  a  program  or 
+        editor  from  within  PROLOG,  thus  encouraging  an  interactive 
+        environment.
+
+             An  "interrupt"   menu is added,  permitting the control  of 
+        tracing, toggling the printer, and screen printing.
+
+             Definite clause grammar support is now included.
+             
+             The cost of Educational PROLOG is $29.95.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             .FS PROLOG
+
+             A  small  increment  in price adds full random  access  file 
+        capability. Character and structure I/O are allowed.
+
+             The  "asserta and "assertz" predicates are expanded and work 
+        with a clause indexing ability.  One can assert clauses  anywhere 
+        in the database under precise pattern matching control. 
+
+             A tree structured lexical scoping system and floating  point 
+        arithmetic are other enhancements.
+
+             The cost of FSM PROLOG is $49.95
+
+
+
+             .VMI PROLOG -- Virtual Memory (Replaces type VMS)
+
+
+             At reasonable cost the addition of virtual memory gives  an 
+        expansion of capabilities of an order of magnitude. 
+
+             The  database on disk is treated transparently.  No  special 
+        provisions  need  be  made  by the  user.  Virtual  and  resident 
+        databases  may be mixed.  A unique updating algorithim  preserves 
+        the format of the database as typed by the user while making only 
+        those changes necessary to make it equivalent to the database  in 
+        central memory.
+
+             The cost of VMI PROLOG is $99.95
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             .VML PROLOG Large model Virtual Memory System
+
+             A.D.A.  PROLOG is a remarkable fifth generation developement 
+        tool  for  the  implementation  of  intelligent  strategies   and 
+        optimized  control.  It  is both the kernel for  applications  of 
+        virtually  unlimited scope and a sophisticated developement  tool 
+        that multiplies the productivity of the programmer many times. 
+
+             With  a  cost/performance ratio exceeding that of any  other 
+        product  and  a  compatibility  insured  by  compliance  to   the 
+        Edinburgh syntax, performance is enhanced by numerous extensions, 
+        many of them invisible to the user.
+
+             A quick overview of some of the features discloses:
+
+             1)  Invisible  compilation  to  a  semantic  network 
+             preserves the flexibility of the interpreted mode and 
+             the speed of a compiler.
+
+             The  programmer can compile and recompile any portion 
+             of a module at any time.  The edit/compile/test cycle 
+             is short and free of strain. An interface is provided 
+             to an editor of choice.
+
+
+             2) Floating point arithmetic with a full  complement 
+             of  input  and  output  methods,  transcendental  and 
+             conversion functions.
+
+
+             3)  Virtual  memory.  Module  size  and  number  are 
+             unrestricted,   with  a  total  capacity  of  several 
+             hundred megabytes.  Resident and virtual modules  may 
+             be co-resident. Compilation is incremental. The cache 
+             algorithim  is  sophisticated.  Changes made  in  the 
+             database can be updated to disk by a single command.
+
+
+             4) A powerful exec function and acceptance of  stream 
+             input make  integration into  applications practical.
+
+
+             5)  Global polymorphic variables  retain  information 
+             that  would  otherwise  require  the  "assertion"  of 
+             facts.
+
+
+             6)  A  quoted  variable class,  borrowed  from  LISP, 
+             permits  referencing variables as objects as well  as 
+             by value.
+
+             7) Multidimensional arrays,  dynamically created  and 
+             destroyed,  efficiently  store numeric and nonnumeric 
+             structures. Arrays are ideal for representing spatial 
+             and ordinal relationships.
+             8)  Debugging facilities let you see your program run 
+             without any additional generation steps.
+
+
+             9)   Totally   invisible  and   incremental   garbage 
+
+
+
+
+
+
+             collection.   There   is  NEVER  any  wait  for  this 
+             function.
+
+
+             10)  A  tree  structured,   dynamically  configurable 
+             lexical scoping system. The work of many  programmers 
+             can  be coupled together in the form of libraries and 
+             nested domains. 
+
+             Each lexically scoped domain is a hidden space  which 
+             communicates  with the parent domain via exports  and 
+             imports. Domains can be linked together under program 
+             control to achieve any desired configuration.
+
+
+             11) The Grammar Rule Notation is an integral feature.
+
+
+             12) Keyword redefinition makes porting code easy.
+
+
+        The  cost  of this system is $200 for the MSDOS version.
+
+
+
+        .VMA PROLOG Large model Virtual Memory System
+
+        This  system  has  additional forms of  virtual  memory.  It  was 
+        intended  for  deep  reasoning  problems.  Contact  us  for  more 
+        information.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                 Upgrade Policy
+
+             Half the cost of any A.D.A. PROLOG system may be credited to 
+        the purchase of a higher level version.      The full cost of VMS 
+        prolog  may  be  applied to the purchase of VMI  or  VML  PROLOG. 
+        Updates to a particular level product vary from $15.00 to $35.00.
+
+
+                                Run-time Packages
+
+             Software  developers wishing to integrate an A.D.A.  product 
+        into  their  system  should inquire  about  specialized  run-time 
+        packages available at reasonable cost.
+
+
+
+                              Technical Information
+
+             Technical information may be obtained at (215) - 646- 4894
+
+             Perhaps we can answer the following questions in advance:
+
+             There is no support for:  APPLE II, Atari, Commodore, or  
+        CPM 80 .  Other machines from these manufactures may be supported 
+        in the future.
+
+             The MSDOS products are available on 5" and 8" diskettes.
+
+
+
+                              To Place Your Order:
+
+             You may place your order at the following number:
+
+                        (215)-646-4894   - day and night.
+
+
+
+                                     Returns
+
+             The  software may be returned within 30 days of purchase for 
+        a full refund.  This applies whether or not the software has been 
+        used.  We do ask that manuals, disks and packaging be returned in 
+        excellent condition.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                  Installation
+
+             You will need an IBM PC compatible machine with a minimum of 
+        256  kbytes  of  memory.  ED PROLOG benefits from  all  available 
+        memory up to the 1 megabyte INTEL limit.
+
+             To  determine the amount of TPA your machine  has,  run  the 
+        "chkdsk" program which is supplied with DOS. The last line reads:
+
+                                XXXXXX bytes free
+
+        where XXXXXX is a six digit number.
+
+        If  this  number  is greater than 200000,  ED  PROLOG  will  have 
+        reduced workspace.  If it's over 245000,  the amount of memory is 
+        optimal. If this is not the case, there are two possibilities:
+
+        1) The machine doesn't have enough memory.
+
+        2)  Something  else is removing memory from TPA,  such as  a  co-
+        resident  program,  a  ramdisk,  a large dos driver,  or a  large 
+        number of file or disk buffers.
+
+        If  you're  short of memory,  make sure that no  other  programs, 
+        ramdisks,  or drivers besides DOS are running in the machine. You 
+        may find it helps to eliminate (by renaming) the config.sys  file 
+        when you intend to run ED PROLOG.
+
+
+                      How to run the Demonstration Programs 
+                        without Knowing What You're Doing
+
+             We strongly advise that you purchase the book Programming in 
+        PROLOG by Clocksin and Mellish,  publisher Springer Verlag, 1981. 
+        For  the  impatient we give some advice.  Type the  demonstration 
+        program you wish to run.  There must be at least one entry  point 
+        within  the  program.  
+
+        Note:  Please  understand that these are demonstrations programs. 
+        Regarding  user  interface,  they are poorly  written.  You  will 
+        probably have to read Clocksin and Mellish to appreciate that the 
+        following examples of input are not equivalent: "yes." , "yes" .
+
+
+        The animals program - "animal"
+         
+             Most  of the examples require C & M for  comprehension.  The 
+        program "animals", however, can be appreciated by anyone. It is a 
+        traditional   example of an expert system.
+             
+             We had hoped to include the animals program on disk,  but we 
+        have  found  to  our  dismay that the version which  we  used  is 
+        allegedly copyrighted by the implementors of PROLOG 86.  Don't be 
+        surprised - even "happy birthday" is copyrighted.  We will simply 
+        point out that the November '84 issue of Robotics Age included  a 
+        version  of  the  animals game,  which you can,  at the  risk  of 
+        copyright infringement,  type in.  There is only one change  that 
+        need  be  made.  The "concat" function used in that  program  has 
+        arguments of the form:
+
+
+
+
+
+
+
+                      concat( [atom1, atom2,...], result ).
+
+        In order to make the concat definition more closely resemble that 
+        of  "name",  which  is  described by Clocksin  and  Mellish,  the 
+        argments have been reversed:
+
+                      concat( result, [atom1, atom2,...] )
+
+        Assuming  that you have typed in the program and made the  change 
+        just noted, the following steps are required to run it:
+             
+             Run the prolog.exe file.  The prompt "?-" will appear.  Type 
+        "consult( 'animals' ).<CR>".  Here <CR> indicates you are to type 
+        a  carriage  return.  The PROLOG system will load  "animals"  and 
+        compile  it into an internal form.  When the "?-" prompt  appears 
+        PROLOG is ready to run the "animals" guessing game. The object of 
+        the program is to deduce the animal you are thinking of. To start 
+        it  off  type  "help.<CR>".  PROLOG  will  respond  by  asking  a 
+        question. 
+             Because of the way the animals program is written,  you must 
+        respond in a rigid format.  You may type "yes<CR>",  "no<CR>", or 
+        "why<CR>". 
+             Eventually the program will terminate with either a guess as 
+        to what animal you are thinking of,  or a remark that the  animal 
+        is  not within its domain of knowledge.  The program has learned, 
+        however.  You  may  run  the  program again to  see  what  effect 
+        additional knowledge has on the program's behavior. 
+
+             The program fragment "console" shows how you may improve the 
+        console input routines of any of these programs.
+             
+
+        The Hematology Diagnosis Program - "hemat"
+
+             Although  the  logical structure is not as sophisticated  as 
+        that of "animals", it is interesting for several reasons:
+
+             1)  The  program  evaluates numerical data to  arrive  at  a 
+        diagnosis.
+
+             2) Although inaccurate, it demonstrates that useful question 
+        answering systems are not difficult to write in PROLOG.
+
+             3)  There  are  some mistakes in  the  program,  which  only 
+        slightly impede its usefulness. 
+
+             This  program  uses  structure  input.  Terminate  all  your 
+        answers with a period, as in "y.<CR>", or "no.<CR>".
+        The starting point is "signs.<CR>".  PROLOG will prompt  you 
+        for  signs  of  anemia.  The  program attempts  to  diagnose  two 
+        varieties of a hemolytic anemia.
+             The program could use a good working over by a  hematologist 
+        and we would be delighted to collaborate.
+
+
+        Prime Number Generator - "sieve"
+
+             This  program demonstrates that anything can be programed in 
+        PROLOG if one tries hard enough.  Asking the  question   
+          "primes( 50, L ).<CR>" causes a list of prime numbers less than 
+
+
+
+
+
+
+        50  to be printed out.  "Sieve" is heavily recursive and  quickly 
+        exhausts the stack space of the small model interpreters.
+
+
+        Grrules
+
+             This  is  an  example  of the use  of  the  definite  clause 
+        grammer  notation.  PD  PROLOG  does not  have  this  translation 
+        facility,  but ED PROLOG and  all of our other versions do. It is 
+        possible  to  perform  the  translations  by  hand  if  you  have 
+        thoroughly  read  C  & M.  Then you would have  the  pleasure  of 
+        asking:
+
+                 ?-sentence( X, [every,man,loves,a,woman], [] ).
+
+        and  having the meaning elucidated as a statment in the predicate 
+        calculus.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                               Special Offer  # 1
+
+             For  some  inexplicable reason,  demonstration programs  are 
+        hard to come by. We are too busy writing PROLOG fill this gap. We 
+        will  reward the contribution of "cute" sample programs with  the 
+        following:
+
+             1) A free  copy of type VMI virtual memory PROLOG
+
+             2) The sample program will be published as an intact file 
+             together with whatever comments or advertisments the author
+             may see fit to include, on our distribution disks. 
+
+             3) Exceptional contributions may merit a copy of type VML 
+             large  model virtual memory PROLOG which now incorporates  a 
+             UNIX1 style tree structured domain system.
+
+
+                                Special Offer # 2
+
+
+             If  you are a hardware manufacturer and would like a  PROLOG 
+        language  for your system,  the solution is simple.  Just send us 
+        one  of  your machines!  Provided your system  implements  a  "C" 
+        compiler, it will be ported in no time flat.
+
+
+        ______
+             1. Trademark of AT & T.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                         Writing Programs For ED PROLOG
+
+             You do not type in programs at the "?-" prompt.  There is no 
+        built-in  editor.  The command "consult( user )" is accepted  but 
+        does not cause PROLOG to enter an editing mode.  We feel that the 
+        most universally acceptable editing method is for the user to use 
+        a text editor of choice,  which can be invoked from within PROLOG 
+        by the "exec" predicate.
+
+             Use  Wordstar  or your customary editor to write a  program. 
+        Then  run  PD  PROLOG and use the consult function  to  load  the 
+        program.
+
+             In  all  cases except PD PROLOG,  you can  run  your  editor 
+        without leaving PROLOG by use of the "exec" predicate.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                             Running the Interpreter
+
+        COMMANDS: Give commands in lower case.
+
+        TO RUN:
+             Invoke PROLOG.EXE. After the "?-" prompt appears,
+               type "consult( <filename><CR> )", where <filename> is the 
+               desired database.
+             To exit, type "exitsys.<CR>"
+
+        TO ENTER A FACT:
+             Don't do it except with the "assert" predicates. This is the 
+             most  frequently misunderstood aspect of A.D.A.  Prolog.  If 
+             you want to enter a bunch of facts,  put them in a file  and 
+             "consult" them using the "consult" predicate.
+
+        TO ASK A QUESTION:
+             At the prompt, type "<expression>.<CR>", where 
+             <expression>  is  a  question as described by  Clocksin  and 
+             Mellish. Be sure to terminate the question with a period.
+             The question may be up to 500 characters long.
+
+        TO INPUT A STRUCTURE AT THE KEYBOARD:
+             The structure may be up to 500 characters in length. Be sure 
+             to terminate with a period.
+
+        TO ASK FOR ANOTHER SOLUTION:
+             If a solution has been provided, the PROLOG interpreter will 
+             ask  "More?  (Y/N):".  Only  if  a "y"  is  typed  will  the 
+             interpreter perform a search.
+
+        TO ABORT A SEARCH:
+             Simply   type   the  escape  key.   The   interpreter   will      
+             respond  with  "Interrrupted.",  and return to  the  command      
+             prompt.
+
+        TO LOAD ANOTHER DATABASE:
+             Type  "consult(<filename>).<CR>" The file name must have the 
+             extension  ".PRO".  It  is  not  necessary  to  include  the 
+             extension in the argument of consult. The file name as given 
+             must not be the same as a predicate name in the file or  any 
+             file which will be loaded.
+
+        TO TRACE:
+             When the system displays the prompt "?-", type "trace.<CR>".  
+             The display will likely move too rapidly for you to read. To 
+             stop the display,  type Control S.  To restart the  display, 
+             type  Control S.  To turn the trace      display  off,  type 
+             "notrace<CR>"  at  the  prompt  "?-".   The  interrupt  menu 
+             contains  additional  options,  such  as sending  all  trace 
+             output to a file, as well as display at the console.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        TO INTERRUPT A PROGRAM:
+             See  the  section  entitled  "The  Interrupt  Menu"  for   a 
+             description  of the flexible options.  Basically,  one types 
+             ESC  to terminate a program,  while Control V or  Control  I 
+             interrupt a program. 
+
+        TO RECONSULT A FILE:
+             The   predicate  "recon"  is  identical  to  the   Edinburgh 
+             predicate "reconsult."
+
+        TO REMOVE A DATABASE:
+             Type "forget(<filename>).<CR>"
+
+        TO EXIT TO THE OPERATING SYSTEM:
+             Type "exitsys.<CR>"
+
+             The system is totally interactive; any commands the operator 
+        gives  are and must be valid program statements.  Statements must 
+        terminate with a period.      All commands which take a file name 
+        also  accept a path name.  Any name which is not a  valid  PROLOG 
+        atom (refer to C & M) must be enclosed in single quotes. Thus one 
+        could say
+
+             consult( expert )
+
+        but one would need single quotes with
+
+             consult( 'b:\samples\subtype\expert' ).
+
+
+        To exit the system, type "exitsys.<CR>"
+
+        Atoms  may contain MSDOS pathnames if they are enclosed by single 
+        quotes, ie.,  '\b:\samples\animal' .
+
+        You may consult more than one file at a time.  However, all names 
+        are public and name conflicts must be avoided. The order in which 
+        modules are loaded may,  in cases of poor program design,  affect 
+        the behavior.
+
+
+
+                             Command Line Arguments
+
+             ED and PD PROLOG accept one command line argument,  which is 
+        the name of a "stream" which replaces the console for input.  The 
+        "stream"  in  MSDOS is a pipe or file which supplies input  until 
+        end-of-file is reached. Control then reverts back to the console. 
+        To avoid noisy parser error messages when end-of-file is reached, 
+        the  last command in the file should be "see( user )." See  Simon 
+        Blackwell's PIE program for an example of this.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                               A Reference of Note
+
+
+             With  minor  exceptions,  the syntax is a superset  of  that 
+        described  by  Clocksin and Mellish in the  book  Programming  in 
+        Prolog by W.F.  Clocksin and C.S.  Mellish, published by Springer 
+        Verlag in Berlin, Heidelberg, New York, and Tokyo. We shall refer 
+        to this book as "C & M".
+
+
+             There   are  very  few   syntactical   differences,   mostly 
+        unrecognized and/or minor.
+             When  an operator is declared using the "op" statement,  the 
+        operator must be enclosed in single quotes in the "op"  statement 
+        itself,  if  it would not otherwise be a legal Edinburgh functor. 
+        Subsequently,  however,  the parser will recognize it for what it 
+        is,  except  in  the "unop" statement,  where it  must  again  be 
+        enclosed in single quotes.
+
+             Variable numbers of functor paramaters are supported.
+
+             A  goal  may be represented by a  variable,  which  is  less 
+        restrictive  than  the  C  &  M requirement  that  all  goals  be 
+        functors.  The  variable must be instantiated to a  functor  when 
+        that goal is pursued.
+
+             Rules which appear inside other expressions must be enclosed 
+        in  parenthesis  if  the "," operator is to be  recognized  as  a 
+        logical connective.
+
+             All  infix  operators described by C & M,  and user  defined 
+        infix,  prefix, and postfix operators with variable associativity 
+        and precedence are supported exactly as in C & M.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                         The Built In Predicate Library
+
+                        Available Operators in PD and ED PROLOG
+
+
+        Column 1 gives the function symbol. 
+
+        Column 2 gives the precedence. The range of precedence is 1 to 255.
+        A zero in the precedence column indicates the symbol is parsed as 
+        a functor, and precedence is meaningless in this case.
+
+        Column 3 gives the associativity. 
+        A zero in the associativity column indicates the symbol is parsed
+        as a functor, and associativity is meaningless in this case.
+
+        Column 4 indicates which version the function is available in. 
+        Unless otherwise noted, the function is available in all versions.
+        Nonstandard predicates are indicated by "NS".
+
+
+        op/pred      precedence    associativity         availability
+
+        "!"             0             0
+        "|"             0             0
+        "="             40,           XFX                   
+        "=="            40,           XFX                   
+        "\\="           40,           XFX                   
+        "\\=="          40,           XFX       
+        "/"             21,           YFX       
+        "@="            40,           XFX       
+        ">="            40,           XFX       
+        "=<"            40,           XFX       
+        ">"             40,           XFX       
+        "<"             40,           XFX       
+        "-"             31,           YFX        
+        "*"             21,           YFX
+        "+"             31,           YFX
+        "=.."           40,           XFX
+        "-->"           255,          YFY       (not  in  PD PROLOG)
+        "?-"            255,          FY  
+              
+
+
+        "arg"           0,            0,                                   
+        "asserta"       0,            0,                                   
+        "assertz"       0,            0,                                   
+        "atom"          0,            0,                                   
+        "atomic"        0,            0,                                   
+        "batch"         0,            0
+        "clause"        0,            0,                                   
+        "clearops"      0,            0,                                   
+        "cls"           0,            0,       NS
+        "concat"        0,            0,                                   
+        "consult"       8,            FX,                                  
+        "crtgmode"      0,            0,       NS
+        "crtset"        0,            0,       NS
+        "curset"        0,            0,       NS
+        "curwh"         0,            0,       NS
+        "debugging      0,            0,                                   
+        "dir"           0,            0,                                   
+
+
+
+
+
+
+        "display"       0,            0,                                   
+        "dotcolor"      0,            0,       NS
+        "drawchar"      0,            0,       NS
+        "drawdot"       0,            0,       NS
+        "drawline"      0,            0,       NS
+        "exec"          0,            0,                                   
+        "exitsys"       0,            0,       NS                          
+        "forget"        0,            0,       NS                          
+        "functor"       0,            0,                                   
+        "get0"          8,            FX,                                  
+        "integer"       0,            0,                                   
+        "is"            40,           XFX,                                 
+        "listing"       0,            0,                                   
+        "memleft"       0,            0,      NS
+        "mod"           11,           XFX,                                 
+        "name"          0,            0,                                   
+        "nl"            0,            0,                                   
+        "nodebug"       0,            0,       (not in PD PROLOG)
+        "nonvar"        0,            0,                                   
+        "nospy"         50,           FX,      (not in PD PROLOG)
+        "not"           60            FX                                   
+        "notrace"       0,            0,       (not in PD PROLOG)
+        "op"            0,            0,                                   
+        "popoff"        0,            0,       NS
+        "popoffd"       0,            0,       NS
+        "popon"         0,            0,       NS
+        "popond"        0,            0,       NS
+        "print"         0,            0,                                   
+        "prtscr"        0,            0,       NS
+        "put"           0,            0,                                   
+        "ratom"         0,            0,                                   
+        "read"          0,            0,                                   
+        "recon"         0,            0, (Note: this is "reconsult")
+        "repeat"        0,            0,                                   
+        "retract"       0,            0                                    
+        "rnum"          0,            0,                                   
+        "see"           0,            0,       
+        "seeing"        0,            0,       
+        "seen"          0,            0,       
+        "skip"          0,            0,       (not in PD PROLOG)
+        "spy"           50,           FX,      
+        "tab"           0,            0,                                   
+        "tell"          0,            0,       
+        "telling"       0,            0,       
+        "told"          0,            0,       
+        "trace"         0,            0,       (not in PD PROLOG)
+        "true"          0,            0,                                   
+        "unop"          0,            0,                                   
+        "var"           0,            0,                                   
+        "write"         0,            0,                                   
+                        Description of the Modifications.
+             
+
+        I/O Redirection
+
+        I/O  redirection is a feature described by Clocksin and  Mellish. 
+        The predicates "see",  "seeing",  "seen",  "tell", "telling", and 
+        "told" are used to select the streams used for input and output. 
+
+             The  predicates  "seen" and "told" require as arguments  the 
+
+
+
+
+
+
+        name of the stream that is to be closed.  This enables the system 
+        to  remember the indices of several streams and switch  back  and 
+        forth between them.
+
+             The  predicate "batch",  when inserted at the beginning of a 
+        stream file, has the following properties:
+
+             1)  The normal prompt,  "?-",  and advisory messages do  not 
+             appear at the screen.
+
+             2)  It is self cancelling if the input stream is  reassigned 
+             to the console.
+
+             3) It may also be cancelled by the predicate "batch".
+
+
+
+        call( <goal> )
+
+             The  predicate as defined in C & M is obsolete.  The purpose 
+        was  to permit a goal search where the goal name was  a  variable 
+        instantiated  to  some functor name.  A.D.A.  permits writing  of 
+        goals with such names,  so the mediation of the "call" clause  is 
+        no longer necessary.
+
+             The  "call"  predicate  may  be  trivially  implemented  for 
+        compatibility with the PROLOG definition
+
+                                 call( X ) :- X.
+
+
+
+        clause
+
+             The  function  clause(  X,  Y ) has the  new  optional  form 
+        clause(  X,  Y,  I  ).  If the third variable is written,  it  is 
+        instantiated  to the current address of a clause in  memory.  The 
+        only  use of the result is with succeeding assertfa and  assertfz 
+        statements.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        debugging
+
+             "Debugging"  prints a list of the current  spypoints.  After 
+        each name a sequence of numbers may appear, indicating the number 
+        of  arguments that is a condition of the trace.  The  word  "all" 
+        appears  if  the  number of arguments is not a condition  of  the 
+        trace.
+
+        op( <prec>, <assoc>, <functor> )
+
+             Defines  the  user  definable  grammar  of  a  functor.  The 
+        definition conforms to that in C & M. We mention here a minor but 
+        important point.  If <functor> is not a valid PROLOG atom it must 
+        be   enclosed  in  single  quotes  when  declared  in  the   "op" 
+        declaration.  It  is  not necessary or legal to do this when  the 
+        functor is actually being used as an operator.  In version 1.6, a 
+        declared  or built-in operator can be used either as an  operator 
+        or as a functor. For example, 
+
+                                 +(2,3) = 2 + 3.
+
+        is a true statement.
+
+             Declared  operators  are annotated in the directory  display 
+        with their precedence and associativity.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Output predicates
+
+           display
+           write
+           print
+           put
+
+             These  functions  have  been  modified  to  accept  multiple 
+        arguments in the form:
+
+                       print( <arg1>, <arg2>, <arg3>,... )
+
+        Thus, "put( a, b, c )" would result in the display of "abc".
+             The  names  of  some  PROLOG atoms that may  occur  are  not 
+        accepted  by  the  PROLOG scanner  unless  surrounded  by  single 
+        quotes.  This only applies when such an atom is read in, not when 
+        it is internally generated. Nevertheless, this presents us with a 
+        problem:  We  would  like to be capable of writing  valid  PROLOG 
+        terms to a file. In some cases, it is necessary to add the single 
+        quotes.  In other cases,  such as human oriented output, they are 
+        an irritant. The modified definitions of the following predicates 
+        are an attempt at a solution:
+
+             display
+             Operator  precedence  is ignored,  all functors are  printed 
+             prefix and single quotes are printed if needed or they  were 
+             supplied if and when the atom was originally input.
+
+             write
+             Operator  precedence is taken into account and operators are 
+             printed according to precedence.  Single quotes are  printed 
+             under the same conditions as for "display."
+
+             print
+             Operator  precedence is taken into account and operators are 
+             printed  according to precedence.  Single quotes  are  never 
+             displayed.  This  is  a  human oriented form of  output  and 
+             should  never  be used for writing of terms for  the  PROLOG 
+             scanner.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        get0
+        read
+
+             The  functions  "get0"  and "read"  have  been  extended  to 
+        support input from a stream other than the one currently selected 
+        by "see". To direct output to a file or other stream, an optional 
+        argument  is used.  For example,  "get0( char,  <file name> )" or 
+        "get0( char,  user )" would cause input to come from <file  name> 
+        or the console.  If the file has not already been opened,  "get0" 
+        will fail.
+
+
+
+             Atoms enclosed by single quotest, eg. '\nthis is a new line' 
+        can contain the escape sequences
+
+             '\n', '\r', '\t' and '\''.
+
+             If these atoms are printed by "display" or "write" they  are 
+        printed  just  as they are.  If they are printed by  the  "print" 
+        clause they are translated as follows:
+
+        '\n'  results  in  the printing of a carriage return and  a  line 
+        feed.
+        '\r' results in the printing of a carriage return only.
+        '\t' results in the printing of a tab character.
+        '\'' allows the printing of a single quote within a quoted atom.
+
+             The "portray" feature is not presently implemented.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        Description of the New Predicates
+
+
+        clearops-
+
+             Nullify  the  operator  status  of  every  operator  in  the 
+             database.
+
+        concat( (<variable> | <functor>), <List> )
+
+             A  list  of functors or operators is concatenated  into  one 
+        string,  which becomes the name of a new atom to which <variable> 
+        or <functor> must match or be instantiated.
+
+
+        dir( option )
+
+             Provide  an  alphabetized listing to the console  of  atoms, 
+        constants,   or   open  files.   Without  options,   simply  type 
+        "dir.<CR>". Options are:
+
+             dir( p ) - list clause names only.
+             dir( c ) - list consulted files only.
+
+        Consulted files are prefixed by "S:".
+
+
+        exitsys
+
+             Exit to the operating system.
+
+
+
+        forget( <file name> )
+             Make  a database unavailable for use and reclaim the storage 
+        it occupied.
+
+
+
+        ratom( <arg>, <stream> )-
+             Read an atom from the input stream,  to which <arg>  matches 
+        or  is  instantiated.  <stream> is optional.  If <stream> is  not 
+        given, the input stream defaults to the standar input.
+             Input is terminated by a CR or LF, which are not included in 
+        the stream.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                             Arithmetic Capabilities
+
+             Integer  arithmetic is supported.  Numbers are 32 bit signed 
+        quantities. The following arithmetic operators are supported:
+
+                      "+", "-", "*", "/", <, <=, >, >=, mod.
+
+        Arithmetic operators must never be used as goals,  although  they 
+        may be part of structures. It is legal to write:
+
+                                    X = a + b
+             
+        which  results in the instantiation of X to the struture (a + b). 
+        But the following is not legal:
+
+                       alpha( X, Y ) :- X + Y, beta( Y ).
+
+
+        Evaluation  of  an arithemtic expression is mediated by the  "is" 
+        and inequality predicates.  For instance,  the following would be 
+        correct:
+
+                         alpha( X, Y, Z ) :- Z is X + Y.
+
+                         beta( X, Y ) :- X + 2 < Y + 3.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            Memory Metric Predicate
+
+             The purpose of this predicate is to give the prolog system 
+        a  sense  of  how much memory remains so  that  expensive  search 
+        strategies  can  be  controlled.  It is not possible  to  exactly 
+        quantify how much memory remains.  At the lowest level, there are 
+        two  types of memory - the stack and the heap.  The stack expands 
+        down  from  high  memory,  while  the heap  tends  to  expand  at 
+        unpredictable intervals upwards.  If the stack and heap meet, the 
+        prolog  system  must abort the search and return to  the  prompt. 
+        Judicious  use  of  the  memory  metric  predicates  reduces  the 
+        probability of this happening.
+
+             The  stack is easy to quantify because it expands  downwards 
+        in  a  predictable  way with recursion.  The symbol  space  is  a 
+        "heap".  For  those  interested,  the structure of  the  heap  is 
+        determined  by  the C compiler under which Prolog  was  compiled. 
+        There  is  a function internal to Prolog known as  the  allocator 
+        searches  the  heap for enough contiguous memory to create a  new 
+        symbol.  The  heap resembles a piece of Swiss cheese;  the  holes 
+        represent symbols and already allocated memory while the remained 
+        is  searched  by the allocator for a piece of  contiguous  memory 
+        large enough to satisfy a request.  If one cannot be  found,  the 
+        uppermost  bound of the heap is expanded upwards,  and that bound 
+        is  the  number  which we measure for an  estimate  of  remaining 
+        memory.
+
+             The  sqace between the top of the heap,  and  the top of the 
+        stack,  which we call "gap",  serves as a rough guide to how much 
+        memory  remains.  The  demands  of the system  are  not  entirely 
+        predictable,  however.  For example, the creation of a new symbol 
+        larger  than "gap" would cause an abort.  The user must  use  the 
+        numbers  supplied  by  these  functions  as  a  heuristic  guide, 
+        tempered  by  experience,  to  minimize  the  possibility  of  an 
+        unexpected abort.
+
+        "Gap" is measured in 256 byte pages.
+
+        memleft( X )
+
+        If  the argument is an integer,  this is satisfied if the size of 
+        "gap" is greater than "X".
+
+        If the argument is a variable,  it is instantiated to the  amount 
+        of "gap" remaining.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                         IBM PC Video Display Predicates
+
+
+        A high level method is provided for drawing and displaying on the 
+        screen of IBM PC and compatible computers. 
+
+
+
+        cls
+
+        Clear  the screen and position the cursor at the upper left  hand 
+        corner.
+
+
+
+        crtgmode( X )
+
+        Matches  the  argument to the mode byte of the display  which  is 
+        defined as follows:
+
+                  mode           meaning
+
+                   0             40 x  25  BW (default)
+                   1             40 x  25  COLOR
+                   2             80 x  25  BW
+                   3             80 x  25  COLOR
+                   4            320 x 200  COLOR
+                   5            320 x 200  BW
+                   6            640 x 200  BW
+                   7             80 x  25  monochrome  display card
+
+
+
+        crtset( X )
+         
+        This  sets the mode of the display.  The argument must be one  of 
+        the modes given above. 
+
+
+
+        curset( <row>, <column>, <page> )
+
+        Sets the cursor to the given row, column, and page. The arguments 
+        must be integers.
+
+
+
+        curwh(  <row>, <column> )
+
+        Reports the current position of the cursor.  The argument must be 
+        an integer or variable. The format is:
+
+             1) page zero is assumed.
+             2) The row is in the range 0 to 79, left to right.
+             3) The column is in the range 0 to 24, bottom to top.
+        dotcolor( <row>, <column>, <color> )
+
+        The  argument  <color> is matched to the color of  the  specified 
+        dot. The monitor must be in graphics mode.
+
+
+
+
+
+
+
+
+
+        drawchar( <character>, <attribute> )
+
+        Put a character at the current cursor position with the specified 
+        attribute.  The  arguments  <character> and <attribute>  must  be 
+        integers.  Consult  the IBM technical reference manual  regarding 
+        attributes.
+
+
+
+        drawdot( <row>, <column>, <color> )
+
+        Put  a dot at the specified position.  The monitor must be in the 
+        graphics  mode.  The  arguments  must be  integer.  The  argument 
+        <color> is mapped to integers by default in the following manner:
+
+
+
+        drawline( <X1>, <Y1>, <X2>, <Y2>, <color> )
+
+        Draw a line on the between the coordinate pairs. The monitor must 
+        be in the graphics mode and the arguments are integer.
+
+
+
+        prtscr
+
+        Print  the  screen  as it currently appears.  Be  sure  that  the 
+        printer  is  on  line and ready before invoking  this  predicate, 
+        since otherwise, the system may lock up or abort.
+
+
+
+        The  integer argument <color> referred to in the above predicates 
+        is represented as follows:
+
+             COLOR          PALETTE 0           PALETTE 1
+             
+               0            background          background
+               1            green               cyan
+               2            red                 magenta
+               3            brown               white
+
+        To change the palette and the background,  see the IBM  Technical 
+        Reference Bios listings for more information.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                   Trace Files
+
+                                 (type ED only)
+
+             You  can  now dump your trace to disk,  instead  of  (groan) 
+        wasting  reams of printer paper.  This option is described in the 
+        next section.
+
+
+                               The Interrupt Menu
+
+                                 (type ED only)
+
+             This  menu  has been modified.  It was formerly  called  the 
+        ESCAPE   menu,  but  the  meaning  of the  ESCAPE  key  has  been 
+        redefined.  It  is  no  longer necessary to display the  menu  to 
+        perform  one of the menu functions.  This reduces the  amount  of 
+        display which is lost by scrolling off the screen.
+
+             Version  1.9 offers the ability to attempt a goal  from  the 
+        interrupt menu, while not disturbing the ongoing computation.
+
+             At any time while searching, printing, or accepting keyboard 
+        input,  you can break to this menu.  It is generally not possible 
+        to  do  this  during disk access,  since control  passes  to  the 
+        operating  system  at this time.  Two keys cause  this  break  to 
+        occur:
+
+             ^V:  The menu is displayed and a command is accepted at the 
+                  prompt  "INTERRUPT>".  After  a command,  the  menu  is 
+                  redisplayed  until  the user selects  a  command  which 
+                  causes an exit. 
+
+             ^I:  The menu is not displayed.  Command is accepted at the 
+                  prompt  "INTERRUPT>" until the user selects  a  command 
+                  which causes an exit.
+
+             ESC: Typing this key  causes a  termination of  the  PROLOG      
+                  search  and  control returns to the user command  level      
+                  with a prompt of "?-".  Notice that previously, the ESC      
+                  key invoked this menu. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             As the resulting menu indicates, the following functions are 
+        possible:
+
+             A: Abort the search and return to the prompt.
+
+             O  Open  a trace file.  The user is prompted for  the  file 
+                name.  The file receives all trace output.  If a file is 
+                already opened it is closed with all output preserved.
+
+             C  Close the trace file if one is open.  Otherwise there is 
+                no effect.
+
+            ^C: Immediately  exit PROLOG without closing files.  This is 
+                not advised.
+
+            ^P: Typing <Control>P toggles the printer. If the printer is 
+                on,  all  input  and output will also be  routed  to  the 
+                printer.
+
+             S: If  the machine in use is an IBM PC compatible  machine, 
+                the  currently displayed screen will be printed.  If  the 
+                machine  is  not an IBM PC compatible,  do not  use  this 
+                function.
+
+             T: If  trace  is in use,  most of the trace output  can  be 
+                temporarily turned off by use of this function,  which is 
+                a toggle.
+
+             G: Satisfy a goal.  The system prompt will appear. Do not be         
+                confused  into  thinking that the system has reverted  to 
+                the  prompt.  After the user has entered the goal in  the 
+                usual  manner,  satisfaction  of the goal is  immediately 
+                attempted.  This need not affect the running  computation 
+                in  any way,  although it is certainly possible to do so. 
+                After  the  goal is attempted,  control  returns  to  the 
+                INTERRUPT  menu.  The  purpose is to facilitate  detailed 
+                analysis of a running system.
+
+             R:  Entering  another  ESC causes a return to the  current 
+                activity  (keyboard  input or search)  with  no  residual 
+                effect from the interruption.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                             Conserving memory space
+
+
+               Success popping is controlled by the predicates "popond",
+        "popoffd",  "popon",  and  "popoff".  Success popping is means of 
+        reclaiming  storage which is used on backtracking to  reconstruct 
+        how a particular goal was satisfied.  If it is obvious that there 
+        is no alternative solution to a goal this PROLOG system is  smart 
+        enough to reclaim that storage. 
+
+             In  this system,  succees popping is an expensive operation. 
+        Therefore,  there  is a tradeoff of memory versus  time.  On  the 
+        other hand, discrete use of success popping can actually speed up 
+        a program by recreating structures in a more accessible form.
+
+             The  definitions of the control predicates is given in  this 
+        manual  and  their use is totally  optional.  The  modulation  of 
+        success popping has no effect on program logic (read solution.)
+             
+             The  "cut"  can  save  substantial  time  and  computational 
+        overhead  as well as storage.  Although the execution of the  cut 
+        costs  time,  you can design your program to use cuts in critical 
+        places  to  avoid unnecessary backtracking.  Thus  the  execution 
+        speed of the program can actually increase. 
+             
+             Anyone  who  has  read Clocksin and  Mellish  is  aware,  of 
+        course, that the "cut" has a powerful logical impact which is not 
+        always desirable.
+
+
+        popoff 
+
+        See the below definition.
+
+
+
+        popon
+
+        The  inference  engine  does complete success popping  for  goals 
+        which appear after "popon".  Consider this example: 
+
+          goal :-  a, popon, b, c, popoff, d.
+
+        If  no alternative solutions exist for b,  then  success  popping 
+        will  reclaim storage by removing unnecessary records  describing 
+        how  "b"  was  satisfied.  If the Prolog system cannot  rule  out 
+        possible additional solutions,  success popping will never occur, 
+        regardless of your use of "popon". 
+             Since goal "d" occurs after "popoff",  success popping  will 
+        never occur.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        popoffd
+
+        If  no  "popon" or "popoff" declarations occur in a  clause,  the 
+        default  action  is  determined by  "popoffd"  and  "popond".  If 
+        "popoffd" has been invoked,  the default is that success  popping 
+        will not occur.
+
+
+
+        popond
+
+        The inverse of "popoffd". Turns on default success popping.
+        printf( <stream>, <term1>,<term2>,... )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                 Prolog Tutorial          
+
+
+                                  Introduction
+
+
+
+
+             Probably  you  have heard of the language PROLOG within  the 
+        last year or so. You probably wondered the following things:
+
+        1) What does the name stand for? Names of computer languages are 
+        almost always acronyms.
+
+        2) What is it good for?
+
+        3) Why now?
+
+        4) Can I get a copy to play with?
+
+             Congratulations! You obviously know the answer to the fourth 
+        question. We now respond to the other three.
+             
+        1)  The  name  stands for "programming in logic." This  we  shall 
+        elaborate on in depth later on.
+
+        2) PROLOG is good for writing question answering systems.  It  is 
+        also   good   for  writing  programs  that  perform   complicated 
+        strategies  that  compute the best or worst way to  accomplish  a 
+        task, or avoid an undesirable result.
+
+        3) PROLOG was virtually unknown in this country until researchers 
+        in  Japan announced that it was to be the core language  of  that 
+        country's fifth generation computer project.  This is the project 
+        with  which  Japan hopes to achieve a domainant position  in  the 
+        world information industry of the 1990's. 
+
+             PROLOG  is  one of the most unusual computer languages  ever 
+        invented.  It  cannot be compared to  FORTRAN,  PASCAL,  "C",  or 
+        BASIC.  The facilities complement,  rather than replace those  of 
+        conventional  languages.  Although  it  has great  potential  for 
+        database  work,  it  has  nothing in  common  with  the  database 
+        languages used on microcomputers.
+
+             Perhaps  the  best point to make is that while  conventional 
+        languages are prescriptive, PROLOG is descriptive. A statement in 
+        a conventional language might read:
+
+             if( car_wheels = TRUE ) then
+               begin
+                 (some sort of procedure)
+                 X = X + 1;
+               end 
+
+
+
+
+
+
+
+
+
+
+
+
+
+        A statment in PROLOG could just be a statment of fact about  cars 
+        and wheels. There are many relationships that hold. For instance,
+
+             has( car, wheels ).
+
+             has( car, quant(wheels, four) ).
+
+             round( wheels ).
+
+        Each  of  these statments is an independent fact  relating  cars, 
+        wheels,  and  the  characteristics of wheels.  Because  they  are 
+        independent, they can be put into a PROLOG program by programmers 
+        working separately. The man who is a specialist on car bodies can 
+        say  his thing,  the wheel specialist can have his say,  and  the 
+        participants can work with relative independence. And this brings 
+        to light a major advantage of PROLOG:
+
+
+                             PARALLEL PROGRAMMING!!!
+                            
+
+        With  conventional  programming languages projects can  still  be 
+        "chunked",  or  divided between programmers.  But efficiency on a 
+        team  project  drops  drastically below that  of  the  individual 
+        programmer  wrapped  up  in  his own trance.  As  the  number  of 
+        participants    grows   the   need   for   communication    grows 
+        geometrically. The time spent communicating can exceed that spent 
+        programming! 
+             Although   PROLOG   does   not  eliminate   the   need   for 
+        task  coordination,  the problem is considerably  simplified.  It 
+        also provides the ability to answer questions in a "ready to  eat 
+        form."  Consider your favorite BASIC interpreter.  Based upon the 
+        statements about cars and wheels previously given,  could you ask 
+        it the following question?   
+
+                       
+              has( car, X ), round( X ).
+
+             Does  a  car  have anything which  is  round?  The  question 
+        instructs the PROLOG interpreter to consider all the objects that 
+        it  knows are possessed by a car and find those which are  round. 
+        Perhaps  you are beginning to guess that PROLOG has the abilities 
+        of a smart database searcher.  It can not only find the facts but 
+        selectively find them and interpret them.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             Consider the problem of a fault tree, as exemplified by this 
+        abbreviated one:
+
+
+
+        {Car won't start}
+             | 
+             | 
+        [Engine  turns  over](No) --> [Battery voltage](no)-\
+                (Yes)                                       v
+                 |                                  {Check battery}
+                 |
+        [Smell gasoline](yes) --> {Try full throttle cranking}
+                 |                       (failure)
+        /--------/                           |
+
+                            (details omitted)
+
+
+
+             The fault tree is easily programmed in BASIC. Later we shall 
+        show  that  PROLOG supplies a superior replacement for the  fault 
+        tree.  Though the tree is capable of diagnosing only the  problem 
+        for  which  it was designed,  PROLOG dynamically  constructs  the 
+        appropriate  tree from facts and rules you have provided.  PROLOG 
+        is not limited to answering one specific question.  Given  enough 
+        information,  it  will attempt to find all deductive solutions to 
+        any problem.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                  PROLOG PRIMER
+
+        I.                       Rules and Facts     
+
+
+
+             This  is  where you should start if you know  nothing  about 
+        PROLOG. Let us consider a simple statment in PROLOG, such as:
+
+        1)   has( car, wheels ).
+
+        This  statement  is a "fact.  The word "has" in this statment  is 
+        known  either  as a functor or predicate.  It is a name  for  the 
+        relationship  within the parenthesis.  It implies that a car  has 
+        wheels.  But  the  order  of  the words  inside  the  bracket  is 
+        arbitrary and established by you. You could just as easily say:
+
+        2)   has( wheels, car ).
+
+        and if you wrote this way consistently,  all would be  well.  The 
+        words  has,  wheels,  and car are all PROLOG atoms.  "Wheels" and 
+        "car" are constants. 
+             
+        A   database   of  facts  can  illustrate  the   data   retrieval 
+        capabilities of PROLOG. For instance:
+
+        3)   has( car, wheels ).
+             has( car, frame ).
+             has( car, windshield ).
+             has( car, engine ).
+
+        You could then ask PROLOG the question:
+
+        4)   has( car, Part ).
+
+        The  capital  "P" of Part means that Part is a  variable.  PROLOG 
+        will make Part equal to whatever constant is required to make the 
+        question match one of the facts in the database. Thus PROLOG will 
+        respond:
+
+             Part = wheels.
+             
+             More?(Y/N):
+
+        If you type "y" the next answer will appear:
+
+             Part = frame.
+
+             More?(Y/N):
+
+        If you continue, PROLOG will produce the answers Part = windshield 
+        and Part = engine. Finally, you will see:
+
+             More?(Y/N):y
+
+             No.
+         
+        indicating that PROLOG has exhausted the database.  Incidentally, 
+        when  a  variable is set equal to a constant or  other  variable, 
+
+
+
+
+
+
+        it is said to be instantiated to that object.
+
+             Notice  that  PROLOG searches the database forwards  and  in 
+        this case,  from the beginning.  The forward search path is built 
+        into PROLOG and cannot be changed. An author of a program written 
+        in  a  prescriptive language is quite conscious of the  order  of 
+        execution  of  his program,  while in PROLOG it is  not  directly 
+        under his control.
+             
+             The other major element is the rule which is a fact which is 
+        conditionally true. In logic this is called a Horn clause: 
+
+
+        5)   has( X, wheels ) :- iscar( X ).
+
+        The  fact iscar( car ) and the above rule are equivalent to
+
+        6)   has( car, wheels).
+
+        The  symbol :- is the "rule sign." The expression on the left  of 
+        :-is the "head" and on the right is the body.  The variable X has 
+        scope  of the rule,  which means that it has meaning only  within 
+        the rule.  For instance,  we could have two rules in the database 
+        using identically named variables.
+
+
+        7)   has( X,  transportation ) :- 
+                           has( X,  car ), has( license, X ).
+
+        8)   has( X, elephant ) :- istrainer( X ), hasjob( X ).
+
+        The  variables  X in the two expressions are completely  distinct 
+        and have nothing to do with each other.
+
+        The comma between has( X, car ) and has( license, X ) means "and" 
+        or logical conjuction.  The rule will not be true unless both the 
+        clauses has(X, car) and has( license, X ) are true.
+
+
+             On the other hand if there is a rule
+             
+        9)   has( license, X ) :- passedexam( X ).
+
+        consider what PROLOG will do in response to the question:
+
+        10)  has( harry, transportation ).
+
+        (Notice  that  harry has not been capitalized because we  do  not 
+        want  it  taken as a variable.  We could,  however,  say  'Harry' 
+        enclosed in single quotes.)
+
+             It  will scan the database and use (7),  in which X will  be 
+        instantiated to harry. The rule generates two new questions:
+
+        11)  has( harry, car ).
+
+        12)  has( license, harry ).
+
+        Assuming  that  harry  has  a car,  the first clause  of  (7)  is 
+        satisfied and the database is scanned for a match to (12). PROLOG 
+
+
+
+
+
+
+        picks  up  rule (9) in which X is instantiated to harry  and  the 
+        question is now posed:
+
+        13)  passedexam( harry ).
+
+             If there is a fact:
+
+             passedexam( harry ).
+
+        in  the database then all is well and harry  has  transportation. 
+        If there is not, then PROLOG will succinctly tell you:
+
+             No.
+
+        But  suppose Harry has money and can hire a chauffer as any  good 
+        programmer  can.  That  could be made part of the program in  the 
+        following way.
+
+             The rule which PROLOG tried to use was:
+
+        14)  has( X,  transportation ) :- 
+                           has( X,  car ), has( license, X ).
+
+        At any point following it there could be included another rule:
+
+        15)  has( X, transportation ) :- has( X, money ).
+
+        or simply the bald fact:
+
+        16)  has( harry, transportation ).
+
+             These  additional  rules  or  facts would  be  used  in  two 
+        circumstances.  If at any point a rule does not yield a solution, 
+        PROLOG   will  scan  forward  from  that  rule  to  find  another 
+        applicable  one.  This process is known as "backtracking  search" 
+        and can be quite time consuming.
+
+
+        If  in response to the "More?" prompt you answer "y" PROLOG  will 
+        search  for an additional distinct solution.  It will attempt  to 
+        find an alternate rule or fact for the last rule or fact used. If 
+        that  fails,  it  will back up to the antecedent rule and try  to 
+        find  an alternate antecedent.  And it will continue to  back  up 
+        until  it  arrives at the question you asked,  at which point  it 
+        will say:
+
+             No.
+
+        "Antecedent"  to a rule means that it gave rise to its' use.  For 
+        example,  (7)  is  the antecedent of (9) in the  context  of  the 
+        question (16).
+
+
+
+
+        II.                          Grammar
+
+             It is a boring subject, but it must be discussed. All PROLOG 
+        statements are composed of valid terms, possibly a rule sign (":-
+        "),  commas representing conjunction ("and"), and a period at the 
+
+
+
+
+
+
+        very end.
+             A term is a structure, constant, variable, or number.
+         
+             What is a structure? It is a kind of grouping:
+
+             1) Structures consist of a functor, and a set of objects or
+                structures in parenthesis.
+
+             2)  Objects are constants,  variables,  numbers,  or  lists, 
+                which we have not discussed yet.
+
+             3)  A  constant or functor must be a string of  letters  and 
+                numbers, beginning with a lower case letter, unless
+                you  choose  to  enclose  it in single  quotes  (  'howdy 
+                pardner'  ),  in  which  case you are  freed  from  these 
+                restrictions.
+             4) A  variable  must be a string of  letters  and  numbers 
+                beginning with a capital letter.
+             
+             5) A  functor  may optionally have  arguments  enclosed  in 
+                parenthesis , as in: hascar( X ) or hascar. 
+
+        An example:  "has( X, transportation )." is a structure.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        III.                     Input / Output      
+
+             You   now   know  enough  to  write  simple  databases   and 
+        interrogate   them  profitably.   But  before  we  examine   more 
+        sophisticated  examples,  it  will be necessary to add input  and 
+        output to the language. There are built in functions which appear 
+        as rules which are satisfied once. Thus the statment:
+
+             write( 'Hello world.' ).
+
+        can be included on the right side of a rule:
+
+
+        greetings(  X ) :- ishuman( X ),  write( 'Hello world.' ).  You 
+        can  also write "write( X )" where X is some variable.  Note that 
+        'Hello  world.' is not enclosed in double quotes.  Single quotes, 
+        which denote a constant, are required. Double quotes would denote 
+        a list, which is another thing entirely.
+
+        Provided  that  a match to "ishuman" can be  found,  the  builtin 
+        function  "write"  is  executed and the message  printed  to  the 
+        screen.
+             The  builtin  read( X ) reads a "structure" that  you  input 
+        from the keyboard. More formally, we have
+
+             read( <variable> or <constant> )
+             write( <variable> or <constant> )
+
+        If you write read( Input ),  then the variable "keyboard" will be 
+        assigned to whatever is typed at the keyboard,  provided that the 
+        input  is a valid PROLOG structure.  The builtin "read" will fail 
+        if instead of Keyboard we wrote read( baloney ),  where "baloney" 
+        is a constant,  and the user at the keyboard did not type exactly 
+        "baloney." 
+
+        When you input a structure in response to a "read" statement,  be 
+        sure to end it with a period and an <ENTER>. 
+
+             There  is  a convenient way of putting the cursor on  a  new 
+        line. This is the builtin "nl". For example:
+
+             showme :- write( 'line 1' ), nl, write( 'line 2' ). 
+
+        would result in:
+
+             line 1
+             line 2
+
+             There  is  also a primitive form of input/output for  single 
+        characters. It will be discussed later.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        IV.                   A Fault Tree Example
+
+             Consider the "won't start" fault tree for an automobile:
+
+        {Car won't start}
+             | 
+             | 
+        [Engine  turns  over](No) --> [Battery voltage](no)-\
+                (Yes)                                       v
+                 |                                  {Check battery}
+                 |
+        [Smell gasoline](yes) --> {Try full throttle cranking}
+                 |                       (failure)
+        /--------/                           |
+        |           /------------------------/ 
+        |           |                       
+        |           |
+        |  [Check for fuel line leaks](yes)-->{Replace fuel line}
+        |          (no)
+        |           |
+        |           |
+        |  [Check for defective carburator](yes)--\
+        |          (no)                           v
+        |                                {Repair carburator}
+        \----\
+             |
+             |
+        [Is spark present](no)-->[Do points open and close](no)-\
+             |                             (yes)                v
+        /----/                               |          {Adjust points}
+        |           /------------------------/
+        |           |
+        |  [Pull distributor wire, observe spark](blue)--\
+        |        (orange)                                v
+        |           |                           {Check plug wires & cap}
+        |           |
+        |  [Measure voltage on coil primary](not 12V)--\
+        |         (12V)                                v
+        |           |              {Check wiring, ballast resistor}
+        |           |
+        |  [Check condenser with ohmmeter](conducts)--\
+        |    (no conduction)                          v
+        |           |                         {Replace condenser}
+        |           |
+        |  [Open and close points](voltage not 0 - 12)--\
+        |   (voltage swings 0 - 12)                     v
+        |           |                         {Fix primary circuit}
+        |           |
+        |  {Consider hidden fault, swap components]
+        |
+        |
+        \-------{Call a tow truck!!}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             A PROLOG program to  implement this is simple. Each statment 
+        represents  a  decision point fragment of the  tree.  The  PROLOG 
+        interpreter  dynamically  assembles  the tree as  it  attempts  a 
+        solution. 
+
+        'car wont start' :- write( 'Is the battery voltage low?' ), 
+                            affirm, nl,
+                            write( 'Check battery' ).
+
+        'car wont start' :- write( 'Smell gasoline?' ), 
+                            affirm, nl,
+                            'fuel system'.
+
+        'fuel system'    :- write( 'Try full throttle cranking' ).
+
+        'fuel system'    :- write( 'Are there fuel line leaks?' ),
+                            affirm, nl,
+                            write( 'Replace fuel line.' ).
+
+        'fuel system'    :- write( 'Check carburator' ).
+
+        'car wont start' :- write( 'Is spark present?' ),
+                            not( affirm ), nl,
+                            'no spark'.
+
+        'no spark'       :- write( 'Do points open and close?' ),
+                            not( affirm ), nl,
+                            write( 'Adjust or replace points.' ).
+
+        'no spark'       :- write( 'Is the spark off the coil good?' ),
+                            affirm,
+                            write( 'Check plug wires and cap.' ).
+
+        'no spark'       :- write( 'What is the voltage on the primary
+                             of the coil: ' ), 
+                            read( Volts ), 
+                            Volts < 10,
+                            nl,
+                            write('Check wiring and ballast resistor.').
+
+        'no spark'       :- write( 'Does the capacitor leak?' ),
+                            affirm,
+                            write( 'Replace the capacitor.' ).
+
+        'no spark'       :- not( 'primary circuit' ).
+
+        'primary circuit' 
+                         :- write( 'Open the  points.  Voltage  across 
+                              coil?:'), nl,
+                            read( Openvolts ), Openvolts < 1, 
+                            write(  'Close the points.  Voltage  across 
+                              coil?:'),
+                            read( Closevolts ), Closevolts > 10, nl,
+                            write( 'Primary circuit is OK.' ). 
+
+        'no spark'       :- write( 'Consider a hidden fault. Swap
+                              cap, rotor,points,capacitor.' ).
+
+
+        'Car wont start' :- write( 'Get a tow truck!!' ).
+
+
+
+
+
+
+
+
+                                 --End program--
+
+
+             The  above  is  a  simple example of  an  expert  system.  A 
+        sophisticated  system would tell you exactly the method by  which 
+        it  has reached a conclusion.  It would communicate by a  "shell" 
+        program  written  in PROLOG which would accept a wider  range  of 
+        input   than  the  "valid  structure"  required  by  the   PROLOG 
+        interpreter directly.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        V.                            Lists               
+
+             Consider  a  shopping list given you by your wife.  It is  a 
+        piece of paper with items written on it in an order that probably 
+        symbolizes  their  importance.  At the top it  may  say  EGGS!!!, 
+        followed by carrots, hamburger, and finally a flea collar for the 
+        dog, if you can find one. In PROLOG such a list would be written:
+
+        1)   [eggs, carrots, hamburger, fleacollar]
+
+        The  order of a list is important so that eggs and carrots cannot 
+        be reversed and PROLOG be uncaring.
+
+        Let us put the list in a structure:
+
+             shopping( [eggs, carrots, hamburger, fleacollar] ).
+
+        Then  if you wished to isolate the head of the list you could ask 
+        the question:
+
+             shopping( [ Mostimportant | Rest ] ).
+
+        and PROLOG would respond:
+
+             Mostimportant   =  eggs,   
+             Rest   =   [carrots,   hamburger, fleacollar].
+
+        The vertical bar "|" is crucial here. It is the string extraction 
+        operator,  which  performs  a  combination  of the  CDR  and  CAR 
+        functions  of LISP.  When it appears in the context [X|Y] it  can 
+        separate the head of the list from the rest, or tail.
+
+
+             You  may have gained the impression that PROLOG is a  rather 
+        static language capable of answering simple questions,  but it is 
+        far  more powerful than that.  The string extraction operator  is 
+        the  key.  It permits PROLOG to whittle a complex expression down 
+        to the bare remainder.  If the rules you have given it permit  it 
+        to  whittle  the  remainder  down to  nothing,  then  success  is 
+        achieved. An example of this is the definition of "append."
+
+             Let  us suppose you have not yet done yesterday's  shopping, 
+        let alone today's. You pull it out of your wallet and sootch tape 
+        it to the list your wife just gave you. Yesterday's list was:
+
+             [tomatoes, onions, ketchup]
+
+        Combined with [eggs, carrots, hamburger, fleacollar] we obtain
+
+             [eggs,carrots,hamburger,fleacollar,tomatoes,onions,garlic].
+
+        To  take one list and to attach it to the tail of another list is 
+        to  "append"  the first to the second.  The PROLOG definition  of 
+        append is:
+
+
+
+        Rule1:     append( [], L, L ).
+
+        Rule2:     append( [X|List1], List2, [X|List3] ) :-
+
+
+
+
+
+
+                      append( List1, List2, List3 ].
+
+        The  general  scheme is this:  
+
+        The definition consists of one rule and one fact.  The rule  will 
+        be used over and over again until what little is left matches the 
+        fact.  The [] stands for empty list,  which is like a bag without 
+        anything in it. This is an example of a recursive definition.
+             Suppose we ask:
+
+             append( [a,b,c], [d,e,f], Whatgives ).
+
+        1. Rule 2 is invoked with arguments ( [a,b,c], [d,e,f], Whatgives ).
+        2. Rule 2 is invoked again with arguments:
+             ( [b,c], [d,e,f], List3 ).
+        3. Rule 2 is invoked again with arguments:
+             ( [b], [d,e,f], List3 ).
+        4.  The  arguments  are now ([],  [d,e,f],  List3 ).  Rule 1  now 
+            matches. End.
+
+        How does this cause a list to be constructed? The key is to watch 
+        the   third  argument.   Supplied  by  the  user,   it  is  named 
+        "Whatgives". The inference engine matches it to [X|List3] in rule 
+        2. Now lets trace this as rule two is successivly invoked: 
+
+
+                Whatgives                                                
+                   |                                                     
+                   |                                                     
+                   |                                                     
+                   v                                                     
+        Rule2:  [X|List3] (List1 = [b,c])                                
+                 |  \                                                    
+                 |   \                                                   
+                 |    \                                                  
+                 v     \                                                 
+        Rule2:   a   [X'|List3'] (List1' = [c])                          
+                      |    \                                             
+                      |     \                                            
+                      |      \                                           
+                      v       \                                          
+        Rule2:        b     [X''|List3''] (List1'' = [], ie., empty set.)
+                              |    \                                     
+                              |     \                                    
+                              |      \                                   
+        Rule1:                c       L  ( in Rule1 = [d,e,f] )              
+                                                                         
+        End.
+
+
+        L in rule 1 is [d,e,f] for the following reason: Notice that rule 
+        2 never alters List2. It supplies it to whatever rule it invokes. 
+        So L in rule 1 is the original List2, or [a,b,c].
+
+             This example would not have worked if the order of rules one 
+        and  two  were  reversed.  The  PROLOG  inference  engine  always 
+        attempts to use the the first rule encountered. You could imagine 
+        it as always reading your program from the top down in attempting 
+        to  find an appropriate rule.  Since rule 2 would always satisfy, 
+        an  unpleasant  thing  would  have happened  if  the  order  were 
+
+
+
+
+
+
+        reversed. The program would loop forever.
+             
+
+
+
+             I  hope  that  this tiny introduction to PROLOG  whets  your 
+        appetite. You should now purchase the book
+
+             Programming In Prolog
+             W.F. Clocksin and C.S. Mellish
+             Springer - Verlag
+             Berlin,Heidelberg,New York. 1981,1984
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

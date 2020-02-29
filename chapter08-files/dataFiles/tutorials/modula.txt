@@ -1,0 +1,3328 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                VAX-11 Modula-2
+                                  User's Guide
+
+
+
+
+
+            Abstract:   This document describes how to compile, link and
+                        execute  Modula-2 programs on a VAX-11 under the
+                        VMS  operating  system.   The  VAX-11   Modula-2
+                        Compiler   is  based  on  an  implementation  of
+                        Modula-2 for the PDP-11  developed  by  a  group
+                        under  the  direction of Prof.  N.  Wirth at the
+                        ETH Zuerich.
+
+                                                                         Page ii
+
+
+                                 Table of Contents
+
+
+      CHAPTER 1       USING MODULA-1 UNDER VAX/VMS
+
+        1.1     Creating And Executing A Program (Overview)  . . . 1-1
+        1.2     File Specifications And Defaults . . . . . . . . . 1-2
+
+
+      CHAPTER 2       COMPILING A MODULE
+
+        2.1     Modula-2 Compiler Qualifiers . . . . . . . . . . . 2-2
+        2.2     Local Control Of Run-Time Checks . . . . . . . . . 2-4
+        2.3     Search Strategies  . . . . . . . . . . . . . . . . 2-5
+        2.4     Compiler Listing . . . . . . . . . . . . . . . . . 2-5
+        2.4.1     Source Listing . . . . . . . . . . . . . . . . . 2-6
+        2.4.2     Cross Reference Table  . . . . . . . . . . . . . 2-6
+        2.4.3     Machine Code Listing . . . . . . . . . . . . . . 2-7
+
+
+      CHAPTER 3       LINKING A PROGRAM
+
+        3.1     The Link Command . . . . . . . . . . . . . . . . . 3-1
+        3.2     Linker Command Qualifiers  . . . . . . . . . . . . 3-2
+        3.2.1     Map File Qualifiers  . . . . . . . . . . . . . . 3-2
+        3.2.2     Debugging And Traceback Qualifiers . . . . . . . 3-2
+        3.3     Identification Checking  . . . . . . . . . . . . . 3-3
+
+
+      CHAPTER 4       EXECUTING A PROGRAM
+
+        4.1     Debugging The Program  . . . . . . . . . . . . . . 4-1
+        4.2     Sample Terminal Session  . . . . . . . . . . . . . 4-2
+
+
+      CHAPTER 5       INPUT AND OUTPUT
+
+
+      CHAPTER 6       PROCEDURE CALLING CONVENTIONS
+
+        6.1     Parameter Passing Mechanisms . . . . . . . . . . . 6-1
+        6.2     Function Return Values . . . . . . . . . . . . . . 6-3
+        6.3     Foreign Procedures . . . . . . . . . . . . . . . . 6-3
+
+
+      CHAPTER 7       SYSTEM DEPENDENT FACILITIES
+
+        7.1     Low Level Facilities . . . . . . . . . . . . . . . 7-1
+        7.1.1     Type Transfer Functions  . . . . . . . . . . . . 7-1
+        7.1.2     Absolute Addresses . . . . . . . . . . . . . . . 7-1
+        7.1.3     The Module SYSTEM  . . . . . . . . . . . . . . . 7-2
+        7.2     Storage Management . . . . . . . . . . . . . . . . 7-4
+        7.2.1     The Module Storage . . . . . . . . . . . . . . . 7-4
+        7.2.2     Storage Allocation . . . . . . . . . . . . . . . 7-5
+
+                                                                        Page iii
+
+
+      APPENDIX A      RESTRICTIONS AND EXTENSIONS
+
+
+      APPENDIX B      VAX-11 MODULA-2 SYNTAX
+
+
+      APPENDIX C      DIAGNOSTIC MESSAGES
+
+        C.1     Compiler Diagnostic Messages . . . . . . . . . . . C-1
+        C.2     Run-Time Diagnostic Messages . . . . . . . . . . . C-4
+
+
+      APPENDIX D      INPUT AND OUTPUT PROCEDURES
+
+        D.1     The Module InOut . . . . . . . . . . . . . . . . . D-1
+        D.2     The Module FileSystem  . . . . . . . . . . . . . . D-5
+        D.2.1     General File Procedures  . . . . . . . . . . . . D-6
+        D.2.2     Binary Access  . . . . . . . . . . . . . . . . . D-7
+        D.2.3     Text File Access . . . . . . . . . . . . . . . . D-8
+        D.2.4     RMS Specific Procedures  . . . . . . . . . . . . D-9
+        D.3     Terminal Input And Output  . . . . . . . . . . .  D-11
+        D.4     File Name Processing Procedures  . . . . . . . .  D-12
+
+
+      APPENDIX E      MISCELLANEOUS PROCEDURES
+
+        E.1     Numerical Conversion Procedures  . . . . . . . . . E-2
+        E.1.1     Output Conversion Procedures . . . . . . . . . . E-2
+        E.1.2     Input Conversion Procedures  . . . . . . . . . . E-4
+        E.1.3     Numeric Conversion Procedures  . . . . . . . . . E-5
+        E.2     Process Scheduling . . . . . . . . . . . . . . . . E-8
+        E.3     Intrinsic Mathematical Procedures  . . . . . . . . E-9
+        E.3.1     Trigonometric Function . . . . . . . . . . . .  E-10
+        E.3.2     Logarithmic And Exponential Functions  . . . .  E-12
+        E.3.3     Complex Functions  . . . . . . . . . . . . . .  E-13
+        E.3.4     Random Number Generator  . . . . . . . . . . .  E-14
+        E.3.5     Miscellaneous Functions  . . . . . . . . . . .  E-14
+        E.4     Date And Time Procedures . . . . . . . . . . . .  E-15
+
+                                                                         Page iv
+
+
+                                      PREFACE
+                                      PREFACE
+
+            ___ __ ____ _________
+            Use of This Document:
+
+            The VAX-11  Modula-2  User's  Guide  has  been  designed  to
+            support  the  development and execution of Modula-2 programs
+            in the VAX/VMS environment.  The programming language itself
+            is described in N.Wirth, "Programming in Modula-2".
+
+            It is assumed that the reader has a general knowledge of the
+            VAX/VMS   Command  Language  and  the  Modula-2  programming
+            language.  In some sections, a more  detailed  understanding
+            of  the  operating  system  is  required.  The reader should
+            consult  the  corresponding  manuals  for  the   information
+            needed.
+
+            _______ __________
+            Related Documents:
+
+            N.  Wirth, "Modula-2 Report", in N.  Wirth  "Programming  in
+            Modula-2", Springer Verlag, Heidelberg, New York, 1982.
+
+            VAX-11 Symbolic Debugger Reference Manual.
+
+            VAX-11 Linker Reference Manual.
+
+            VAX Architecture Handbook.
+
+            VAX-11 PASCAL User's Guide.
+
+            VAX-11 Run-Time Library Reference Manual.
+
+            VAX/VMS System Services Reference Manual.
+
+            __________ ____________
+            Notational Conventions:
+
+            Within command language descriptions
+
+                [ ]
+                [ ] bold square  brackets  indicate  that  the  enclosed
+                    sequence of bold symbols is optional,
+
+                { } braces  indicate  that  the  enclosed  sequence   of
+                    symbols may be repeated zero or more times.
+
+            Descriptions of Modula-2 components  follow  the  notational
+            conventions of the Modula-2 Report.
+
+
+
+
+
+
+
+
+
+
+
+
+                               CHAPTER 1
+
+                      USING MODULA-1 UNDER VAX/VMS
+                      USING MODULA-1 UNDER VAX/VMS
+
+
+
+        1.1  Creating And Executing A Program (Overview)
+
+        In general, Modula-2 programs are composed of separate  modules.
+        The  first step in creating an executable program is to edit the
+        different source files containing the  compilation  units  (main
+        module, definition modules, implementation modules).
+
+                                      NOTE
+
+                The Modula-2 compiler  distinguishes  upper  and
+                lower  case  characters.  Hence, all identifiers
+                must be spelled exactly  as  they  are  defined.
+                All  reserved  words  and standard names must be
+                capitalized.
+
+
+        Source files are compiled separately.  The order in  which  this
+        has  to  be  done  depends  on  the  import/export relationships
+        between the modules.  In particular, definition modules must  be
+        compiled prior to the corresponding implementation modules.
+
+        Two kinds of output files  are  produced  (besides  an  optional
+        listing file):
+
+        Processing  a  definition  file  results  in  a   symbol   file,
+        containing  a coded module description readable by the compiler.
+        This  file  is  needed  when  the  implementation  module  or  a
+        compilation unit importing the module is compiled.
+
+        The result of processing an implementation or main module is  an
+        object file readable by the linker.
+
+        Finally, the separate object files have to be linked together to
+        form  an  executable  image file.  Execution of this file can be
+        started by the RUN command.
+
+USING MODULA-1 UNDER VAX/VMS
+USING MODULA-1 UNDER VAX/VMS                                            Page 1-2
+
+
+        1.2  File Specifications And Defaults
+
+        A full VAX/VMS file specification has the following form:
+
+            node::device:[directory]filename.filetype;version
+
+        Node, device, directory, and version are optional  items;  their
+        default values are:
+
+            node:       applicable   only    to    systems    supporting
+                        DECnet-VAX,
+
+            device:     user's current device,
+
+            directory:  user's current default directory,
+
+            version:    highest version on input, highest  version+1  on
+                        output.
+
+        The filetype specification may be omitted in certain cases.  The
+        default type depends on usage:
+
+            MOD  input to Modula-2 compiler
+            SYM  input to and output from Modula-2 compiler
+            OBJ  output from Modula-2 compiler
+            LIS  source file listing
+
+            OBJ  input to linker
+            EXE  output from linker
+            MAP  linker map file
+
+
+
+
+
+
+
+
+
+
+
+
+                               CHAPTER 2
+
+                           COMPILING A MODULE
+                           COMPILING A MODULE
+
+
+
+        Each Modula-2 compilation unit has to  be  compiled  separately.
+        In  the case of a definition module a symbol file is created, an
+        object file otherwise.  Optionally a source file listing may  be
+        produced.   The  compiler also searches for and reads the symbol
+        files  belonging  to  imported  modules.    If   not   specified
+        otherwise, a standard search strategy is applied (see 2.3).  The
+        Modula-2 compiler is invoked by the MODULA command which has the
+        following form:
+
+            $ MODULA {/qualifier} file-spec {/qualifier}
+
+        _________
+        file-spec
+
+            determines the source  file  containing  the  module  to  be
+            compiled.  Only one file is accepted.  The default file type
+            is MOD.  Type DEF is recommended for definition modules.
+
+        In interactive mode, you can also enter the  file  specification
+        on  a  separate  line by typing a carriage return after you type
+        MODULA.   The  system  responds  with  a  prompt  for  the  file
+        specification:
+
+            $ MODULA <return>
+            $_File:
+
+        Processing of a source file comprises several passes.  Temporary
+        work    files    named   INTERFILE.MVC   serve   for   interpass
+        communication.   The  normal  succession  of   passes   is   for
+        definition modules
+
+            1.  syntax analysis
+            2.  declaration analysis
+            3.  symbol file generation
+            4.  listing generation (optional)
+
+
+COMPILING A MODULE
+COMPILING A MODULE                                                      Page 2-2
+
+
+        and for implementation and main modules
+
+            1.  syntax analysis
+            2.  declaration analysis
+            3.  body analysis
+            4.  code generation
+            5.  listing generation (optional).
+
+
+
+        2.1  Modula-2 Compiler Qualifiers
+
+        MODULA command qualifiers control  optional  compiler  settings.
+        For  every  qualifier  there  is a negative form to suppress the
+        respective effect.  The negative form is indicated by a  leading
+        "NO",  e.g.,  "NOLIST"  is  the  negative  form  of "LIST".  The
+        meanings of the qualifiers and their default values  are  listed
+        below.
+
+        CHECK
+        CHECK
+
+            Code  is  generated   to   perform   run-time   checks   for
+            out-of-range array bounds and case labels.
+
+            By default, CHECK is enabled.
+
+        CROSS_REFERENCE
+        CROSS_REFERENCE
+
+            A cross reference table is included in the  source  listing.
+            This  qualifier  is  effective only when used in conjunction
+            with LIST.
+
+            By default, CROSS_REFERENCE is disabled.
+
+        DEBUG
+        DEBUG
+
+            The DEBUG qualifier produces information to be used  by  the
+            VAX-11  Symbolic  Debugger  and the run-time error reporting
+            mechanism.
+
+            By default, DEBUG is disabled and only traceback information
+            is generated.
+
+        LIST
+        LIST
+
+            A listing file is written.  The qualifier  has  the  general
+            form:
+
+                     [               ]
+                /LIST[=file-spec-list]
+
+            You may include a file specification for the  listing  file.
+            If  no  specification  is  given a file of type LIS with the
+            name of the source file is created.  The  file  contains  at
+            least  the  source  text and the error messages, but further
+            listings  are  added  by  applying  CROSS_REFERENCE   and/or
+
+COMPILING A MODULE
+COMPILING A MODULE                                                      Page 2-3
+
+
+            MACHINE_CODE.
+
+            By default,  LIST  is  disabled  for  interactive  mode  and
+            enabled for batch mode (but note that even in batch mode the
+            listing file is not automatically printed!).
+
+        TERMINAL
+        TERMINAL
+
+            If the TERMINAL option is enabled, the following information
+            is displayed:
+
+                compiler version,
+                succession of the compiler passes, and
+                the names of the symbol files read.
+
+            By default, TERMINAL is disabled for  interactive  mode  and
+            enabled for batch mode.
+
+        MACHINE_CODE
+        MACHINE_CODE
+
+            A readable representation of the generated code is  included
+            in  the source listing.  This qualifier is effective only in
+            conjunction with the LIST qualifier.
+
+            By default, MACHINE_CODE is disabled.
+
+        OBJECT
+        OBJECT
+
+            An object file for the linker is  produced.   The  qualifier
+            has the form:
+
+                       [          ]
+                /OBJECT[=file-spec]
+
+            You may specify a file for the object module.   The  default
+            is  a  file  of  type OBJ which takes the name of the source
+            file.  If the source file contains a definition module  this
+            qualifier has no effect.
+
+            By default, OBJECT is enabled for  main  and  implementation
+            modules, disabled otherwise.
+
+        QUERY
+        QUERY
+
+            The QUERY qualifier forces the compiler  to  ask  explicitly
+            for the symbol files to be read.
+
+            By default, QUERY  is  disabled  and  the  compiler  uses  a
+            standard strategy to search for the symbol files (see 2.3).
+
+            The standard search strategy is also effective when QUERY is
+            enabled but no file specification is given.
+
+COMPILING A MODULE
+COMPILING A MODULE                                                      Page 2-4
+
+
+        SYMBOL_FILE
+        SYMBOL_FILE
+
+            A symbol file is created if the source contains a definition
+            module.  It has the form:
+
+                            [          ]
+                /SYMBOL_FILE[=file-spec]
+
+            You may supply an optional file specification for the symbol
+            file.   The  default  is a file of type SYM with the name of
+            the source file.
+
+            By default, SYMBOL_FILE is enabled for  definition  modules,
+            disabled otherwise.
+
+
+                                    Summary
+                           MODULA Command Qualifiers
+        +--------------------------+--------------------+------------------------+
+        | Qualifier                | Negative Form      | Default                |
+        +--------------------------+--------------------+------------------------+
+        | /CHECK                   | /NOCHECK           | /CHECK                 |
+        | /CROSS_REFERENCE         | /NOCROSS_REFERENCE | /NOCROSS_REFERENCE     |
+        | /DEBUG                   | /NODEBUG           | /NODEBUG               |
+        | /LIST[=file-spec]        | /NOLIST            | /NOLIST (interact)     |
+        |                          |                    | /LIST (batch)          |
+        | /TERMINAL                | /NOTERMINAL        | /NOTERMINAL (interact) |
+        |                          |                    | /TERMINAL (batch)      |
+        | /MACHINE_CODE            | /NOMACHINE_CODE    | /NOMACHINE_CODE        |
+        | /OBJECT[=file-spec]      | /NOOBJECT          | /OBJECT                |
+        | /QUERY                   | /NOQUERY           | /NOQUERY               |
+        | /SYMBOL_FILE[=file-spec] | /NOSYMBOL_FILE     | /SYMBOL_FILE           |
+        +--------------------------+--------------------+------------------------+
+
+
+        2.2  Local Control Of Run-Time Checks
+
+        The insertion of run-time checks into  the  generated  code  can
+        additionally  be  controlled  during  compilation  by  using the
+        T-option.  The T-option must be entered into the source text  at
+        the beginning of a comment clause; it has the general form:
+
+            TOption = "$T" Switch
+            Switch = "+"|"-"|"="
+
+        where the associated switch
+
+            +   enables run-time checks,
+            -   disables run-time checks,
+            =   resets the option to the previous value.
+
+        Examples:
+
+COMPILING A MODULE
+COMPILING A MODULE                                                      Page 2-5
+
+
+            (* $T+ to generate test code *)
+            (* $T- to turn off test code generation *)
+
+
+        2.3  Search Strategies
+
+        In the default case (i.e., when no file  name  is  specified  in
+        query  mode)  the compiler applies a standard strategy to search
+        for  the  symbol  files  needed:   The  default  file  name   is
+        constructed  out  of the first 9 characters of the module's name
+        and a file type SYM is assumed.
+
+        The file is first searched in the user's default directory.   If
+        the   search   fails,   directories   with   the  logical  names
+        MOD$LIBRARY, MOD$LIBRARY_1 up to MOD$LIBRARY_9 are searched  (in
+        this order).  This search is repeated for all three logical name
+        tables (process, group, system).  Each  search  terminates  when
+        the  first  undefined  logical name is encountered.  If the file
+        has not yet been found, the  directory  with  the  logical  name
+        MOD$SYSTEM is searched.
+
+        The result of the searching process is  displayed  to  the  user
+        when the SYMBOL_FILE option is enabled.
+
+
+        2.4  Compiler Listing
+
+        The contents  of  the  listing  is  controlled  by  the  command
+        qualifiers   LIST,   CROSS_REFERENCE,   and  MACHINE_CODE.   The
+        application of LIST is necessary to obtain a listing at all.
+
+        Each listing page has  a  two  line  heading.   The  first  line
+        contains (from left to right):
+
+            o   the name of the compilation unit,
+            o   the date of compilation,
+            o   the compiler version, and
+            o   a running page number.
+
+        In the second line you will find
+
+            o   the listing subject,
+            o   the creation date, and
+            o   the name of the source file.
+
+        The listing terminates with  a  compilation  summary,  informing
+        about  the  active  compiler options and giving some performance
+        information.
+
+
+        2.4.1  Source Listing
+
+        Initiated by LIST.
+
+COMPILING A MODULE
+COMPILING A MODULE                                                      Page 2-6
+
+
+        The source list contains a copy of the source file  preceded  by
+        the   compiler-generated   line  numbers.   Error  messages  are
+        inserted after the erroneous lines.  The position where an error
+        has been detected is marked by an arrow.
+
+
+        2.4.2  Cross Reference Table
+
+        Initiated by CROSS_REFERENCE, presupposes LIST.
+
+        The cross reference table presents all  identifiers  defined  or
+        accessed   in   the  compilation  unit  in  alphabetical  order.
+        Standard names are not tabulated.
+
+        Each table entry consists of at least two items:  the identifier
+        and  its declaration class.  The latter distinguishes constants,
+        types,  variables,  parameters  (value  and  variable),  fields,
+        procedures, functions, and modules.
+
+        Further specifications which may follow are:
+
+            A short type characterization enclosed  in  angle  brackets.
+            For subranges the base type is denoted; if the type has been
+            denoted by a synonym, the original type name is given.  This
+            item   is   omitted  for  hidden  types,  predefined  types,
+            procedures, and modules.
+
+            The name of the scope in which the  identifier  is  defined,
+            preceded  by  "in"  or  "from".  The prefix "from" indicates
+            that the defining scope  is  external.   Alternatively,  the
+            word  "imported"  may  appear  if  the  name  designates  an
+            external module.  This item is  omitted  when  the  name  is
+            defined at global level.
+
+            The word "exported", which  means  that  the  identifier  is
+            exported from the enclosing module.
+
+            A list of numbers of the lines where the name is referenced.
+            A definition line is marked by an asterisk.
+
+        Included in the table are also identifiers  imported  indirectly
+        (as  part of another imported identifier), although they are not
+        referenced in the source text.  There is, of course, no list  of
+        line numbers in this case.
+
+
+        2.4.3  Machine Code Listing
+
+        Initiated by MACHINE_CODE, presupposes LIST.
+
+        The generated code is represented  as  a  VAX-11  MACRO  program
+        source   listing.    Correspondence  with  the  source  text  is
+        established via the line numbers inserted  as  comments  on  the
+        right hand side.
+
+
+
+
+
+
+
+
+
+
+
+
+                               CHAPTER 3
+
+                           LINKING A PROGRAM
+                           LINKING A PROGRAM
+
+
+
+        After  compilation,  the  separate  object  modules  are  linked
+        together to produce an executable image file.
+
+
+        3.1  The Link Command
+
+        To link the modules, use the LINK command in the following form:
+
+            $ LINK{/command qualifier} file-spec-list
+
+        _______ __________
+        command qualifiers
+
+            Specify output file options.
+
+        ______________
+        file-spec-list
+
+            Specifies the input files to be linked.  File specifications
+            can be separated by commas or plus signs.
+
+        To create executable code you must specify all your object files
+        to  be  linked,  except  the  ones  stored  in  the default link
+        libraries.  The first file named should contain the main program
+        (module).
+
+        By default, object files are assumed to be of type OBJ.
+
+        If no other specification is given, the  executable  image  file
+        takes the name of the first object file and is of type EXE.
+
+        In interactive mode you may enter the file specifications  on  a
+        separate  line  by  typing  a  carriage return after the command
+        name.   The  system  responds  with  a  prompt  for   the   file
+        specification.
+
+
+        3.2  Linker Command Qualifiers
+
+        Below, a few qualifiers are listed which may be of  interest  to
+        the  Modula-2  programmer.   For  some qualifiers there are also
+        negative fodetailed information.
+
+LINKING A PROGRAM
+LINKING A PROGRAM                                                       Page 3-2
+
+
+        3.2.1  Map File Qualifiers
+
+        The MAP qualifier directs the linker  to  generate  a  map  file
+        containing  a  summary of the image's characteristics, a list of
+        contributing modules, and a list of global symbols  and  values.
+        The qualifier has the form:
+
+                [          ]
+            /MAP[=file-spec]
+
+        where the optional file specification designates the  map  file.
+        The  default  is  a  file of type MAP with the name of the first
+        object file.
+
+        By default, MAP is disabled for interactive mode and enabled for
+        batch mode.
+
+        In conjunction with /MAP the modifying qualifiers BRIEF or  FULL
+        and CROSS_REFERENCE may be used.
+
+        /BRIEF and /FULL define the amount of  information  included  in
+        the map file, as follows:
+
+            /BRIEF produces a summary of the image's characteristics and
+            a list of contributing modules.
+
+            /FULL adds a summary of characteristics of image sections in
+            the linked image to the normal map file.
+
+        /CROSS_REFERENCE can be used with /MAP or /MAP/FULL  to  include
+        cross-reference information for global symbols in the map file.
+
+        By default, CROSS_REFERENCE is disabled
+
+
+        3.2.2  Debugging And Traceback Qualifiers
+
+        If the DEBUG qualifier is  used,  the  program  will  always  be
+        executed  under  the control of the debugger.  (You may suppress
+        this by issuing /NODEBUG with the RUN command.)
+
+        By default, DEBUG is disabled.
+
+        The  TRACEBACK  qualifier  is  used  to  have   error   messages
+        accompanied by symbolic traceback information.
+
+        By default, TRACEBACK is enabled.  /DEBUG implies /TRACEBACK.
+
+LINKING A PROGRAM
+LINKING A PROGRAM                                                       Page 3-3
+
+
+
+
+                                    Summary
+                            Link Command Qualifiers
+
+        +----------------------+-----------------+---------------------+
+        | Qualifier            | Negative Form   | Default             |
+        +----------------------+-----------------+---------------------+
+        | /BRIEF               | None            | Not applicable      |
+        | /CROSS_REFERENCE     | /NOCROSS_...    | /NOCROSS_REFERENCE  |
+        | /DEBUG               | /NODEBUG        | /NODEBUG            |
+        | /FULL                | None            | Not applicable      |
+              [          ]
+        | /MAP[=file-spec]     | /NOMAP          | /NOMAP (interact.)  |
+        |                      |                 | /MAP (batch)        |
+        | /TRACEBACK           | /NOTRACEBACK    | /TRACEBACK          |
+        +----------------------+-----------------+---------------------+
+
+
+        3.3  Identification Checking
+
+        The VAX-11 Modula-2 compiler provides identification information
+        for  describing the relationship between symbol files and object
+        files belonging to the same module.  This identification  is  in
+        fact   the  compilation  date  and  time  of  the  corresponding
+        definition module and it is passed to the linker in the form  of
+        an Entity Ident Consistency Check subrecord.
+
+        The linker checks the Entity Ident Consistency  Check  subrecord
+        of  each object module before it links them together.  If object
+        files of two modules importing different versions  of  the  same
+        definition  module  are  encountered the linker issues a warning
+        message.  In such a case, the object files giving  rise  to  the
+        message should be replaced by newly compiled ones.
+
+        For more information about the Entity  Ident  Consistency  Check
+                            ______ ______ _________ ______
+        subrecords, see the VAX-11 Linker Reference Manual.
+
+
+
+
+
+
+
+
+
+
+
+
+                               CHAPTER 4
+
+                          EXECUTING A PROGRAM
+                          EXECUTING A PROGRAM
+
+
+
+        The RUN command starts the  execution  of  an  executable  image
+        file.  It has the form:
+
+                 [ [  ]     ]
+            $ RUN[/[NO]DEBUG] file-spec
+
+        The file name must be specified; the file type may  be  omitted,
+        EXE is assumed in this case.
+
+        The DEBUG qualifier allows to run the program under  control  of
+        the  debugger,  even  if  you  have  issued  the MODULA and LINK
+        commands without  this  qualifier.   /NODEBUG  will  override  a
+        /DEBUG given at link time.
+
+        In interactive mode, the file  specification  is  entered  on  a
+        separate  line  by  typing  a  carriage return after the command
+        name.   The  system  responds  with  a  prompt  for   the   file
+        specification.
+
+
+        4.1  Debugging The Program
+
+        Currently, the VAX-11 Symbolic Debugger runs  Modula-2  programs
+        with  the  language  mode  set to PASCAL.  See the corresponding
+                         ______  ______  ______  _____            ______
+        chapter of  the  VAX-11  PASCAL  User's  Guide  (or  the  VAX-11
+        ________  ________ _________ ______
+        Symbolic  Debugger Reference Manual) for a description.  Because
+        of the differences between the two languages, some features work
+        differently, as there are:
+
+            o   No distinction is made  between  lower  and  upper  case
+                letters in identifiers.
+
+            o   Nested modules are not  recognized;  all  variables  and
+                procedures  declared  inside  a  nested  module are made
+                global to the compilation unit.
+
+            o   Module bodies are treated  as  parameterless  procedures
+                with the names of the modules.
+
+EXECUTING A PROGRAM
+EXECUTING A PROGRAM                                                     Page 4-2
+
+
+                                          NOTE
+
+                    The differences mentioned above may lead to name
+                    conflicts  inside  the  debugger,  which are not
+                    always handled properly.
+
+
+            o   Type CARDINAL is treated as INTEGER.
+
+            o   All variables and procedures can only be accessed in the
+                context  of  the  module  they  are  defined in (see the
+                debugger commands SET MODULE, SET SCOPE).
+
+            o   In addition to PASCAL, the source  file  information  is
+                present  for  Modula-2  programs.   Thus,  the  debugger
+                commands related to  source  files  can  be  used  (e.g.
+                TYPE, SET STEP SOURCE, EXAMINE/SOURCE, and SET SOURCE).
+
+            o   Sets  are  displayed  and  must  be  entered  in  PASCAL
+                notation, using square brackets ("[", "]").
+
+            o   Open array parameters are known to the debugger as fixed
+                size  arrays  with a lower bound of 0 and an upper bound
+                of 2**16-1.
+
+            o   Constant and type  identifiers  are  not  known  to  the
+                debugger.
+
+            o   All tagfields and fields in record variants are known as
+                ordinary  record  fields  to  the  debugger,  i.e.,  the
+                tagfield and variant information is not present.
+
+
+        4.2  Sample Terminal Session
+
+        Suppose you have edited three source files:
+
+        a definition module EXAMPLE1.DEF,
+
+                DEFINITION MODULE Example1;
+                EXPORT QUALIFIED ...
+                ..
+                END Example1.
+
+        the corresponding implementation module EXAMPLE1.MOD,
+
+                IMPLEMENTATION MODULE Example1;
+                FROM InOut IMPORT ...
+                FROM Storage IMPORT ...
+                ..
+                END Example1.
+
+EXECUTING A PROGRAM
+EXECUTING A PROGRAM                                                     Page 4-3
+
+
+        and a main module MAIN.MOD.
+
+                MODULE Main;
+                FROM Example1 IMPORT ...
+                FROM Example2 IMPORT ...
+                ..
+                END Main.
+
+        The dialog to run the  complete  program  might  now  appear  as
+        follows (user input underlined):
+
+          ______ ____________ ________
+        $ MODULA EXAMPLE1.DEF <return>
+                                      ! the definition module must
+                                      ! be compiled prior to the
+                                      ! implementation module
+
+          ____________________ ________ ________
+        $ MODULA/TERMINAL/LIST EXAMPLE1 <return>
+                                      ! compiles EXAMPLE1.MOD and
+                                      ! produces a source listing.
+                                      ! TERMINAL is enabled:
+        VAX-11 Modula-2 V3.1 compiling DSK1:[301100]EXAMPLE1.MOD;2/LIST
+        Syntax analysis
+         Example1: DSK1:[301100]EXAMPLE1.SYM;1
+         InOut: DSK1:[301100]INOUT.SYM;1
+         Storage: DSK1:[301100]STORAGE.SYM;2
+        Declaration analysis
+        Body analysis
+        Code generation
+        Listing generation
+          ____________ ____ ________
+        $ MODULA/QUERY MAIN <return>
+                                      ! in query mode, the compiler will
+                                      ! prompt for the symbol files
+                                      ! needed
+                   ________
+         Example1> <return>
+                                      ! standard search strategy
+        DSK1:[301100]EXAMPLE1.SYM;1
+                   _________ ________
+         Example2> INSTANCE2 <return>
+        DSK1:[301100]INSTANCE2.SYM;3
+                                      ! INSTANCE2.SYM will be read
+          ____ ______________________ ________
+        $ LINK MAIN,EXAMPLE1,EXAMPLE2 <return>
+                                      ! links MAIN.OBJ, EXAMPLE1.OBJ and
+                                      ! EXAMPLE2.OBJ, InOut and Storage
+                                      ! will usually be contained in a
+                                      ! link library;
+                                      ! note that the first name must
+                                      ! designate the main module
+
+          ___ ____ ________
+        $ RUN MAIN <return>
+                                      ! executes MAIN.EXE
+
+
+
+
+
+
+
+
+
+
+
+
+                               CHAPTER 5
+
+                            INPUT AND OUTPUT
+                            INPUT AND OUTPUT
+
+
+
+        Since I/O operations  are  not  part  of  the  language  itself,
+        together  with  the  compiler  a  collection  of probably useful
+        functions is provided by means of external modules
+
+        Among the modules distributed are (source files in parantheses):
+
+                InOut                   (INOUT.DEF)
+                Terminal                (TERMINAL.DEF)
+                FileSystem              (FILESYSTE.DEF)
+                Conversions             (CONVERSIO.DEF)
+                FileNames               (FILENAMES.DEF)
+                FileLookup              (FILELOOKU.DEF)
+                TextIO                  (TEXTIO.DEF)
+                TTIO                    (TTIO.DEF)
+
+        InOut, Terminal, FileSystem are also described in the appendix.
+
+
+
+
+
+
+
+
+
+
+
+
+                               CHAPTER 6
+
+                     PROCEDURE CALLING CONVENTIONS
+                     PROCEDURE CALLING CONVENTIONS
+
+
+
+        In the context of the VAX/VMS operating system, a procedure is a
+        routine  entered  by a CALL instruction.  In a Modula-2 program,
+        such a routine can be a  function  or  a  procedure  written  in
+        Modula-2, a VAX/VMS system service, or a VAX-11 Run-Time Library
+        procedure.
+
+        This chapter provides information  on  the  calling  conventions
+        used  by  the  VAX-11  Modula-2  compiler and on calling VAX/VMS
+        system services and VAX-11 Run-Time Library procedures.  A basic
+        knowledge  of  the VAX-11 procedure calling and argument passing
+                                                                  ______
+        mechanisms is assumed.  For  more  information  see  the  VAX-11
+        ________  _______  _________  ______         ______ ____________
+        Run-Time  Library  Reference  Manual and the VAX-11 Architecture
+        ________
+        Handbook.
+
+        VAX-11 Modula-2  uses  the  VAX-11  CALLS  instruction  to  call
+        procedures.   Each  time  a  procedure  is  called, the Modula-2
+        compiler  constructs  an  argument  list  on  the  stack.    The
+        arguments  in  the  list are based on the parameter type and the
+        parameter kind (value or  reference)  specified  in  the  formal
+        parameter list and the values in the actual parameter list.
+
+
+        6.1  Parameter Passing Mechanisms
+
+        The VAX-11 procedure calling standard defines  three  mechanisms
+        by which arguments are passed to procedures:
+
+            1.  by-reference
+            2.  by-immediate-value
+            3.  by-descriptor
+
+        The following table describes the mechanisms that  are  used  by
+        the VAX-11 Modula-2 compiler, depending on the type and the kind
+        of the formal parameter:
+
+PROCEDURE CALLING CONVENTIONS
+PROCEDURE CALLING CONVENTIONS                                           Page 6-2
+
+
+
+
+          +--------------+---------------------+---------------------+
+          | type         | value parameter     | reference parameter |
+          +--------------+---------------------+---------------------+
+          | BOOLEAN      |                     |                     |
+          | CHAR         |                     |                     |
+          | INTEGER      |                     |                     |
+          | CARDINAL     |                     |                     |
+          | POINTER      |                     |                     |
+          | SET          |                     |                     |
+          | Enumeration  |                     |                     |
+          | Subrange     |                     |                     |
+          | BYTE         |  by-reference       |  by-reference       |
+          | SHORTWORD    |                     |                     |
+          | WORD         |                     |                     |
+          | ADDRESS      |                     |                     |
+          | REAL         |                     |                     |
+          | D_FLOATING   |                     |                     |
+          | G_FLOATING   |                     |                     |
+          | H_FLOATING   |                     |                     |
+          | QUADWORD     |                     |                     |
+          | OCTAWORD     |                     |                     |
+          +--------------+---------------------+---------------------+
+          | RECORD       |  by-reference       |  by-reference       |
+          | ARRAY        |                     |                     |
+          +--------------+---------------------+---------------------+
+          | PROCEDURE    |               by-reference                |
+          +--------------+---------------------+---------------------+
+
+        An open array parameter is passed by two arguments.
+
+        The parameter list created by the compiler  for  an  open  array
+        parameter definition
+
+            (...;  a:  ARRAY OF type;  ...)
+
+        is equivalent to the following foreign parameter definition (see
+        below)
+
+            (...; %IMMED higha: CARDINAL; %IMMED adra : ADDRESS; ...)
+
+        with adra = ADR(a) and higha = HIGH(a).
+
+
+        6.2  Function Return Values
+
+        A function returns a value to the calling program.   The  method
+        by  which  a  value  is  returned  depends on its type as listed
+        below:
+
+PROCEDURE CALLING CONVENTIONS
+PROCEDURE CALLING CONVENTIONS                                           Page 6-3
+
+
+
+
+             +--------------+-------------------------------------+
+             | type         |     return method                   |
+             +--------------+-------------------------------------+
+             | BOOLEAN      |                                     |
+             | CHAR         |                                     |
+             | INTEGER      |                                     |
+             | CARDINAL     |                                     |
+             | POINTER      |                                     |
+             | Enumeration  |     Register R0                     |
+             | Subrange     |                                     |
+             | BYTE         |                                     |
+             | SHORTWORD    |                                     |
+             | WORD         |                                     |
+             | ADDRESS      |                                     |
+             | REAL         |                                     |
+             +--------------+-------------------------------------+
+             | D_FLOATING   |                                     |
+             | G_FLOATING   |     Registers R0,R1                 |
+             | QUADWORD     |                                     |
+             +--------------+-------------------------------------+
+             | H_FLOATING   |     by reference as the first       |
+             | OCTAWORD     |     parameter in the function's     |
+             |              |     parameter list                  |
+             +--------------+-------------------------------------+
+
+
+        6.3  Foreign Procedures
+
+        Access to procedures  and  variables  written  in  other  VAX-11
+        programming languages, especially to the VAX/VMS system services
+        and Run-Time Library procedures,  is  provided  through  special
+        definition  modules, so-called foreign definition modules.  They
+        serve  only  to  export  the  descriptions  of  the   respective
+        procedures  and  have  no  corresponding Modula-2 implementation
+        modules.
+
+        A foreign definition module is syntactically  indicated  by  the
+        prefix "%FOREIGN":
+
+            ForeignDefinitionModule =
+              "%FOREIGN" DEFINITION MODULE ident ";"
+              { import } [ export ] { foreigndefinition } END ident ".".
+
+        This section contains the formal definitions of  the  procedures
+        and  variables  to be linked.  Procedure and variable names must
+        be known to the linker and the calling convention must match  at
+        the linker level.
+
+        To allow full  utilization  of  the  VAX/VMS  procedure  calling
+        standard,  additional parameter qualifiers have been introduced,
+        applicable only within foreign definition modules:
+
+            ForeignFormalParameters =
+
+PROCEDURE CALLING CONVENTIONS
+PROCEDURE CALLING CONVENTIONS                                           Page 6-4
+
+
+              "(" [ ForeignFPSection {";" ForeignFPSection }] ")"
+              [":" qualident ].
+            ForeignFPSection   =
+              [ VAR ][ "%REF" | "%IMMED" | "%STDESCR"]
+              IdentList ":" FormalType.
+
+        where
+
+            %IMMED   denotes passing by immediate value,
+            %REF     denotes passing by reference, and
+            %STDESCR denotes passing by string descriptor.
+
+        As an example, we give a definition module which  allows  access
+        to some screen handling procedures:
+
+            %FOREIGN DEFINITION MODULE ScreenIO;
+
+            EXPORT QUALIFIED ..., SCR$GET_SCREEN, SCR$PUT_SCREEN, ...;
+              ...
+              (* Perform I/O to and from the Screen *)
+              PROCEDURE SCR$GET_SCREEN
+                (VAR %STDESCR input:  ARRAY OF CHAR;
+                     %STDESCR prompt: ARRAY OF CHAR;
+                 VAR          outlen: CARDINAL): CARDINAL;
+
+              PROCEDURE SCR$PUT_SCREEN
+                (    %STDESCR text:   ARRAY OF CHAR;
+                     %IMMED   lineno: CARDINAL;
+                     %IMMED   colno:  CARDINAL;
+                     %IMMED   flags:  BITSET): CARDINAL;
+              ...
+
+            END ScreenIO.
+
+        Foreign definition modules should not be written  without  knowledge
+        about the parameter passing mechanisms involved.
+
+
+
+
+
+
+
+
+
+
+
+
+                                 CHAPTER 7
+
+                        SYSTEM DEPENDENT FACILITIES
+                        SYSTEM DEPENDENT FACILITIES
+
+
+
+        7.1  Low Level Facilities
+
+        There are applications (e.g., system programming) for which  the
+        language  rules  may  turn  out to be too restrictive.  For this
+        reason,  Modula-2   provides   some   means   for   "low   level
+        programming"; most of them are implementation dependent.
+
+        The programmer is urged to use these low level  facilities  very
+        carefully  and  only  if  it seems unavoidable.  He will be much
+        less protected against errors because low level  facilities  are
+        not checked for consistency with language rules.
+
+
+        7.1.1  Type Transfer Functions
+
+        Type transfer functions, denoted by  type  identifiers  used  as
+        function  identifiers,  serve  to  breach  Modula's type system.
+        They do not  involve  any  actual  computation  but  modify  the
+        compiler's  type  checking.  For instance, if c is an expression
+        of  type  CARDINAL  then  BITSET(c)  is   interpreted   as   the
+        corresponding  value  of  type BITSET.  This is a correspondance
+        determined by the underlying system and not by  the  programming
+        language  itself.   Therefore,  using  type  transfer  functions
+        requires  familiarity  with  the  internal  representation   and
+        storage allocation scheme of the corresponding data types.
+
+
+        7.1.2  Absolute Addresses
+
+        The assignment of absolute addresses is still allowed in  VAX-11
+        Modula-2  but  this  feature  should  be  used  with utmost care
+        because all addresses are usually relocated by the linker!
+
+
+        7.1.3  The Module SYSTEM
+
+        The module SYSTEM offers some further facilities of the Modula-2
+        language.   Most  of  them  are  implementation dependent and/or
+        refer to the given  processor.   Facilities  of  that  kind  are
+        sometimes  necessary  for the so called "low level programming".
+
+SYSTEM DEPENDENT FACILITIES
+SYSTEM DEPENDENT FACILITIES                                             Page 7-2
+
+
+        SYSTEM contains also types and procedures  which  allow  a  very
+        basic coroutine handling.
+
+        The module SYSTEM is known to the compiler because its  exported
+        objects  obey  special  rules,  that  must  be  checked  by  the
+        compiler.  If a compilation unit  imports  objects  from  module
+        SYSTEM, no symbol file has to be supplied for this module.
+
+        Objects exported from module SYSTEM:
+
+        _____
+        Types
+
+            BYTE, SHORTWORD, WORD, QUADWORD, OCTAWORD
+            BYTE, SHORTWORD, WORD, QUADWORD, OCTAWORD
+
+            Objects of these  types  represent  individually  accessible
+            storage  units (BYTE = one byte, SHORTWORD = two bytes, WORD
+            = four bytes, QUADWORD = eight  bytes,  OCTAWORD  =  sixteen
+            bytes).   Only  assignment is allowed for variables of these
+            types.  A parameter of type BYTE, SHORTWORD, WORD,  QUADWORD
+            or OCTAWORD may be substituted by an actual parameter of any
+            type that uses the same number of bytes in storage.  If  the
+            parameter  is  a  value parameter of type BYTE, SHORTWORD or
+            WORD, then values of types using up to four bytes  are  also
+            allowed   for   substitution.    The   same  holds  for  the
+            substitution of an open array  parameter  with  elements  of
+            type  SHORTWORD,  WORD, QUADWORD or OCTAWORD by a value of a
+            type which size is not an  integral  multiple  of  the  open
+            array element size.
+
+            For compatibility with  the  VAX/VMS  data  type  names  the
+            identifier  LONGWORD is also exported from the module SYSTEM
+            as a synonym for the identifier WORD.
+
+            ADDRESS
+            ADDRESS
+
+            Objects of type ADDRESS represent  the  byte  address  of  a
+            storage  location.   The type ADDRESS is compatible with all
+            pointer types and is itself defined as POINTER TO WORD.  All
+            integer arithmetic operators apply to this type.
+
+            PROCESS
+            PROCESS
+
+            Objects of type PROCESS are used for process handling.
+
+SYSTEM DEPENDENT FACILITIES
+SYSTEM DEPENDENT FACILITIES                                             Page 7-3
+
+
+            F_FLOATING, D_FLOATING, G_FLOATING, H_FLOATING
+            F_FLOATING, D_FLOATING, G_FLOATING, H_FLOATING
+
+            The Modula-2 standard type REAL  is  implemented  using  the
+            VAX-11  F_FLOATING  data  type.   The  other VAX-11 floating
+            point data types are made available in the  VAX-11  Modula-2
+            compiler  through  export from module SYSTEM.  All operators
+            defined in Modula-2 for the type REAL are also  defined  for
+            the  types  D_FLOATING, G_FLOATING and H_FLOATING.  The type
+            F_FLOATING is only a synonym for the type  REAL.   Different
+            floating  point  types cannot be mixed in expressions (i.e.,
+            there  is  no  implicit  conversion).   However  the  module
+            Conversions  exports  procedures  for  the conversion of the
+            different floating point data types into each other.
+
+            The standard procedure TRUNC is applicable to  all  floating
+            point data types.
+
+                                        NOTE
+
+                If your VAX-11 processor is not  equipped  with  the
+                extended  instruction  set  option and you are using
+                variables  of   type   G_FLOATING,   H_FLOATING   or
+                OCTAWORD,   the   VAX-11  extended  instruction  set
+                emulator, LIB$EMULATE, should be  established  as  a
+                                             ______ ________ _______
+                condition  handler.  See the VAX-11 Run-Time Library
+                _________ ______
+                Reference Manual for more information.
+
+
+        __________
+        Procedures
+
+            NEWPROCESS(p : PROC; a : ADDRESS;
+            NEWPROCESS(p : PROC; a : ADDRESS;
+                       n : CARDINAL; VAR p1 : PROCESS)
+                       n : CARDINAL; VAR p1 : PROCESS)
+
+            A new process with P as program and A as workspace of size N
+            is  assigned  to  P1.   This  process  is allocated, but not
+            activated.  P must be a parameterless procedure decalred  at
+            level  0.  At least 50 words are needed for the workspace of
+            a process.
+
+            TRANSFER(VAR p1, p2:  PROCESS)
+            TRANSFER(VAR p1, p2:  PROCESS)
+
+            Suspends the current process, assigns it to P1  and  resumes
+            the process designated by P2.
+
+        _________
+        Functions
+
+            ADR(variable):  ADDRESS
+            ADR(variable):  ADDRESS
+
+            Returns the storage address of the variable.
+
+SYSTEM DEPENDENT FACILITIES
+SYSTEM DEPENDENT FACILITIES                                             Page 7-4
+
+
+            SIZE(variable):  CARDINAL
+            SIZE(variable):  CARDINAL
+
+            Returns the number of bytes allocated for the variable.   If
+            the  variable  is  of  a record type with variants, then the
+            variant with maximal size is assumed.
+
+            TSIZE(type):  CARDINAL
+            TSIZE(type):  CARDINAL
+            TSIZE(type, tag1const, tag2const, ...  ):  CARDINAL
+            TSIZE(type, tag1const, tag2const, ...  ):  CARDINAL
+
+            Returns the number of bytes allocated for a variable of  the
+            type.   If  the  type  is  a  record with variants, then tag
+            constants of the last FieldList (see Modula-2 syntax) may be
+            substituted  in  their  nesting order.  If no or not all tag
+            constants are specified, then  the  remaining  variant  with
+            maximal size is assumed.
+
+            REGISTER(num:  CARDINAL):  CARDINAL
+            REGISTER(num:  CARDINAL):  CARDINAL
+
+            Returns the content of the specified register.
+
+
+        7.2  Storage Management
+
+        7.2.1  The Module Storage
+
+        The storage management procedures ALLOCATE and DEALLOCATE  which
+        serve  to  dynamically  obtain  and  return storage space can be
+        imported from the standard module Storage:
+
+            DEFINITION MODULE Storage;
+
+              FROM SYSTEM IMPORT ADDRESS;
+
+              EXPORT QUALIFIED ALLOCATE, DEALLOCATE;
+
+              PROCEDURE ALLOCATE (VAR p: ADDRESS; size: CARDINAL);
+
+              PROCEDURE DEALLOCATE (VAR p: ADDRESS; size: CARDINAL);
+
+            END Storage.
+
+        ALLOCATE signals an exception whenever there is not enough  free
+        heap space.
+
+        When writing your own storage management procedures  you  should
+        care  for an appropriate declaration.  Since NEW and DISPOSE are
+        translated into calls to ALLOCATE and DEALLOCATE, these must  be
+        compatible with the type
+
+            PROCEDURE (VAR ADDRESS, CARDINAL)
+
+SYSTEM DEPENDENT FACILITIES
+SYSTEM DEPENDENT FACILITIES                                             Page 7-5
+
+
+        7.2.2  Storage Allocation
+
+        The  following  table  summarizes  the  storage  allocation  and
+        alignment for variables of unstructured and set type:
+
+
+          +-------------+-----------------------+--------------------+
+          | type        | storage allocation    | alignment boundary |
+          +-------------+-----------------------+--------------------+
+          | BOOLEAN     |                       |                    |
+          | CHAR        |   8 bits (1 byte)     |   byte             |
+          | BYTE        |                       |                    |
+          +-------------+-----------------------+--------------------+
+          | SHORTWORD   |  16 bits (1 word)     |   word             |
+          +-------------+-----------------------+--------------------+
+          | INTEGER     |                       |                    |
+          | CARDINAL    |                       |                    |
+          | REAL        |  32 bits (1 longword) |   longword         |
+          | POINTER     |                       |                    |
+          | WORD        |                       |                    |
+          | ADDRESS     |                       |                    |
+          +-------------+-----------------------+--------------------+
+          | D_FLOATING  |                       |                    |
+          | G_FLOATING  |  64 bits (1 quadword) |   longword         |
+          | QUADWORD    |                       |                    |
+          +-------------+-----------------------+--------------------+
+          | H_FLOATING  | 128 bits (1 octaword) |   longword         |
+          | OCTAWORD    |                       |                    |
+          +-------------+-----------------------+--------------------+
+          | Enumeration |  8 bits (1 byte) if   |   byte             |
+          |             |  type contains 256 or |                    |
+          |             |  less elements;       |                    |
+          |             |  16 bits (1 word) if  |   word             |
+          |             |  type contains more   |                    |
+          |             |  then 256 elements    |                    |
+          +-------------+-----------------------+--------------------+
+          | SET         |   8 bits (1 byte),    |   byte             |
+          |             |  16 bits (1 word), or |   word             |
+          |             |  32 bits (1 longword),|   longword         |
+          |             |  according to         |                    |
+          |             |  cardinality of base  |                    |
+          |             |  type                 |                    |
+          +-------------+-----------------------+--------------------+
+
+        Variables of subrange type are allocated and aligned in the same
+        way as variables of their base type.
+
+        An array is stored and aligned according  to  the  type  of  its
+        elements.  Every element is also aligned according to its type.
+
+        Records are stored field by  field.   Each  field  is  allocated
+        according to its type and aligned on a byte boundary.
+
+
+
+
+
+
+
+
+
+
+
+
+                               APPENDIX A
+
+                      RESTRICTIONS AND EXTENSIONS
+                      RESTRICTIONS AND EXTENSIONS
+
+
+
+        The implementation of Modula-2 on the  VAX-11  differs  in  some
+        respect  from the language definition; some restrictions have to
+        be considered.
+
+        ___________
+        Identifiers
+
+        Identifiers may contain the additional characters "$" and "_":
+
+            ident = letter { letter | digit | "$" | "_" }.
+
+        Due to the naming conventions of the  linker  some  restrictions
+        must   be   obeyed  for  module  names  and  exported  procedure
+        identifiers.  An external name is, at the linker level, composed
+        of  the  module  name  and  the exported name, both converted to
+        upper case and separated by a dot.   If  the  composed  name  is
+        longer  than  31  characters  (including the dot) the individual
+        names are shortened to 15 characters.  A conflict will occur  if
+        the resulting name is not unique anymore.
+
+        It is also recommended to provide compilation  unit  identifiers
+        differing in the first 9 characters, because these determine the
+        default symbol file names.  However,  the  user  may  circumvent
+        this   restriction   by   applying  the  SYMBOL_FILE  and  QUERY
+        qualifiers.
+
+        ____ ______ _________
+        Real number constants
+
+        Expressions of constant real numbers are not  evaluated  by  the
+        compiler (except sign inversion).
+
+        ____ ______ __________
+        Real number conversion
+
+        The real number conversion routines are implemented according to
+        VAX-11  instructions,  i.e.  they work with type INTEGER instead
+        of type  CARDINAL.   The  argument  type  of  FLOAT(i)  must  be
+        INTEGER.  The result type of TRUNC(r) is INTEGER.
+
+RESTRICTIONS AND EXTENSIONS
+RESTRICTIONS AND EXTENSIONS                                             Page A-2
+
+
+        ___ _________
+        FOR statement
+
+        The step must not be greater than 7FFFFFFFH (MaxInt).
+
+        ____ _________
+        CASE statement
+
+        The labels  of  a  case  statement  must  not  be  greater  than
+        7FFFFFFFH.
+
+        ________ ______________
+        Priority specifications
+
+        Priority specifications are not implemented.
+
+        ________ ________ ___
+        Standard function LEN
+
+        The additional standard  function  LEN  returns  the  number  of
+        characters in a string.  It is defined as follows:
+
+                TYPE intcar = [ 0 .. MaxInt ];
+
+                PROCEDURE LEN ( s : ARRAY OF CHAR ) : intcar;
+                  VAR i : intcar;
+                BEGIN i := 0;
+                  WHILE (i <= HIGH(s)) AND (s[i] <> 0C) DO
+                    INC(i);
+                  END;
+                  RETURN i
+                END LEN;
+
+        ____ ________ _________
+        Type transfer functions
+
+        Additional type transfer functions have been defined  for  types
+        of  different sizes, provided their sizes are less than or equal
+        to 4 bytes.  In extending the size of an entity  the  additional
+        high order bits are set to zero.
+
+
+
+
+
+
+
+
+
+
+
+
+                               APPENDIX B
+
+                         VAX-11 MODULA-2 SYNTAX
+                         VAX-11 MODULA-2 SYNTAX
+
+
+
+          1              /***************************************/
+          2              /                                       /
+          3              /     MODULA-2 Multi-Pass Compiler      /
+          4              /     ****************************      /
+          5              /                                       /
+          6              /        VAX/VMS Implementation         /
+          7              /                                       /
+          8              /          Modula-2 Syntax              /
+          9              /                                       /
+         10              /     Version 3.1 of  1-FEB-1983        /
+         11              /                                       /
+         12              /                                       /
+         13              /                                       /
+         14              /                                       /
+         15              /                                       /
+         16              /                                       /
+         17              /***************************************/
+         18 
+         19 ident =      letter {letter | digit | "_" | "$"} .
+         20 number =     integer | real .
+         21 integer =    digit {digit} |
+         22              octalDigit {octalDigit} ("B"|"C"|"b"|"c") |
+         23              digit {hexDigit} ("H"|"h") .
+         24 real =       digit {digit} "." {digit} [ScaleFactor] .
+         25 ScaleFactor = ("E"|"e") ["+"|"-"] digit {digit} .
+         26 hexDigit =   digit |
+         27              "A"|"B"|"C"|"D"|"E"|"F"|"a"|"b"|"c"|"d"|"e"|"f" .
+         28 digit =      octalDigit | "8" | "9" .
+         29 octalDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" .
+         30 string =     "'" {character} "'" | '"' {character} '"' .
+         31 qualident =  ident {"." ident} .
+         32 ConstantDeclaration = ident "=" ConstExpression .
+         33 ConstExpression = SimpleConstExpr [relation SimpleConstExpr] .
+         34 relation =   "=" | " " | "<>" | "<" | "<=" | ">" | ">=" | IN .
+         35 SimpleConstExpr = ["+"|"-"] ConstTerm {AddOperator ConstTerm} .
+         36 AddOperator = "+" | "-" | OR .
+         37 ConstTerm =  ConstFactor {MulOperator ConstFactor} .
+                                                         _
+         38 MulOperator = "*" | "/" | DIV | MOD | AND | "" .
+         39 ConstFactor = qualident | number | string | set |
+         40             "(" ConstExpression ")" | NOT ConstFactor .
+
+VAX-11 MODULA-2 SYNTAX
+VAX-11 MODULA-2 SYNTAX                                                  Page B-2
+
+
+         41 set =        [qualident] "{" [element {"," element}] "}" .
+         42 element =    ConstExpression [".." ConstExpression] .
+         43 TypeDeclaration = ident "=" type .
+         44 type =       SimpleType | ArrayType | RecordType | SetType |
+         45              PointerType | ProcedureType .
+         46 SimpleType = qualident | enumeration | SubrangeType .
+         47 enumeration = "(" IdentList ")" .
+         48 IdentList =  ident {"," ident} .
+         49 SubrangeType = "[" ConstExpression ".." ConstExpression "]" .
+         50 ArrayType =  ARRAY SimpleType {"," SimpleType} OF type .
+         51 RecordType = RECORD FieldListSequence END .
+         52 FieldListSequence = FieldList {";" FieldList} .
+         53 FieldList =  [IdentList ":" type |
+         54              CASE [ident ":"] qualident OF variant {"|" variant}
+         55              [ELSE FieldListSequence] END] .
+         56 variant =    CaseLabelList ":" FieldListSequence .
+         57 CaseLabelList = CaseLabels {"," CaseLabels} .
+         58 CaseLabels = ConstExpression [".." ConstExpression] .
+         59 SetType =    SET OF SimpleType .
+         60 PointerType = POINTER TO type .
+         61 ProcedureType = PROCEDURE [FormalTypeList] .
+         62 FormalTypeList = "(" [[VAR] FormalType
+         63              {"," [VAR] FormalType}] ")" [":" qualident] .
+         64 VariableDeclaration = IdentList ":" type .
+         65 designator = qualident {"." ident | "[" ExpList "]" | ""} .
+         66 ExpList =    expression {"," expression} .
+         67 expression = SimpleExpression [relation SimpleExpression] .
+         68 SimpleExpression = ["+"|"-"] term {AddOperator term} .
+         69 term =       factor {MulOperator factor} .
+         70 factor =     number | string | set |
+         71              designator [ActualParameters] |
+         72              "(" expression ")" | NOT factor .
+         73 ActualParameters = "(" [ExpList] ")" .
+         74 statement =  [ assignment | ProcedureCall |
+         75              IfStatement | CaseStatement | WhileStatement |
+         76              RepeatStatement | LoopStatement | ForStatement |
+         77              WithStatement | EXIT | RETURN [expression] ] .
+         78 assignment = designator ":=" expression .
+         79 ProcedureCall = designator [ActualParameters] .
+         80 StatementSequence = statement {";" statement} .
+         81 IfStatement = IF expression THEN StatementSequence
+         82              {ELSIF expression THEN StatementSequence}
+         83              [ELSE StatementSequence] END .
+         84 CaseStatement = CASE expression OF case {"|" case}
+         85              [ELSE StatementSequence] END .
+         86 case =       CaseLabelList ":" StatementSequence .
+         87 WhileStatement = WHILE expression DO StatementSequence END .
+         88 RepeatStatement = REPEAT StatementSequence UNTIL expression .
+         89 ForStatement = FOR ident ":=" expression TO expression
+         90              [BY ConstExpression] DO StatementSequence END .
+         91 LoopStatement= LOOP StatementSequence END .
+         92 WithStatement= WITH designator DO StatementSequence END .
+         93 ProcedureDeclaration= ProcedureHeading ";" block ident .
+         94 ProcedureHeading = PROCEDURE ident [FormalParameters] .
+         95 block =      {declaration} [BEGIN StatementSequence] END .
+
+VAX-11 MODULA-2 SYNTAX
+VAX-11 MODULA-2 SYNTAX                                                  Page B-3
+
+
+         96 declaration = CONST {ConstantDeclaration ";"} |
+         97              TYPE {TypeDeclaration ";"} |
+         98              VAR {VariableDeclaration ";"} |
+         99              ProcedureDeclaration ";" |
+        100              ModuleDeclaration ";" .
+        101 FormalParameters = "(" [FPSection {";" FPSection}] ")"
+        102              [":" qualident] .
+        103 FPSection =  [VAR] IdentList ":" FormalType .
+        104 FormalType = [ARRAY OF] qualident .
+        105 ModuleDeclaration = MODULE ident [priority] ";"
+        106              {import} [export] block ident .
+        107 priority =   "[" ConstExpression "]" .
+        108 export =     EXPORT [QUALIFIED] IdentList ";" .
+        109 import =     [FROM ident] IMPORT IdentList ";" .
+        110 DefinitionModule = DEFINITION MODULE ident ";"
+        111              {import} [export] {definition} END ident "." .
+        112 definition = CONST {ConstantDeclaration ";"} |
+        113              TYPE {ident ["=" type] ";"} |
+        114              VAR {VariableDeclaration ";"} |
+        115              ProcedureHeading ";" .
+        116 ProgramModule = MODULE ident [priority] ";"
+        117              {import} block ident "." .
+        118 CompilationUnit = ForeignDefinitionModule |
+        119              DefinitionModule | [IMPLEMENTATION] ProgramModule .
+        120 ForeignDefinitionModule = "%FOREIGN" DEFINITION MODULE ident ";"
+        121              {import} [export] {Foreigndefinition} END ident "." .
+        122 Foreigndefinition = CONST {ConstantDeclaration ";"} |
+        123              TYPE {ident ["=" type] ";"} |
+        124              VAR {VariableDeclaration ";"} |
+        125              ForeignProcedureHeading ";" .
+        126 ForeignProcedureHeading = PROCEDURE ident
+        127              [ForeignFormalParameters] .
+        128 ForeignFormalParameters = "(" [ForeignFPSection
+        129              {";" ForeignFPSection}] ")" [":" qualident] .
+        130 ForeignFPSection =  [VAR]
+        131              ["%REF" | "%IMMED" | "%STDESCR"]
+        132              IdentList ":" FormalType .
+
+VAX-11 MODULA-2 SYNTAX
+VAX-11 MODULA-2 SYNTAX                                                  Page B-4
+
+
+        ActualParameters           79   -73    71
+        AddOperator                68   -36    35
+        ArrayType                 -50    44
+        assignment                -78    74
+        block                     117   106   -95    93
+        case                      -86    84    84
+        CaseLabelList              86   -57    56
+        CaseLabels                -58    57    57
+        CaseStatement             -84    75
+        character                  30    30
+        CompilationUnit          -118
+        ConstantDeclaration       122   112    96   -32
+        ConstExpression           107    90    58    58    49    49    42
+                                   42    40   -33    32
+        ConstFactor                40   -39    37    37
+        ConstTerm                 -37    35    35
+        declaration               -96    95
+        definition               -112   111
+        DefinitionModule          119  -110
+        designator                 92    79    78    71   -65
+        digit                     -28    26    25    25    24    24    24
+                                   23    21    21    19
+        element                   -42    41    41
+        enumeration               -47    46
+        ExpList                    73   -66    65
+        export                    121   111  -108   106
+        expression                 89    89    88    87    84    82    81
+                                   78    77    72   -67    66    66
+        factor                     72   -70    69    69
+        FieldList                 -53    52    52
+        FieldListSequence          56    55   -52    51
+        Foreigndefinition        -122   121
+        ForeignDefinitionModule  -120   118
+        ForeignFormalParameters  -128   127
+        ForeignFPSection         -130   129   128
+        ForeignProcedureHeading  -126   125
+        FormalParameters         -101    94
+        FormalType                132  -104   103    63    62
+        FormalTypeList            -62    61
+        ForStatement              -89    76
+        FPSection                -103   101   101
+        hexDigit                  -26    23
+        ident                     126   123   121   120   117   116   113
+                                  111   110   109   106   105    94    93
+                                   89    65    54    48    48    43    32
+                                   31    31   -19
+        IdentList                 132   109   108   103    64    53   -48
+                                   47
+        IfStatement               -81    75
+        import                    121   117   111  -109   106
+        integer                   -21    20
+        letter                     19    19
+        LoopStatement             -91    76
+        ModuleDeclaration        -105   100
+        MulOperator                69   -38    37
+
+VAX-11 MODULA-2 SYNTAX
+VAX-11 MODULA-2 SYNTAX                                                  Page B-5
+
+
+        number                     70    39   -20
+        octalDigit                -29    28    22    22
+        PointerType               -60    45
+        priority                  116  -107   105
+        ProcedureCall             -79    74
+        ProcedureDeclaration       99   -93
+        ProcedureHeading          115   -94    93
+        ProcedureType             -61    45
+        ProgramModule             119  -116
+        qualident                 129   104   102    65    63    54    46
+                                   41    39   -31
+        real                      -24    20
+        RecordType                -51    44
+        relation                   67   -34    33
+        RepeatStatement           -88    76
+        ScaleFactor               -25    24
+        set                        70   -41    39
+        SetType                   -59    44
+        SimpleConstExpr           -35    33    33
+        SimpleExpression          -68    67    67
+        SimpleType                 59    50    50   -46    44
+        statement                  80    80   -74
+        StatementSequence          95    92    91    90    88    87    86
+                                   85    83    82    81   -80
+        string                     70    39   -30
+        SubrangeType              -49    46
+        term                      -69    68    68
+        type                      123   113    64    60    53    50   -44
+                                   43
+        TypeDeclaration            97   -43
+        VariableDeclaration        124   114    98   -64
+        variant                   -56    54    54
+        WhileStatement            -87    75
+        WithStatement             -92    77
+
+
+
+
+
+
+
+
+
+
+
+
+                                   APPENDIX C
+
+                              DIAGNOSTIC MESSAGES
+                              DIAGNOSTIC MESSAGES
+
+
+
+        C.1  Compiler Diagnostic Messages
+
+          0   : illegal character
+          1   : illegal symbol
+          2   : constant out of range
+          3   : open comment at end of file
+          4   : string terminator not on this line
+          5   : too many errors
+          6   : string too long
+          7   : too many identifiers (identifier table full)
+          8   : too many identifiers (hash table full)
+
+         20   : identifier expected
+         21   : integer constant expected
+         22   : ']' expected
+         23   : ';' expected
+         24   : block name at the END does not match
+         25   : error in block
+         26   : ':=' expected
+         27   : error in expression
+         28   : THEN expected
+         29   : error in LOOP statement
+         30   : constant must not be CARDINAL
+         31   : error in REPEAT statement
+         32   : UNTIL expected
+         33   : error in WHILE statement
+         34   : DO expected
+         35   : error in CASE statement
+         36   : OF expected
+         37   : ':' expected
+         38   : BEGIN expected
+         39   : error in WITH statement
+         40   : END expected
+         41   : ')' expected
+         42   : error in constant
+         43   : '=' expected
+         44   : error in TYPE declaration
+         45   : '(' expected
+         46   : MODULE expected
+         47   : QUALIFIED expected
+
+DIAGNOSTIC MESSAGES
+DIAGNOSTIC MESSAGES                                                     Page C-2
+
+
+         48   : error in factor
+         49   : error in simple type
+         50   : ',' expected
+         51   : error in formal type
+         52   : error in statement sequence
+         53   : '.' expected
+         54   : export at global level not allowed
+         55   : body in definition module not allowed
+         56   : TO expected
+         57   : nested module in definition module not allowed
+         58   : '}' expected
+         59   : '..' expected
+         60   : error in FOR statement
+         61   : IMPORT expected
+
+         66   : DEFINITION expected
+
+         70   : identifier specified twice in importlist
+         71   : identifier not exported from qualifying module
+         72   : identifier declared twice
+         73   : identifier not declared
+         74   : type not declared
+         75   : identifier already declared in module environment
+         76   :
+         77   :
+         78   : value of absolute address must be of type CARDINAL
+         79   : scope table overflow in compiler
+         80   : illegal priority
+         81   : definition module belonging to implementation not found
+         82   : structure not allowed for implementation of hidden type
+         83   : procedure implementation different from definition
+         84   : not all defined procedures or hidden types implemented
+         85   : illegal combination of parameter passing mechanisms
+         86   : incompatible versions of symbolic modules
+         87   : illegal parameter passing mechanism for this type
+         88   : function type is not scalar or basic type
+         89   :
+         90   : pointer-referenced type not declared
+         91   : tagfieldtype expected
+         92   : incompatible type of variant-constant
+         93   : constant used twice
+         94   : arithmetic error in evaluation of constant expression
+         95   : range not correct
+         96   : range only with scalar types
+         97   : type-incompatible constructor element
+         98   : element value out of bounds
+         99   : set-type identifier expected
+        100   : declaration needs too much space
+        101   : undeclared identifier in export-list of the module
+        102   :
+        103   : wrong class of identifier
+        104   : no such module name found
+        105   : module name expected
+        106   : scalar type expected
+        107   : set too large
+
+DIAGNOSTIC MESSAGES
+DIAGNOSTIC MESSAGES                                                     Page C-3
+
+
+        108   : type must not be INTEGER or CARDINAL
+        109   : scalar or subrange type expected
+        110   : variant value out of bounds
+        111   : illegal export from program module
+
+        120   : incompatible types in conversion
+        121   : this type is not expected
+        122   : variable expected
+        123   : incorrect constant
+        124   : no procedure found for substitution
+        125   : unsatisfying parameters of substituted procedure
+        126   : set constant out of range
+        127   : error in standard procedure parameters
+        128   : type incompatibility
+        129   : type identifier expected
+        130   : type impossible to index
+        131   : field not belonging to a record variable
+        132   : too many parameters
+        133   :
+        134   : reference not to a variable
+        135   : illegal parameter substitution
+        136   : constant expected
+        137   : expected parameters
+        138   : BOOLEAN type expected
+        139   : scalar types expected
+        140   : operation with incompatible type
+        141   : only global procedure or function allowed in
+                expression
+        142   : incompatible element type
+        143   : type incompatible operands
+        144   : no selectors allowed for procedures
+        145   : only function call allowed in expression
+        146   : arrow not belonging to a pointer variable
+        147   : standard function or procedure must not be assigned
+        148   : constant not allowed as variant
+        149   : SET type expected
+        150   : illegal substitution to WORD parameter
+        151   : EXIT only in LOOP
+        152   : RETURN only in PROCEDURE
+        153   : expression expected
+        154   : expression not allowed
+        155   : type of function expected
+        156   : integer constant expected
+        157   : procedure call expected
+        158   : identifier not exported from qualifying module
+
+        300   : index out of range
+        301   : division by zero
+        302   :
+        303   : case label defined twice
+
+        400   : expression too complicated (register overflow)
+        401   :
+        402   : expression too complicated (branch too long)
+        403   : expression too complicated (jumptable overflow)
+
+DIAGNOSTIC MESSAGES
+DIAGNOSTIC MESSAGES                                                     Page C-4
+
+
+        404   : too many globals, externals and calls
+                (linkertable overflow)
+        405   : procedure too long (codetable overflow)
+        406   : compiler error (assertion failed)
+        407   : compiler error (internal confusion)
+
+        994   : too many nested procedures
+        995   : FOR step too large ( > MaxInt )
+        996   : CASE label too large ( > MaxInt )
+        997   : illegal parameter substitution (implementation
+                restriction on type transfer function)
+
+
+        C.2  Run-Time Diagnostic Messages
+
+        1000  : HALT statement encountered
+        1001  : index or case expression out of range
+        1002  : illegal pointer value
+        1003  : function return without result
+        1004  : problem during "FileSystem" operation for file
+                "filename"
+
+        1009  : end of coroutine
+        1010  : process workspace overflow
+
+
+
+
+
+
+
+
+
+
+
+
+                               APPENDIX D
+
+                      INPUT AND OUTPUT PROCEDURES
+                      INPUT AND OUTPUT PROCEDURES
+
+
+
+        D.1  The Module InOut
+
+        The procedures contained in the utility module InOut are used to
+        perform  input  from and output to standard input/output devices
+        or  to  sequential  files.   In  particular,  they  perform  the
+        necessary  data  representation conversions between the standard
+        data types and sequences of characters.   The  input  procedures
+        read  from  the system's standard input device (SYS$INPUT).  The
+        output procedures write on the system's standard  output  device
+        (SYS$OUTPUT).   However,  both  input  and output can instead be
+        assigned to files by calling OpenInput  and  OpenOutput.   These
+        procedures  request  the  specification  of  the names of files.
+        Input and output are reset to the  default  devices  by  calling
+        CloseInput  and  CloseOutput,  which  must be called in order to
+        close the associated files.
+
+        Several output procedures contain a parameter n  specifying  the
+        number  of  characters  to be written.  If n is greater than the
+        number m of characters actually needed to represent the value x,
+        then  n-m  blanks  precede that value.  If n is less than m, the
+        specified n is ignored.
+
+        ______ ____
+        MODULE Name
+
+            InOut
+
+        ________
+        EXPORTed
+
+            EOL, Done, in, out, termCH, OpenInput, OpenOutput,
+            CloseInput, CloseOutput, Read, ReadLn, ReadString, ReadInt,
+            ReadCard, ReadOct, ReadHex, ReadReal, ReadDFloat,
+            ReadGFloat, ReadHFloat, Write, WriteLn, WriteString,
+            WriteInt, WriteCard, WriteOct, WriteHex, WriteReal,
+            WriteDFloat, WriteGFloat, WriteHFloat
+
+        ________
+        IMPORTed
+
+            FROM SYSTEM IMPORT DFLOATING,GFLOATING,HFLOATING;
+            IMPORT FileSystem;
+            FROM FileSystem IMPORT File;
+
+INPUT AND OUTPUT PROCEDURES
+INPUT AND OUTPUT PROCEDURES                                             Page D-2
+The Module InOut
+
+
+        _________ ____________
+        Procedure Descriptions
+
+        PROCEDURE OpenInput(defnam : ARRAY OF CHAR);
+
+            Request a file name and open input  file  "in".   If  opened
+            successfully, subsequent input is read from this file.  Name
+            is parsed with "defnam" as default name.
+
+        PROCEDURE OpenOutput(defnam : ARRAY OF CHAR);
+
+            Request a file name and open output file "out".   If  opened
+            successfully,  subsequent  output  is  written to this file.
+            File name is parsed with "defnam" as the default name.
+
+        PROCEDURE CloseInput;
+
+            Closes input file "in", returns input to terminal.
+
+        PROCEDURE CloseOutput;
+
+            Closes output file "out", and returns output to terminal.
+
+        PROCEDURE Read(VAR ch : CHAR);
+
+            Reads a single character from the file "in".
+
+        PROCEDURE ReadLn;
+
+            Skips to the beginning of the next input line.
+
+        PROCEDURE ReadString(VAR s : ARRAY OF CHAR);
+
+            Read an ASCII string, i.e.  a  sequence  of  characters  not
+            containing  blanks,  tabs  or  control  characters;  leading
+            blanks are ignored.  Input is terminated by any non-printing
+            ASCII  character.   The terminating character is assigned to
+            "termCH".
+
+        PROCEDURE ReadInt(VAR i : INTEGER);
+
+            Read an integer string from "in"  and  convert  to  integer.
+            Leading blanks are ignored.
+
+        PROCEDURE ReadCard(VAR c : CARDINAL);
+
+            Read ASCII numerical string an convert to CARDINAL.  Leading
+            blanks are ignored.
+
+INPUT AND OUTPUT PROCEDURES
+INPUT AND OUTPUT PROCEDURES                                             Page D-3
+The Module InOut
+
+
+        PROCEDURE ReadOct(VAR c : CARDINAL);
+
+            Read ASCII octal string and convert  to  CARDINAL.   Leading
+            blanks are ignored.
+
+        PROCEDURE  ReadHex(VAR  c : CARDINAL);  Read  ASCII  hexadecimal
+            string and convert to CARDINAL.  Leading blanks are ignored.
+
+        PROCEDURE ReadReal(VAR r : REAL);
+
+            Read ASCII real  (floating  point)  string  and  convert  to
+            single   precision   floating  point.   Leading  blanks  are
+            ignored.
+
+        PROCEDURE ReadDFloat(VAR d : DFLOATING);
+
+            Read ASCII real (floating point) string  and  convert  to  D
+            format floating point.  Leading blanks are ignored.
+
+        PROCEDURE ReadGFloat(VAR g : GFLOATING);
+
+            Read ASCII real (floating point) string  and  convert  to  G
+            format floating point.  Leading blanks are ignored.
+
+        PROCEDURE ReadHFloat(VAR h : HFLOATING);
+
+            Read ASCII real (floating point) string  and  convert  to  H
+            format floating point.  Leading blanks are ignored.
+
+        PROCEDURE Write(ch : CHAR);
+
+            Write single ASCII character to output file "out".
+
+        PROCEDURE WriteLn;
+
+            Write end of line to output file "out".   Terminates  output
+            and forces line to terminal (if appropriate).
+
+        PROCEDURE WriteString(s : ARRAY OF CHAR);
+
+            Writes a string of ASCII characters to output file "out".
+
+        PROCEDURE WriteInt(i : INTEGER; n : CARDINAL);
+
+            Write integer "i" with (at least)  "n"  characters  to  file
+            "out".   If  n  is greater than the number of digits needed,
+            blanks are added preceding the number
+
+INPUT AND OUTPUT PROCEDURES
+INPUT AND OUTPUT PROCEDURES                                             Page D-4
+The Module InOut
+
+
+        PROCEDURE WriteCard(c : CARDINAL; n : CARDINAL);
+
+            Write CARDINAL "c" with (at least) "n"  characters  to  file
+            "out".   If  n  is greater than the number of digits needed,
+            blanks are added preceding the number
+
+        PROCEDURE WriteOct(c : CARDINAL; n : CARDINAL);
+
+            Write CARDINAL "c" with (at least) "n"  characters  to  file
+            "out"  as  an  octal ASCII string.  If n is greater than the
+            number of digits needed,  blanks  are  added  preceding  the
+            number.
+
+        PROCEDURE WriteHex(c : CARDINAL; n : CARDINAL);
+
+            Write CARDINAL "c" with (at least) "n"  characters  to  file
+            "out"  as  a hexadecimal ASCII string.  If n is greater than
+            the number of digits needed, blanks are added preceding  the
+            number.
+
+        PROCEDURE WriteReal(r : REAL; n : CARDINAL);
+
+            Write single precision floating point  value  "r"  with  (at
+            least)  "n"  characters to file "out".  If n is greater than
+            the number of digits needed, blanks are added preceding  the
+            number.
+
+        PROCEDURE WriteDFloat(d : DFLOATING; n : CARDINAL);
+
+            Write D format floating point value "r" with (at least)  "n"
+            characters  to  file "out".  If n is greater than the number
+            of digits needed, blanks are added preceding the number.
+
+        PROCEDURE WriteGFloat(g : GFLOATING; n : CARDINAL);
+
+            Write G format floating point value "r" with (at least)  "n"
+            characters  to  file "out".  If n is greater than the number
+            of digits needed, blanks are added preceding the number.
+
+        PROCEDURE WriteHFloat(h : HFLOATING; n : CARDINAL);
+
+            Write H format floating point value "r" with (at least)  "n"
+            characters  to  file "out".  If n is greater than the number
+            of digits needed, blanks are added preceding the number.
+
+INPUT AND OUTPUT PROCEDURES
+INPUT AND OUTPUT PROCEDURES                                             Page D-5
+The Module FileSystem
+
+
+        D.2  The Module FileSystem
+
+        This module provides the programmer with  high-level  access  to
+        files  stored  on  disk.   Evidently, these procedures depend to
+        some degree on the underlying file system which  is  usually  an
+        integral  part  of the given operating system.  The module shown
+        here is designed for the VAX-11 with  the  record-oriented  file
+        system RMS.
+
+        ______ ____
+        MODULE Name
+
+            FileSystem
+
+        ________
+        EXPORTed
+
+            File, EOL,  Done,  Create,  Open,  Close,  Release,  Delete,
+            Rename, GetPos, SetPos, Reset, Eof, ReadWord, ReadShortWord,
+            ReadByte, WriteWord,  WriteShortWord,  WriteByte,  ReadChar,
+            WriteChar,  ReadRecord,  WriteRecord,  GetRecord, PutRecord,
+            Eor, Fab, Rab, Name, Parse, Status, ShowStatus
+
+        ________
+        IMPORTed
+
+            FROM SYSTEM IMPORT ADDRESS, BYTE, SHORTWORD, WORD;
+
+
+INPUT AND OUTPUT PROCEDURES
+INPUT AND OUTPUT PROCEDURES                                             Page D-6
+The Module FileSystem
+
+
+        _________ ____________
+        Procedure Descriptions
+
+
+        D.2.1  General File Procedures
+
+
+        PROCEDURE Done () : BOOLEAN;
+
+            Returns TRUE if the last call to FIleSystem was  successful,
+            false otherwise.
+
+        PROCEDURE Create (VAR f : File;
+                          filename : ARRAY OF CHAR;
+                          var,cr : BOOLEAN);
+
+            Create a new file and open it for  read  and  write  access.
+            "var"  is  TRUE  if  the  file  will contain variable length
+            records otherwise the  records  are  of  fixed  length  (512
+            bytes).   "cr" is TRUE if the file's record attribute is set
+            to 'cr', otherwise it is set to 'none'.  'Normal' text files
+            should  be  created  with  "var"  and "cr" set to TRUE.  The
+            position is set to the beginning of the file.
+
+        PROCEDURE Open (VAR f:  File;
+                        filename : ARRAY OF CHAR;
+                        modify : BOOLEAN);
+
+            Opens an existing file.   If  "modify"  is  set  TRUE  write
+            access  to  the  file  is  allowed.   Position is set to the
+            beginning of the file.
+
+        PROCEDURE Close (VAR f : File);
+
+            Closes file "f", any modifications become permanent.
+
+        PROCEDURE Release (VAR f : File);
+
+            If write access was allowed on the file "f", it  is  deleted
+            otherwise it is closed .
+
+        PROCEDURE Rename (old,new : ARRAY OF CHAR);
+
+            Renames the "old" file to the "new filename.
+
+        PROCEDURE Delete (filename : ARRAY OF CHAR);
+
+            Deletes the file specified by "filename".
+
+INPUT AND OUTPUT PROCEDURES
+INPUT AND OUTPUT PROCEDURES                                             Page D-7
+The Module FileSystem
+
+
+        PROCEDURE GetPos (VAR f : File;
+                          VAR highpos,lowpos : CARDINAL);
+
+            Returns the current file position in "highpos" and "lowpos".
+            The  record number is contained in "lowpos" and the lower 16
+            bits of "highpos", while the byte offset within  the  record
+            is contained in the upper 16 bits of "highpos".
+
+        PROCEDURE SetPos (VAR f : File;
+                          highpos,lowpos : CARDINAL);
+
+            Set  file  "f"  to  position  specified  by  "highpos"   and
+            "lowpos",  which  should  be  supplied  by a previous GetPos
+            call.
+
+        PROCEDURE Reset (VAR f : File);
+
+            Set position of file "f" to beginning of file.
+
+        PROCEDURE Eof (VAR f : File) : BOOLEAN;
+
+            Set position of file "f" to end of file.
+
+
+        D.2.2  Binary Access
+
+
+        PROCEDURE ReadWord (VAR f : File; VAR w : WORD);
+
+            Read one word from file "f" at current position and  advance
+            position.
+
+        PROCEDURE ReadShortWord (VAR f : File; VAR s : SHORTWORD);
+
+            Read one shortword from file "f"  at  current  position  and
+            advance position.
+
+        PROCEDURE ReadByte (VAR f : File; VAR b : BYTE);
+
+            Read one byte from file "f" at current position and  advance
+            position.
+
+        PROCEDURE WriteWord (VAR f : File; w : WORD);
+
+            Write one word to file "f" at current position  and  advance
+            position.
+
+INPUT AND OUTPUT PROCEDURES
+INPUT AND OUTPUT PROCEDURES                                             Page D-8
+The Module FileSystem
+
+
+        PROCEDURE WriteShortWord (VAR f : File; s : SHORTWORD);
+
+            Write one shortword to file  "f"  at  current  position  and
+            advance position.
+
+        PROCEDURE WriteByte (VAR f : File; b : BYTE);
+
+            Write one byte to file "f" at current position  and  advance
+            position.
+
+
+        D.2.3  Text File Access
+
+
+        PROCEDURE ReadChar (VAR f : File; VAR ch : CHAR);
+
+            Read one character from file "f"  at  current  position  and
+            advance position.
+
+        PROCEDURE WriteChar (VAR f : File; ch : CHAR);
+
+            Write one character to file  "f"  at  current  position  and
+            advance position.
+
+INPUT AND OUTPUT PROCEDURES
+INPUT AND OUTPUT PROCEDURES                                             Page D-9
+The Module FileSystem
+
+
+        D.2.4  RMS Specific Procedures
+
+
+        PROCEDURE ReadRecord (VAR f : File;
+                              VAR rec : ARRAY OF BYTE;
+                              VAR size : CARDINAL);
+
+            Read an entire record from file "f" into  array  "rec",  the
+            size of the record will be returned in "size".
+
+        PROCEDURE WriteRecord (VAR f : File;
+                               VAR rec : ARRAY OF BYTE;
+                               size : CARDINAL);
+
+            Write an entire record from "rec" to file "f".   The  record
+            size is determined by "size".
+
+        PROCEDURE GetRecord (VAR f : File);
+
+            Read next record from file "f".
+
+        PROCEDURE PutRecord (VAR f : File);
+
+            Put end of record to file "f".
+
+        PROCEDURE Eor (VAR f : File) : BOOLEAN;
+
+            Returns TRUE if current position is at end of  a  record  in
+            file "f".
+
+        PROCEDURE Fab (VAR f : File) : ADDRESS;
+
+            Returns address of the FAB belonging to "f".
+
+        PROCEDURE Rab (VAR f : File) : ADDRESS;
+
+            Returns address of the RAB belonging to file "f".
+
+        PROCEDURE Name (VAR f : File;
+                        VAR filename : ARRAY OF CHAR);
+
+            Returns the name of the file currently open on file "f".
+
+        PROCEDURE Parse (filename, defaultname : ARRAY OF CHAR;
+                         VAR resultname : ARRAY OF CHAR;
+                         VAR fnstatus : BITSET);
+
+            Parses the file name  "filename",  using  the  default  file
+            specification   "defaultname"  and  returns  the  result  in
+            "resultname".
+
+INPUT AND OUTPUT PROCEDURES
+INPUT AND OUTPUT PROCEDURES                                            Page D-10
+The Module FileSystem
+
+
+        PROCEDURE Status () : CARDINAL;
+
+            Returns the VAX/VMS status code of the  last  RMS  operation
+            called from FileSystem.
+
+        PROCEDURE ShowStatus;
+
+            Displays  the  error  message  on  the  terminal   for   any
+            FileSystem operation.
+
+INPUT AND OUTPUT PROCEDURES
+INPUT AND OUTPUT PROCEDURES                                            Page D-11
+Terminal Input And Output
+
+
+        D.3  Terminal Input And Output
+
+        This module provides procedures that read a single character  or
+        a  character  string from SYS$INPUT and write a single character
+        or a character strings to SYS$OUTPUT.
+
+        ______ ____
+        MODULE Name
+
+            Terminal
+
+        ________
+        EXPORTed
+
+            Read, ReadString,  ReadLn,  ReadAgain,  Write,  WriteString,
+            WriteLn;
+
+        _________ ___________
+        Procedure Description
+
+        PROCEDURE Read (VAR ch : CHAR);
+
+            Reads a single character from the terminal and places it  in
+            "ch", advances position to the next character.
+
+        PROCEDURE ReadString (VAR s : ARRAY OF CHAR);
+
+            Reads a line of characters from the current position until a
+            line  terminator  is  detected  or  the  string  is complete
+            filled.
+
+        PROCEDURE ReadLn;
+
+            Skips to the beginning of the next line.
+
+        PROCEDURE ReadAgain;
+
+            "Backs up" the  terminal  input  1  character,  causing  the
+            previously  read character to be read again using the ReadCh
+            procedure.
+
+        PROCEDURE Write (ch : CHAR);
+
+            Writes a single character to the terminal.
+
+        PROCEDURE WriteString (s : ARRAY OF CHAR);
+
+            Writes a string of characters to the terminal.
+
+        PROCEDURE WriteLn;
+
+            Writes an end of line to the terminal.
+
+INPUT AND OUTPUT PROCEDURES
+INPUT AND OUTPUT PROCEDURES                                            Page D-12
+File Name Processing Procedures
+
+
+        D.4  File Name Processing Procedures
+
+        These  procedures  permit  VMS  file  name  operations   to   be
+        performed.
+
+        ______ ____
+        MODULE Name
+
+            FileNames
+
+        ________
+        EXPORTed
+
+            ReadFileName, ReadOption, Termination, FileName
+
+        _________ ___________
+        Procedure Description
+
+        PROCEDURE ReadFileName(Default : ARRAY OF CHAR;
+                               AcceptOption : BOOLEAN;
+                               VAR Name : ARRAY OF CHAR;
+                               VAR TypedFields : BITSET;
+                               VAR Term : Termination);
+
+            Read file name (and options) from  terminal  until  a  <cr>,
+            blank,  <tab>,  or <esc> is typed.  "Default" specifies file
+            defaults  to  be  applied   to   the   file   name   "Name".
+            "AcceptOption", when true, allows options preceded by "/" to
+            entered along with the file name.  "TypedFields" returns the
+            components explicitly typed:
+
+            17 IN typedfields <=> node was typed
+             7 IN typedfields <=> devicename was typed
+             6 IN typedfields <=> directory was typed
+             2 IN typedfields <=> filename was typed
+             1 IN typedfields <=> filetype was typed
+             0 IN typedfields <=> version was typed
+             8 IN typedfields <=> filespecification contains wildcard
+
+            Other  bits  in  typedfields  are  reserved  for  FileNames.
+            "Term" returns the status of the input termination:
+
+            normal  : normally terminated
+            empty   : normally terminated, but name is empty
+            escape  : ^Z is typed, no file specified.
+            error   : name is syntactically illegal
+
+        PROCEDURE ReadOption(VAR option : ARRAY OF CHAR
+                             VAR length : CARDINAL);
+
+            To be called repeatedly after FileName, until  length  =  0.
+            The  characters  of the next option are returned in "optstr"
+            (terminated with a 0C character if length <= HIGH(optstr) ).
+
+
+
+
+
+
+
+
+
+
+
+
+                               APPENDIX E
+
+                        MISCELLANEOUS PROCEDURES
+                        MISCELLANEOUS PROCEDURES
+
+
+
+        This  appendix  describes  the  MODULA-2   specific   procedures
+        available to the programmer.  Included are procedures to perform
+        the following functions:
+
+            o   Numerical and ASCII conversion
+
+            o   Process scheduling
+
+            o   Mathematical, trigonometric and complex operations
+
+            o   Date and time procedures
+
+MISCELLANEOUS PROCEDURES
+MISCELLANEOUS PROCEDURES                                                Page E-2
+Numerical Conversion Procedures
+
+
+        E.1  Numerical Conversion Procedures
+
+        This section describes the VAX/VMS MODULA-2 numerical conversion
+        procedures.  The functions provided include
+
+            o   Number to ASCII string conversions
+            o   ASCII string to number conversions
+            o   Number to number conversions
+
+        ______ ____
+        MODULE Name
+
+            Conversions
+
+        ________
+        EXPORTed
+
+            Done, NumToString, OctToString, HexToString, IntToString,
+            CardToString, RealToString, DFloatToString, GFloatToString,
+            HFloatToString,
+
+            StringToOct, StringToHex, StringToInt, StringToCard,
+            StringToReal, StringToDFloat, StringToGFloat,
+            StringToHFloat,
+
+            ByteToInt, ShortToInt, IntToReal, IntToDFloat, IntToGFloat,
+            IntToHFloat, RealToInt, RealToDFloat, RealToGFloat,
+            RealToHFloat, DFloatToInt, DFloatToReal, DFloatToGFloat,
+            DFloatToHFloat, GFloatToInt, GFloatToReal, GFloatToDFloat,
+            GFloatToHFloat, HFloatToInt, HFloatToReal, HFloatToDFloat,
+            HFloatToGFloat;
+
+        _______
+        IMPORTs
+
+            FROM SYSTEM D_FLOATING, G_FLOATING, H_FLOATING, BYTE,
+            SHORTWORD, WORD
+
+        _________ ____________
+        Procedure Descriptions
+
+
+        E.1.1  Output Conversion Procedures
+
+
+        PROCEDURE NumToString (num : WORD;
+                               len, base : CARDINAL;
+                               VAR s : ARRAY OF CHAR);
+
+            Convert the WORD "num" to an ASCII text string "s" of length
+            "len" in radix "base".
+
+        PROCEDURE OctToString (num : WORD; len : CARDINAL;
+                               VAR s : ARRAY OF CHAR);
+
+MISCELLANEOUS PROCEDURES
+MISCELLANEOUS PROCEDURES                                                Page E-3
+Numerical Conversion Procedures
+
+
+            Convert the WORD "num" to an octal ASCII text string "s"  of
+            length "len".
+
+        PROCEDURE HexToString (num : WORD; len : CARDINAL;
+                               VAR s : ARRAY OF CHAR);
+
+            Convert the WORD "num" to a hexadecimal  ASCII  text  string
+            "s" of length "len".
+
+        PROCEDURE IntToString (num : INTEGER; len : CARDINAL;
+                               VAR s : ARRAY OF CHAR);
+
+            Convert the INTEGER "num" to an ASCII  text  string  "s"  of
+            length "len".
+
+        PROCEDURE CardToString (num : CARDINAL; len : CARDINAL;
+                               VAR s : ARRAY OF CHAR);
+
+            Convert the CARDINAL "num" to an ASCII text  string  "s"  of
+            length "len".
+
+        PROCEDURE RealToString (num : REAL; len : CARDINAL;
+                                VAR s : ARRAY OF CHAR);
+
+            Convert a single precision floating point value  "num"  into
+            an ASCII text string "s" of length "len".
+
+        PROCEDURE DFloatToString (num : D_FLOATING; len : CARDINAL;
+                                  VAR s : ARRAY OF CHAR);
+
+            Convert a D format floating point value "num" into an  ASCII
+            text string "s" of length "len".
+
+        PROCEDURE GFloatToString (num : G_FLOATING; len : CARDINAL;
+                                  VAR s : ARRAY OF CHAR);
+
+            Convert a G format floating point value "num"  to  an  ASCII
+            text string "s" of length "len".
+
+        PROCEDURE HFloatToString (num : H_FLOATING; len : CARDINAL;
+                                  VAR s : ARRAY OF CHAR);
+
+            Convert an H format floating point value "num" to  an  ASCII
+            text string "s" of length "len".
+
+MISCELLANEOUS PROCEDURES
+MISCELLANEOUS PROCEDURES                                                Page E-4
+Numerical Conversion Procedures
+
+
+        E.1.2  Input Conversion Procedures
+
+
+        PROCEDURE StringToInt (s : ARRAY OF CHAR) : INTEGER;
+
+            Convert a decimal  ASCII  text  string  "s"  to  an  INTEGER
+            result.
+
+        PROCEDURE StringToOct (s : ARRAY OF CHAR) : CARDINAL;
+
+            Convert an octal ASCII text string "s" to a CARDINAL result.
+
+        PROCEDURE StringToHex (s : ARRAY OF CHAR) : CARDINAL;
+
+            Convert a hexadecimal ASCII text string "s"  to  a  CARDINAL
+            result.
+
+        PROCEDURE StringToCard (s : ARRAY OF CHAR) : CARDINAL;
+
+            Convert a decimal  ASCII  text  string  "s"  to  a  CARDINAL
+            result.
+
+        PROCEDURE StringToReal (s : ARRAY OF CHAR) : REAL;
+
+            Convert a real ASCII text string "s" to a  single  precision
+            floating point result.
+
+        PROCEDURE StringToDFloat (s : ARRAY OF CHAR) : D_FLOATING;
+
+            Convert a real ASCII text string "s" to a D format  floating
+            point result.
+
+        PROCEDURE StringToGFloat (s : ARRAY OF CHAR) : G_FLOATING;
+
+            Convert a real ASCII text string "s" to a G format  floating
+            point result.
+
+        PROCEDURE StringToHFloat (s : ARRAY OF CHAR) : H_FLOATING;
+
+            Convert a real ASCII text string "s" to an H format floating
+            point result.
+
+MISCELLANEOUS PROCEDURES
+MISCELLANEOUS PROCEDURES                                                Page E-5
+Numerical Conversion Procedures
+
+
+        E.1.3  Numeric Conversion Procedures
+
+
+        PROCEDURE ByteToInt (num : BYTE) : INTEGER;
+
+            Convert a BYTE "num" to an INTEGER result.
+
+        PROCEDURE ShortToInt (num : SHORTWORD) : INTEGER;
+
+            Convert a SHORTWORD "num" to an INTEGER result.
+
+        PROCEDURE IntToReal (num : INTEGER) : REAL;
+
+            Convert an INTEGER "num"  to  a  single  precision  floating
+            point result.
+
+        PROCEDURE IntToDFloat (num : INTEGER) : D_FLOATING;
+
+            Convert an INTEGER  "num"  to  a  D  format  floating  point
+            result.
+
+        PROCEDURE IntToGFloat (num : INTEGER) : G_FLOATING;
+
+            Convert an INTEGER  "num"  to  a  G  format  floating  point
+            result.
+
+        PROCEDURE IntToHFloat (num : INTEGER) : H_FLOATING;
+
+            Convert an INTEGER "num"  to  an  H  format  floating  point
+            result.
+
+        PROCEDURE RealToInt (num : REAL) : INTEGER;
+
+            Convert a  single  precision  floating  point  "num"  to  an
+            INTEGER result.
+
+        PROCEDURE RealToDFloat (num : REAL) : D_FLOATING;
+
+            Convert a single precision  floating  point  "num"  to  a  D
+            format floating point result.
+
+        PROCEDURE RealToGFloat (num : REAL) : G_FLOATING;
+
+            Convert a single precision  floating  point  "num"  to  a  G
+            format floating point result.
+
+        PROCEDURE RealToHFloat (num : REAL) : H_FLOATING;
+
+            Convert a single precision floating  point  "num"  to  an  H
+            format floating point result.
+
+MISCELLANEOUS PROCEDURES
+MISCELLANEOUS PROCEDURES                                                Page E-6
+Numerical Conversion Procedures
+
+
+        PROCEDURE DFloatToInt (num : D_FLOATING) : INTEGER;
+
+            Convert a D  format  floating  point  "num"  to  an  INTEGER
+            result.
+
+        PROCEDURE DFloatToReal (num : D_FLOATING) : REAL;
+
+            Convert  a  D  format  floating  point  "num"  to  a  single
+            precision floating point result.
+
+        PROCEDURE DFloatToGFloat (num : D_FLOATING) : G_FLOATING;
+
+            Convert a D format  floating  point  "num"  to  a  G  format
+            floating point result.
+
+        PROCEDURE DFloatToHFloat (num : D_FLOATING) : H_FLOATING;
+
+            Convert a D format floating  point  "num"  to  an  H  format
+            floating point result.
+
+        PROCEDURE GFloatToInt (num : G_FLOATING) : INTEGER;
+
+            Convert a G  format  floating  point  "num"  to  an  INTEGER
+            result.
+
+        PROCEDURE GFloatToReal (num : G_FLOATING) : REAL;
+
+            Convert  a  G  format  floating  point  "num"  to  a  single
+            precision floating point result.
+
+        PROCEDURE GFloatToDFloat (num : G_FLOATING) : D_FLOATING;
+
+            Convert a G format  floating  point  "num"  to  a  D  format
+            floating point result.
+
+        PROCEDURE GFloatToHFloat (num : G_FLOATING) : H_FLOATING;
+
+            Convert a G format floating  point  "num"  to  an  H  format
+            floating point result.
+
+        PROCEDURE HFloatToInt (num : H_FLOATING) : INTEGER;
+
+            Convert an H format  floating  point  "num"  to  an  INTEGER
+            result.
+
+        PROCEDURE HFloatToReal (num : H_FLOATING) : REAL;
+
+            Convert an  H  format  floating  point  "num"  to  a  single
+            precision floating point result.
+
+MISCELLANEOUS PROCEDURES
+MISCELLANEOUS PROCEDURES                                                Page E-7
+Numerical Conversion Procedures
+
+
+        PROCEDURE HFloatToDFloat (num : H_FLOATING) : D_FLOATING;
+
+            Convert an H format floating  point  "num"  to  a  D  format
+            floating point result.
+
+        PROCEDURE HFloatToGFloat (num : H_FLOATING) : G_FLOATING;
+
+            Convert an H format floating  point  "num"  to  a  G  format
+            floating point result.
+
+MISCELLANEOUS PROCEDURES
+MISCELLANEOUS PROCEDURES                                                Page E-8
+Process Scheduling
+
+
+        E.2  Process Scheduling
+
+        This  section   describes   the   VAX/VMS   process   scheduling
+        procedures.
+
+        ______ ____
+        MODULE Name
+
+                ProcessScheduler
+
+        ________
+        EXPORTed
+
+            SIGNAL, StartProcess, SEND, WAIT, Awaited, InitSignal;
+
+        _______
+        IMPORTs
+
+            ADDRESS
+
+        _________ ____________
+        Procedure Descriptions
+
+        PROCEDURE StartProcess (p : PROC; a : ADDRESS; n : CARDINAL);
+
+            Starts process p with workspace at a of length n bytes
+
+        PROCEDURE SEND (VAR s : SIGNAL);
+
+            Resume first process waiting for SIGNAL s
+
+        PROCEDURE WAIT (VAR s : SIGNAL);
+
+            Insert process at end of queue  waiting  for  SIGNAL  s  and
+            resume any process that is ready
+
+        PROCEDURE Awaited (s : SIGNAL) : BOOLEAN;
+
+        PROCEDURE InitSignal (VAR s : SIGNAL);
+
+MISCELLANEOUS PROCEDURES
+MISCELLANEOUS PROCEDURES                                                Page E-9
+Intrinsic Mathematical Procedures
+
+
+        E.3  Intrinsic Mathematical Procedures
+
+        This section describes the mathematical procedures available  to
+        MODULA-2 programmers:
+
+            o   Floating point trigonometric functions
+            o   Complex functions
+            o   Exponentiation
+            o   Complex exponentiation
+            o   Random number generator
+            o   Miscellaneous functions
+
+        These routines support all floating point formats as follows:
+
+
+
+
+                        +--------------+---------------+
+                        |    FORMAT    |  MODULE NAME  |
+                        +--------------+---------------+
+                        |  F_FLOATING  |   MATHLIB0    |
+                        |  D_FLOATING  |   MATHLIB1    |
+                        |  G_FLOATING  |   MATHLIB2    |
+                        |  H_FLOATING  |   MATHLIB3    |
+                        +--------------+---------------+
+
+        ______ ____
+        MODULE Name
+
+            MATHLIB0 (F_FLOATING)
+            MATHLIB1 (D_FLOATING)
+            MATHLIB2 (G_FLOATING)
+            MATHLIB3 (H_FLOATING)
+
+        ________
+        EXPORTed
+
+            Real, arccos, arcsin, arctan, arctan2, arctanh, cosh, sinh,
+            tanh, cos, sin, tan, log, ln, log2, exp, sqrt,
+
+            COMPLEX, cabs, conjg, ccos, cmul, cdiv, cexp, imag, complex,
+            cln, real, csin, csqrt,
+
+            power, cpower,
+
+            random,
+
+            mod;
+
+        _______
+        IMPORTs
+
+            FROM SYSTEM QUADWORD
+
+
+MISCELLANEOUS PROCEDURES
+MISCELLANEOUS PROCEDURES                                               Page E-10
+Intrinsic Mathematical Procedures
+
+
+        _________ ____________
+        Procedure Descriptions
+
+
+        E.3.1  Trigonometric Function
+
+
+        PROCEDURE sin (arg : Real) : Real;
+
+            Returns the sine of the input argument "arg",  expressed  in
+            radians.
+
+        PROCEDURE cos (arg : Real) : Real;
+
+            Returns the cosine of the input argument "arg", expressed in
+            radians.
+
+        PROCEDURE tan (arg : Real) : Real;
+
+            Returns the tangent of the input argument  "arg",  expressed
+            in radians
+
+        PROCEDURE arcsin (arg : Real) : Real;
+
+            Returns the arcsine in radians of the input argument "arg".
+
+        PROCEDURE arccos (arg : Real) : Real;
+
+            Returns the arccosine  in  radians  of  the  input  argument
+            "arg".
+
+        PROCEDURE arctan (arg : Real) : Real;
+
+            Returns the arctangent in  radians  of  the  input  argument
+            "arg".
+
+        PROCEDURE arctan2 (arg1, arg2 : Real) : Real;
+
+            Returns the arctangent in radians of the ratio of  the  inut
+            arguments, "arg1/arg2".
+
+        PROCEDURE sinh (arg : Real) : Real;
+
+            Returns the hyperbolic sine of the input argument "arg".
+
+        PROCEDURE cosh (arg : Real) : Real;
+
+            Returns the hyperbolic cosine of the input argument "arg".
+
+MISCELLANEOUS PROCEDURES
+MISCELLANEOUS PROCEDURES                                               Page E-11
+Intrinsic Mathematical Procedures
+
+
+        PROCEDURE tanh (arg : Real) : Real;
+
+            Returns the hyperbolic tangent of the input argument "arg".
+
+        PROCEDURE arctanh (arg : Real) : Real;
+
+            Returns the hyperbolic  arctangent  of  the  input  argument
+            "arg".
+
+MISCELLANEOUS PROCEDURES
+MISCELLANEOUS PROCEDURES                                               Page E-12
+Intrinsic Mathematical Procedures
+
+
+        E.3.2  Logarithmic And Exponential Functions
+
+
+        PROCEDURE log (arg : Real) : Real;
+
+            Returns the common logarithm (base 10) of the input argument
+            "arg".
+
+        PROCEDURE ln (arg : Real) : Real;
+
+            Returns the natural logarithm (base e) of the input argument
+            "arg".
+
+        PROCEDURE exp (arg : Real) : Real;
+
+            Returns e (2.71828) raised to the input argument "arg".
+
+        PROCEDURE log2 (arg : Real) : Real;
+
+            Returns the logarithm (base 2) of the input argument "arg".
+
+        PROCEDURE sqrt (arg : Real) : Real;
+
+            Returns the square root of the input argument "arg".
+
+        PROCEDURE power (b, e : Real) : Real;
+
+            Returns the real result of the input argument "b" raised  to
+            the "e" power.
+
+MISCELLANEOUS PROCEDURES
+MISCELLANEOUS PROCEDURES                                               Page E-13
+Intrinsic Mathematical Procedures
+
+
+        E.3.3  Complex Functions
+
+
+        PROCEDURE cabs (arg : COMPLEX) : Real;
+
+            Returns the complex absolute  value  of  the  complex  input
+            argument "arg".
+
+        PROCEDURE complex (argreal argimag : Real) : COMPLEX;
+
+            Returns the complex value of the real and  imaginary  inputs
+            "argreal" and "argimag".
+
+        PROCEDURE imag (arg : COMPLEX) : Real;
+
+            Returns the imaginary part of  the  complex  input  argument
+            "arg".
+
+        PROCEDURE real (arg : COMPLEX) : Real;
+
+            Returns the real part of the complex input argument "arg".
+
+        PROCEDURE conjg (arg : COMPLEX) : COMPLEX;
+
+            Returns the complex conjugate of the complex input  argument
+            "arg" (r,i), as (r,-i).
+
+        PROCEDURE csin (arg : COMPLEX) : COMPLEX;
+
+            Returns the complex  sine  of  the  complex  input  argument
+            "arg", expressed in radians.
+
+        PROCEDURE ccos (arg : COMPLEX) : COMPLEX;
+
+            Returns the complex cosine of  the  complex  input  argument
+            "arg", expressed in radians.
+
+        PROCEDURE cln (arg : COMPLEX) : COMPLEX;
+
+            Returns the complex natural logarithm of the  complex  input
+            argument "arg".
+
+        PROCEDURE cexp (arg : COMPLEX) : COMPLEX;
+
+            Returns  the  complex  exponential  of  the  complex   input
+            argument "arg".
+
+        PROCEDURE csqrt (arg : COMPLEX) : COMPLEX;
+
+            Returns  the  complex  square  root  of  the  complex  input
+            argument "arg".
+
+MISCELLANEOUS PROCEDURES
+MISCELLANEOUS PROCEDURES                                               Page E-14
+Intrinsic Mathematical Procedures
+
+
+        PROCEDURE cpower (b, e : COMPLEX) : COMPLEX;
+
+            Returns the comlex result of the complex input arguments "b"
+            raised to the "e" power.
+
+        PROCEDURE cmul (arg1, arg2 : COMPLEX) : COMPLEX;
+
+            Returns the complex product of the complex  input  arguments
+            "arg1" and "arg2".
+
+        PROCEDURE cdiv (arg1, arg2 : COMPLEX) : COMPLEX;
+
+            Returns the complex quotient of the complex input  arguments
+            "arg1" and "arg2".
+
+
+        E.3.4  Random Number Generator
+
+
+        PROCEDURE random (VAR s : INTEGER) : Real;
+
+            Returns  a  single  precision  floating  point  pseudorandom
+            number  uniformly distributed between 0.0 and 1.0 inclusive.
+            The argument "s" is used as the seed for the  generation  of
+            the  number,  and  is  automatically  updated.  There are no
+            restrictions on the value of seed,  although  it  should  be
+            initialized to different values on separate runs in order to
+            obtain different random sequences.
+
+
+        E.3.5  Miscellaneous Functions
+
+
+        PROCEDURE mod (arg1, arg2 : Real) : Real;
+
+            Returns "arg1" MODULO "arg2".
+
+        PROCEDURE done : BOOLEAN;
+
+            Returns  TRUE  if  the  last  mathematical   operation   was
+            successful, FALSE otherwise.
+
+MISCELLANEOUS PROCEDURES
+MISCELLANEOUS PROCEDURES                                               Page E-15
+Date And Time Procedures
+
+
+        E.4  Date And Time Procedures
+
+        These procedures provide the means for getting the  system  time
+        and  date,  and  for  conversion  from internal binary format to
+        ASCII text strings.
+
+        ______ ____
+        MODULE Name
+
+            DateTime
+
+        ________
+        EXPORTed
+
+            TimeType, Time, Date, ConvertTime, ConvertDate
+
+        ________
+        IMPORTed
+
+            FROM SYSTEM IMPORT QUADWORD;
+
+        _________ ____________
+        Procedure Descriptions
+
+        PROCEDURE Time (VAR time : TimeType);
+
+            Returns current system time in system format
+
+        PROCEDURE Date (VAR date : ARRAY OF CHAR);
+
+            Returns  current  system  time  as  string  in  the   format
+            "HH:MM:SS.DD".
+
+        PROCEDURE ConvertTime (time : TimeType;
+                               VAR date : ARRAY OF CHAR);
+
+            Converts time given as argument in internal format into text
+            string.
+
+        PROCEDURE ConvertDate (date : ARRAY OF CHAR;
+                               VAR time : TimeType);
+
+            Converts text string given  as  argument  into  system  time
+            format

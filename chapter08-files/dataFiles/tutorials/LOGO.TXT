@@ -1,0 +1,1247 @@
+..F66
+..B15    
+..L7
+
+
+
+
+____________________
+
+LOGO REFERENCE GUIDE
+____________________
+
+
+
+
+
+
+
+
+
+
+
+
+________________________________
+
+Table of Contents
+
+Chapter 1 - Starting LOGO
+Chapter 2 - Edit Mode
+Chapter 3 - Run Mode 
+Chapter 4 - LOGO Programming
+Chapter 5 - LOGO Commands
+Chapter 6 - LOGO Expressions
+Chapter 7 - Sample LOGO Programs
+________________________________
+
+
+
+
+
+
+_____________________________________
+
+By Larry Kheriaty
+(C) 1988 Washington Computer Services
+_____________________________________
+..P
+..N1
+_________________________
+
+Chapter 1 - Starting LOGO
+_________________________
+
+
+To install LOGO copy the file LOGO.EXE 
+and the file SAMPLES to your disk.
+
+With LOGO you can experiment with logic, 
+geometry and graphics by controlling the 
+LOGO turtle as it moves and draws on the
+screen. You can use the LOGO Edit mode 
+to write a program, or list of commands 
+for the turtle to follow. This manual 
+describes the LOGO commands you can use,
+how to combine the commands into a 
+program, and how to use the Edit mode 
+to enter the program into the computer.
+
+LOGO's Edit mode can also be used as a 
+basic word processor. 
+
+Each LOGO program is stored in a text 
+file. To start LOGO use the command:
+
+        LOGO name
+
+where "name" represents the name of the
+text file which contains the LOGO 
+program to be loaded and made available
+for work. Upon leaving LOGO the updated
+file is stored once again on your disk, 
+and the previous version of the file is 
+stored as file "name.BAK".
+
+When you wish to work on the program 
+again, just start LOGO with the same 
+file name. By using different file 
+names you can have any number of 
+different LOGO programs on your disk.
+..P 
+_____________________
+
+Chapter 2 - Edit Mode
+_____________________
+
+
+When you start LOGO, you begin in Edit 
+mode. In Edit mode you can write a new 
+program, or modify a previously written
+program. LOGO Edit mode is actually a 
+simple word processor and can be used 
+it as such. This entire manual was 
+written using LOGO Edit mode.
+
+To run LOGO commands or programs go to
+Run mode by pressing F9.
+
+Edit mode lets you see your program on 
+the screen. You can use the special 
+keys to move around within the program 
+and insert, change or delete text. The 
+special keys to use in Edit mode are 
+described here.
+
+Arrow Keys (Up, Down, Left, Right)
+     These keys move the cursor one 
+     space in any direction.
+
+Home
+     The Home key moves to the 
+     beginning of the program text.
+
+End 
+     The End key moves to the end of 
+     the program text.
+
+PgUp
+     The PgUp key moves the text up 
+     (forward) one screen. 
+
+PgDn The PgDn key moves the text down 
+     (backward) one screen.
+
+Tab 
+     The Tab key moves to the next tab 
+     stop (every 10 columns).
+
+BackTab 
+     The BackTab key moves to the start
+     of the line.
+
+Ins     
+     The Ins key inserts a blank at the
+     cursor by moving the rest of the 
+     line to the right one space.
+
+Del     
+     The Del key removes a character at
+     the cursor by moving the rest of 
+     the line to the left one space.
+
+F1
+     If the cursor is at the start of a
+     line, F1 inserts a blank line prior
+     to the current line. If the cursor
+     is elsewhere in the line, the line
+     is split into 2 lines at that point.
+
+F2   
+     If the cursor is at the start of a
+     line, F2 deletes, or removes the 
+     entire line and places the line on
+     the top of the pick stack. If the
+     cursor is at the end of a line,
+     F2 joins the next line to the end 
+     of the current line.
+
+F3
+     Picks up the current line and 
+     places it on the pick stack.
+
+F4 
+     Takes the top line off the pick 
+     stack and inserts it into the
+     text prior to the current line.   
+
+F5
+     Search for a text string. You are
+     prompted for the search string
+     at the bottom of the screen.
+
+F6
+     Re-flows a paragraph to the width
+     of the text work screen. You would
+     not normally use this for a LOGO 
+     program, but if you are using the 
+     LOGO Edit mode to write other text
+     you might use it. A paragraph is
+     ended by a blank line.
+
+^F6  (shift F6)
+     Re-flows a paragraph to the width      
+     indicated by the column in which
+     the cursor now rests.
+
+F7
+     Prompts for the name of another
+     file to be copied into the current
+     file at the current location.
+
+F8
+     Prints the current program text to
+     the system printer.
+
+F9
+     Switches to RUN MODE. (F9 is also 
+     used to switch from Run mode back 
+     to Edit mode.)
+
+F10
+     Saves the current LOGO file on disk
+     and returns to DOS.
+
+^F10 (shift F10)
+     Returns to DOS without saving the 
+     current LOGO file on disk.
+
+______________
+
+The Pick Stack
+______________
+
+The pick stack is a storage location 
+where up to 15 lines may be saved. Use 
+it to copy lines from one location to 
+another by pressing F3 once for each 
+line to be put on the pick stack, then 
+pressing F4 for each line to be brought
+back from the pick stack and inserted 
+into the text elsewhere. You can also 
+use F4 to bring back lines that have 
+been deleted via F2.
+
+___________________________
+
+Printing Your File On Paper
+___________________________
+
+Use the F8 key to print your file. 
+There are five "dot" commands you can 
+insert into your file to control how it
+is printed. A dot command consists of 
+two periods at the start of a line, 
+followed by a single letter. The first 
+four commands below require a number, n,
+immediately after the letter.
+
+   ..Fn   sets the form length to n 
+          lines. The default is 66. 
+
+   ..Bn   sets the bottom page margin 
+          to n lines. The default is 11 
+          lines skipped from the bottom
+          of each page to the first 
+          line printed on the next page.
+
+   ..Ln   sets the left margin to n 
+          spaces. The default is 5.
+
+   ..Nn   begin page numbering with n 
+          assigned to this page. Setting
+          n=0 turns off page numbering.
+
+   ..P    skips to the top of a new page.
+..P
+______________________
+
+Printing Control Codes
+______________________
+
+Many printers have special features,   
+such as bold printing, that can be 
+invoked by sending control codes to the 
+printer. To send a control code to the 
+printer as you list your program, 
+insert the desired control code within 
+the text at the appropriate place. To  
+do so press the ESC key, then type a 
+number immediately after it. The ESC 
+code shows up on the screen as a solid 
+V-shaped triangle. When the file is 
+printed, rather than the ESC character 
+and the number being sent to the 
+printer, the ASCII code represented by 
+the number is sent to the printer.
+
+For example, if your printer expects 
+ASCII 14 (hex 0E) to turn on double 
+wide print and ASCII 20 (hex 14) to 
+turn it off, the following text would 
+print the word "big" in double width. 
+(Note: the letter V in these examples
+stands for the character you see on the
+screen when you press the ESC key.)
+
+     This is a V14 big V20 word.
+
+As another example, if your printer 
+expects ESC E to turn on emphasized 
+printing, you could type:
+
+     V27E This is emphasized.
+
+The effect of "V27" is to send ASCII 
+27, the ESC code to the printer.
+
+..P
+____________________
+
+Chapter 3 - Run Mode
+____________________
+
+
+You can enter Run mode by pressing F9 
+from Edit mode. In Run mode the turtle 
+is displayed in the center of the 
+screen. The cursor is at the bottom of 
+the display where there is room for 
+three lines of text. In Run mode you 
+can enter individual LOGO commands, 
+such as Forward, Right, Left, etc.  You
+can also start any LOGO procedure that 
+you have written in Edit mode by 
+entering the name of the procedure 
+followed by its parameter values. 
+
+When a program is running you can stop 
+it by pressing the ESC key at any time.
+You can return from Run mode to Edit 
+mode by the F9 key or the Quit command.
+
+To enter a LOGO command just type it on
+the keyboard. The Backspace key may be 
+used to correct typing errors prior to 
+pressing the Enter key. You can type 
+one or more commands on a line. To run 
+the commands you have typed press Enter.
+
+If you type a command incorrectly 
+either in Run mode, or within a 
+procedure you execute from Run mode, 
+you may see a LOGO error message. There
+are several possible error messages. 
+The most common ones are discussed in 
+the next chapter. The error message 
+may tell you exactly what error you 
+made, or may be just a general
+warning that something is wrong.
+..P 
+____________________________
+
+Chapter 4 - LOGO Programming
+____________________________
+
+
+You program in LOGO by telling the 
+turtle what to do. The commands that 
+the turtle understands are described in
+the next chapter. In Run mode you can 
+type one command at a time. Each time 
+you type a command the turtle executes 
+it. For example, if you type 
+
+     Forward 30
+
+the turtle moves forward 30 of its 
+steps and draws a line as it goes.
+If you then type 
+
+     Right 90
+
+the turtle turns to its right by 90 
+degrees (right angle). Another 
+forward command at this point would 
+draw a line at a right angle to the 
+previous one.
+
+You can go beyond typing one command at
+a time by combining a sequence of 
+commands into a procedure. Use Edit 
+mode to type your procedure into 
+memory, then use Run mode to execute 
+the procedure by giving its name. 
+Programming consists of writing 
+procedures to perform increasingly 
+complex sequences of actions. When you 
+write a program you often do so in a 
+building block fashion, creating simple
+procedures which are used to build more
+complex procedures. The process often 
+involves repeated cycles of using Edit 
+mode to write and modify a procedure, 
+and Run mode to try out the procedure. 
+Once a simple procedure works, you can 
+write other procedures which call upon 
+the simple procedure as if it were one 
+of the built-in commands of LOGO.
+
+When testing your procedures you will 
+occasionally get an error message from 
+LOGO indicating that you have done 
+something wrong. Understanding these 
+messages can provide some insight into 
+the whole programming process.
+
+     I don't know how to ...
+
+This is one of the error messages you 
+might see. To understand it you need to
+know how LOGO works.
+
+When you type a word, LOGO assumes it is 
+either a pre-defined LOGO command or a 
+user-defined LOGO command. A pre-defined
+LOGO command is a word LOGO already 
+knows how to do, such as Forward, Right, 
+Showturtle, etc. Most of these words 
+can be typed completely or can be 
+abbreviated to two letters. If LOGO 
+knows the word you type, then the 
+turtle executes the command. 
+
+User-defined commands are procedures   
+written by the user in Edit mode that 
+define new words for LOGO. Each 
+procedure begins with "TO something", 
+where the word "something" is any word 
+LOGO does not already know. For 
+example, to define the word "box" write
+a procedure which begins "TO BOX", 
+followed by a list of pre-defined or 
+user-defined commands. One possible
+procedure to draw a box is: 
+..P
+     TO BOX
+       FORWARD 50
+       RIGHT 90 
+       FORWARD 50
+       RIGHT 90
+       FORWARD 50
+       RIGHT 90
+       FORWARD 50
+       RIGHT 90
+     END
+
+When LOGO says "I don't know how to    
+something" it means that it sees a 
+command which it does not know and for 
+which you have not written a procedure 
+it can follow.
+
+Programming in LOGO is a process of 
+starting with the commands already 
+known to LOGO and building more and 
+more complex commands by grouping 
+sequences of commands into procedures.
+
+There are commands in LOGO which permit
+you to group repetitive commands 
+together. For example, the BOX 
+procedure can be re-written as follows:
+
+     TO BOX
+       REPEAT 4
+        [
+         FORWARD 50
+         RIGHT 90 
+        ]
+     END
+
+This is equivalent to the previous BOX 
+procedure. It is shorter because the 
+Repeat command is used to indicate that
+all the commands between the brackets 
+are to be executed 4 times. The Repeat 
+command is a grouping command. The 
+commands that are grouped together must
+be enclosed in "[" and "]". Improper 
+grouping can result in the error 
+message:
+
+     I expected to see a "[" next.
+     
+Another common error message is:
+
+     I don't understand how much.
+
+Most of the commands in LOGO require 
+that you type a numeric value after the
+command. For example, in the command 
+"Forward 30", the command "Forward" 
+requires that you tell how far the 
+turtle is to go. If you were to type 
+"Forward" without the numeric value 
+after it, you would see the above error 
+message. When a command requires a 
+value, it can be a number (FD 30), or a
+variable (FD :X), or an expression     
+(FD :X + 5). If the value is missing, 
+you see the message "I don't understand
+how much". It is also possible to see 
+this message when you make an error in 
+expressing the value. For example 
+"Forward X" is in error because the 
+variable X, like all variables, should 
+be preceded by the colon ":" character.
+               
+Since one procedure can call another   
+procedure it is also possible for a 
+procedure to call itself. This is 
+called recursion. A recursive procedure
+has its own name as part of its 
+definition. The BOX procedure could be 
+written recursively as follows:
+
+     TO BOX
+       FORWARD 50
+       RIGHT 90
+       BOX
+     END
+..P
+When the BOX procedure is executed, the 
+Forward and Right commands are 
+executed, then the command "BOX" is 
+encountered. This causes LOGO to call 
+BOX from within BOX. The Forward and 
+Right commands are executed a second 
+time and the command "BOX" is once 
+again encountered. This process would 
+repeat indefinitely unless interrupted 
+by something. You could stop the 
+"infinite loop" by pressing the ESC key
+at any time. If allowed to go on, LOGO 
+eventually stops with the error message:
+
+     My memory is too full.
+
+In the computer's RAM memory LOGO 
+keeps track of what procedure it is 
+executing. When one procedure calls 
+another, LOGO remembers where it came 
+from and returns there after execution 
+of the called procedure. This stacking
+up of called procedures and unstacking
+of return points is invisible to you 
+unless you run a procedure like this 
+one in which LOGO never actually 
+reaches the end of a procedure. So 
+eventually LOGO uses all the available
+memory and stops with an error message.
+
+..F66
+..B20
+..L7
+..N13
+_________________________
+
+Chapter 5 - LOGO Commands
+_________________________
+
+The commands are shown here in 
+alphabetical order. Some commands may 
+be abbreviated to two letters. All 
+commands may be entered in either upper
+or lower case. LOGO considers upper and 
+lower case to be equal within commands,
+procedure names, variables, etc.
+
+In the command descriptions the word 
+"value" is used to stand for a number, 
+a variable, or an expression which can 
+be evaluated to a number. The next 
+chapter describes the formation of 
+expressions.
+
+Commands may be written in completely 
+free format, that is, one command per 
+line, one command on several lines, or 
+several commands on one line.
+
+It is a good idea to follow an 
+organized pattern when entering 
+commands into procedures so the 
+resulting program is easy to read. The 
+examples in this document are all 
+written with one command per line; and 
+each group of nested commands is 
+indented 2 spaces from the previous 
+line to give a visual indication of the
+grouping of commands. For example:
+..P
+       TO POLYGON :SIDES
+         MAKE :ANGLE  360/:SIDES
+         REPEAT  :SIDES
+          [
+           FORWARD  50
+           RIGHT  :ANGLE
+          ]
+         PRINT  "DONE"
+         SHOWTURTLE
+       END
+
+In this example all the commands 
+between the TO and the END are 
+indented. Also the commands in the 
+REPEAT group are indented further. The 
+brackets that enclose the REPEAT group 
+are shown on separate lines to make it 
+easy to see which brackets match up.
+
+A description of each command follows.
+_______________________________________
+
+BACK  value           abbreviation:  BK   
+
+The turtle walks backward "value" 
+steps. If the turtle reaches the edge 
+of the display, it wraps around to the 
+opposite edge.
+
+example:  BACK 20
+
+_______________________________________
+
+BACKGROUND  value      abbreviation: BG
+
+The display background color is set to a
+color "value".  "value" may be a number 
+from 0 through 15.
+
+example:  BACKGROUND 2
+
+_______________________________________
+
+CALL 
+
+The CALL command is different from all 
+other commands in that the word CALL is 
+not actually given. To call a procedure
+type the name of the procedure, 
+followed by any needed parameters. The 
+procedure is executed and LOGO stacks 
+the return point so that when the 
+procedure ends or executes a RETURN 
+command, then LOGO resumes with the 
+command following the call command.
+
+examples:  POLYGON 5
+           SPIRAL 10 17
+
+_______________________________________ 
+
+CLEAR
+
+The display screen is cleared to the 
+current background color.
+
+example:  CLEAR
+
+_______________________________________ 
+
+END
+
+Every LOGO procedure must end with an 
+END command. When the END is reached 
+the procedure returns to the place from
+which it was called.
+
+example:   END BOX
+
+_______________________________________ 
+
+ELSE
+
+see IF
+
+_______________________________________ 
+
+FORWARD  value        abbreviation:  FD
+
+The turtle walks forward "value" steps.
+If the turtle reaches the edge of the 
+display, it wraps around to the 
+opposite edge.
+
+example:  FORWARD 50
+
+_______________________________________ 
+
+HEAD  value
+
+The turtle direction, or heading, is 
+set to "value" degrees. The value must 
+be from 0 to 359 inclusive. A value of 
+0 is straight up, and the heading 
+increases clockwise to the right. A 
+heading of 90 is to the right, 180 is 
+down, 270 is to the left.
+
+example:  HEAD 90
+
+_______________________________________ 
+
+HIDETURTLE            abbreviation:  HT
+
+The turtle becomes invisible.
+
+example:  HT
+
+_______________________________________ 
+
+HOME
+
+The turtle goes to the center of the 
+display, heading 0 degrees and is 
+visible.
+
+example:  HOME
+
+_______________________________________ 
+
+IF  value
+ [
+  group of commands
+ ]
+
+ELSE
+ [
+  group of commands
+ ]
+
+This command permits a group of 
+statements to be executed or skipped 
+dependent upon the truth value of an 
+expression.
+
+The value is computed to be either true
+(non-zero) or false (zero). If the 
+value is true the group of commands 
+after the IF is executed. If the value
+is false the group of commands after 
+the IF is skipped.
+
+The ELSE and its following group of 
+commands may be present or omitted. If 
+present then the ELSE group is executed
+if the value after the IF is false or 
+skipped if the value is true.
+
+The group of commands may be enclosed 
+in brackets "[  ]" or in parentheses 
+"(  )". It may consist of zero or 
+more commands.
+
+example:  IF  :X = 5
+           [
+            PRINT "FIVE"
+           ]
+          ELSE
+           [
+            PRINT "NOT FIVE"
+           ]
+
+_______________________________________ 
+
+LEFT  value           abbreviation:  LT
+
+The turtle rotates to its left 
+(counter-clockwise) by "value" degrees. 
+
+example:  LEFT 90
+
+_______________________________________ 
+
+MAKE  :variable  value
+
+The variable is given the value of the 
+expression. All variable names must 
+begin with a colon  ":"  character. If 
+the variable name appears on the TO 
+command of the current procedure then 
+it is a local variable, known only 
+inside the procedure. Otherwise it is a
+global variable, shared by all 
+procedures.
+
+examples:  MAKE :X  20
+           MAKE :COUNT  :COUNT + 1
+
+_______________________________________ 
+
+MOVETO  value  value
+
+The turtle is moved to the absolute 
+pixel location whose horizontal address
+is the first value and whose vertical 
+address is the second value.  
+Horizontal pixel locations are numbered
+left to right, 0 to 319. Vertical pixel
+locations are numbered top to bottom, 0
+199.
+
+example:  MOVETO 103 75
+
+_______________________________________ 
+
+PENCOLOR  value       abbreviation:  PC
+
+The turtle drawing color is set to the 
+color value. The possible values are 1,
+2 or 3 for the three foreground colors 
+or 0 for the background color. Any 
+lines drawn by the turtle are drawn in 
+the current drawing color.
+
+example:  PC 2
+
+_______________________________________ 
+
+PENDOWN               abbreviation:  PD
+
+The turtle pen is set down, which means
+that as the turtle moves it leaves a 
+line as it moves.
+
+example:  PD
+
+_______________________________________ 
+
+PENUP                 abbreviation:  PU 
+
+The turtle pen is picked up, which 
+means as when the turtle moves it 
+does not draw a line.
+
+example:  PU
+
+_______________________________________ 
+
+PENWIDTH  value       abbreviation:  PW
+
+Sets the line width of the lines drawn 
+by the turtle. A value of 1 is for thin
+lines, 2 is for medium, 3 is for thick 
+lines.
+
+example:  PW 2
+
+_______________________________________ 
+
+PRINT  value
+PRINT  "any text"
+
+The numeric value or the text inside 
+the quotes is printed at the current 
+turtle location. If the print runs off 
+the edge of the screen it is truncated 
+at that point.
+
+examples:  PRINT  :COUNT+4
+           PRINT  "Hello World."
+
+_______________________________________ 
+
+QUIT
+
+The QUIT command exits Run mode and 
+returns to Edit mode.  
+
+example:  QUIT
+
+_______________________________________ 
+
+REPEAT  value
+ [
+  group of commands
+ ]
+
+This command permits the repeated 
+execution of a group of commands a 
+pre-determined number of times.
+
+The group of commands is executed 
+repeatedly "value" times. The group of 
+commands may be enclosed in brackets 
+"[  ]" or parentheses "(  )". It 
+may consist of zero or more commands.
+
+example:  REPEAT 4
+           [ 
+            FD 50    RT 90
+           ]
+
+_______________________________________ 
+
+RETURN
+
+The current procedure is ended and LOGO
+returns to the procedure from which the
+current procedure was called. 
+
+example:  RETURN
+
+_______________________________________ 
+
+RIGHT  value          abbreviation:  RT
+
+The turtle rotates to its right 
+(clockwise) by "value" degrees. 
+
+example:  RIGHT 90
+
+_______________________________________ 
+
+SHOWTURTLE            abbreviation:  ST
+
+The turtle becomes visible.
+
+example:  ST
+
+_______________________________________ 
+
+SLOW  value
+
+The motion of the turtle is slowed 
+down. The larger the value the slower 
+the turtle moves. A value of 0 causes 
+the turtle to move at its maximum      
+speed. A value of 50 makes the turtle 
+go very slowly.
+
+example:  SLOW 10
+
+_______________________________________ 
+
+STOP
+
+The current program is stopped and 
+control remains in Run mode.
+
+example:  STOP
+
+_______________________________________ 
+
+TO  name  local-variables
+ list of commands
+END
+
+The TO command is used to define the 
+start of a procedure. After the TO must
+be the name of the procedure. A        
+procedure name is any word you select. 
+Both upper and lower case are 
+considered equal. After the procedure 
+name there may be from zero to five 
+local variable names. Each local 
+variable name must be preceded by a 
+colon ":" character. 
+
+Each TO command must have a 
+corresponding END command at the end of
+the procedure.
+
+A procedure is executed by means of the
+CALL command which refers to the 
+procedure by name. When the CALL 
+command is executed it may specify from
+zero to five parameters to be passed to 
+the procedure. The parameters are 
+assigned to the local variables before 
+the commands within the procedure are 
+executed.
+
+The local variables are known only 
+within the procedure and only to this 
+particular invocation of the procedure.
+Each time the procedure is called it 
+gets a fresh set of local variables.   
+
+example:  TO BOX :SIDE            
+            REPEAT 4
+             [              
+              FORWARD :SIDE
+              RIGHT 90    
+             ]
+          END
+..P
+_______________________________________ 
+
+WHILE  value
+ [
+  group of statements
+ ]
+
+This command permits the repeated 
+execution of the group of statements as
+long as a condition remains true.
+
+If the value is true (non-zero) the    
+group of commands is executed 
+repeatedly until the value is found to 
+be false (zero). When the value is 
+false the group of commands is skipped 
+and LOGO continues with the next 
+command.
+
+The group of commands may be enclosed 
+in brackets "[  ]" or in parentheses 
+"(  )". It may consist of zero or 
+more commands.
+
+example:  WHILE  ?KEY=0
+           [
+            PRINT "Please press a key"
+           ]
+
+_______________________________________ 
+
+..F66
+..B20
+..L7
+..N25
+____________________________
+
+Chapter 6 - LOGO Expressions
+____________________________
+
+Many LOGO commands require a numeric 
+value as part of the command. A numeric
+value may be expressed in a variety of 
+ways. LOGO accepts whole numbers in the
+range -32000 to 32000.
+
+________________________________________
+
+NUMBERS
+
+A value can be just a number such as:
+
+     5     123    21751
+
+
+________________________________________
+
+CHARACTERS
+
+A value can also be expressed as an 
+ASCII character such as:
+
+     'X     'a     '2
+
+which gives the value of the character 
+after the single quote mark as it 
+occurs in the ASCII table. For example 
+'X is 88, 'a is 97 and '2 is 50.
+..P
+________________________________________
+
+VARIABLES
+
+A LOGO program can also store values in
+local or global variables. A variable 
+is a word you select, preceded by a 
+colon character. Each variable has a 
+unique storage location in memory in 
+which a value is stored. A variable can
+be specified in any command in which a 
+value is required. The value currently 
+stored in a variable is the value 
+substituted in the command. Some 
+possible variable names are:
+
+     :SIDE    :X     :COUNT  
+
+Variable names may be upper or lower 
+case. Upper and lower case letters are 
+considered equal for naming purposes. 
+That is, the variable names :XYZ and 
+:xyz are considered the same by LOGO.
+
+If a variable name is used within a 
+procedure and it appears on the TO 
+statement of that procedure, then the 
+variable is said to be local to the 
+procedure. It is known only within the 
+procedure and is given a new storage   
+location upon each call of the 
+procedure. Various procedures may have 
+local variables by the same name, and 
+remain distinct. Each procedure may 
+have from zero to five local variables.
+
+If a variable is used within a 
+procedure and it does not appear on the 
+TO statement of that procedure, it is 
+a global variable. Global variables are 
+shared among all procedures.
+
+A variable can be given a value by a 
+MAKE command or by being passed a 
+parameter value by a CALL command.
+
+
+________________________________________
+
+BUILT-IN VARIABLES or FUNCTIONS
+
+There are 5 built-in LOGO variables 
+whose values are determined by LOGO. 
+These variables may be used to specify 
+a value within a command. Each of the 
+built-in variables (functions) begins 
+with a question mark "?".
+
+     ?X       gives the current turtle 
+              horizontal pixel address.
+
+     ?Y       gives the current turtle 
+              vertical pixel address.  
+
+     ?H       gives the current turtle 
+              heading in degrees.
+
+     ?KEY     gives 0 if no key is 
+              currently depressed, or 
+              gives the ASCII value of 
+              the depressed key.
+
+     ?RAN n   gives a randomly selected
+              value from 0 to n-1.
+
+Built-in variables can be in upper or 
+lower case.                            
+..P       
+________________________________________
+
+ERXPRESSIONS and OPERATORS
+
+A value may be derived by a combination
+of any of the above ways of expressing 
+a value and one or more of the 
+operators shown below. Each operator 
+takes one or two operands and yields a 
+result value. 
+
+LOGO expressions may be written in 
+standard algebraic or programming format
+with sub-expressions grouped in 
+parentheses as needed for clarity. 
+Operators are listed here in decreasing 
+operator precedence. Unless grouped 
+differently by parentheses, operators 
+are executed by precedence, highest 
+first. In these descriptions :X and :Y 
+are used to stand for any values.
+
+     - :X         negative value of :X
+
+     ^ :X         if :X is zero gives 1,
+                  else gives 0
+
+     :X  *  :Y    gives :X times :Y
+
+     :X  /  :Y    gives :X divided by :Y 
+                  (whole number result)
+
+     :X  +  :Y    gives :X plus :Y
+
+     :X  -  :Y    gives :X minus :Y
+
+     :X  <  :Y    gives 1 if :X is less 
+                  than :Y, otherwise 0.
+
+     :X  >  :Y    gives 1 if :X is greater
+                  than :Y, otherwise 0.
+
+     :X  =  :Y    gives 1 if :X is equal
+                  to :Y, otherwise 0.
+
+     :X  <> :Y    gives 1 if :X is not 
+                  equal to :Y, otherwise 0.
+
+     :X  >= :Y    gives 1 if :X is greater
+                  than or equal to :Y, 
+                  otherwise gives 0.
+
+     :X  <= :Y    gives 1 if :X is less
+                  than or equal to :Y, 
+                  otherwise gives 0.
+
+     :X  &  :Y    gives 1 if both :X AND
+                  :Y are non-zero,
+                  otherwise gives 0.
+
+     :X  !  :Y    gives 1 if either :X 
+                  OR :Y are non-zero,
+                  otherwise gives 0.
+
+
+________________________________________
+
+SAMPLE EXPRESSIONS
+
+     :X + 1
+
+     -4 * (:ABC - :DEF) / (12 + :ZEBRA)
+
+     ?KEY = 'X
+
+     :COUNT >= 25
+
+..P
+________________________________
+
+Chapter 7 - Sample LOGO Programs
+________________________________
+
+
+
+There are several sample programs 
+included in the file "SAMPLES". To try 
+them out enter the command:
+
+     LOGO SAMPLES
+
+Each sample program consists of one or 
+more procedures, followed by a list of 
+commands to use from Run mode to 
+execute the sample. 
+
+To try the sample copy down the 
+commands that are listed as things to 
+try in Run mode, then press F9 to get 
+to run mode. Type in the first of the 
+commands and press Enter. Some of the 
+samples will stop on their own. Others 
+will continue until memory is full or 
+you press ESC. 
+
+Try each sample with the suggested 
+parameters, then experiment with other 
+parameter settings.  
+
+After each time you run a sample type 
+CLEAR, and press Enter, to clean up the
+display. Then try the next sample.
+

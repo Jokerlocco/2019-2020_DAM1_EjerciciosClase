@@ -1,0 +1,565 @@
+
+     +-------------------------------------------------------+
+     | Nota: Este peque~no documento no es un tutor de       |
+     | Forth, sino un resumen personal para una exposicion.  |
+     | Para una exposicion detallada, con ejemplos y         |
+     | explicaciones claras, veanse las referencias que      |
+     | cito al final, y especialmente el libro "Starting     |
+     | Forth", de Leo Brodie. Para aspectos mas avanzados,   |
+     | "Thinking Forth", del mismo autor. Ademas de estas    |
+     | dos referencias clave, existen otras muchas en la     |
+     | red.                                                  |
+     +-------------------------------------------------------+
+
+FILOSOFIA SUBYACENTE
+====================
+
+    Hay mas de una forma de resolver los problemas, pero
+    hay problemas que pueden evitarse. En la filosofia que
+    mueve al dise~no de sistemas y programas Forth la
+    idea clave es la simplicidad, en sus dos vertientes:
+    no resuelvas problemas que pueden evitarse y, cuando
+    el problema sea inevitable, busca la solucion mas
+    sencilla posible. Reflexiones sobre la programacion
+    predominante y la alternativa que propone Forth pueden
+    encontrarse en el excelente articulo "Low fat computing",
+    de Jeff Fox, pero especialmente "Introduction to 
+    thoughtful programming and the Forth philosophy", de
+    Michael Misamore.
+
+0.- ARITMETICA Y LOGICA
+=======================
+
+    + - * /                   \ aritmetica basica
+    mod                       \ resto
+    /mod                      \ resto y cociente
+    1+ 1- abs max min neg
+    */                        \ ( n1 n2 n3 -- n1 n2 * n3 / )
+    */mod                     \ ( n1 n2 n3 -- n1 n2 * n3 /mod )
+    = > >= < <= 0= 0> 0< 0<>
+    and or xor not
+    lshift rshift invert
+
+1.- OPERACIONES SOBRE LA PILA
+=============================
+
+    dup   swap  drop  rot   nip   over  tuck  -rot  2dup  2swap
+    ---   ----  ----  ---   ---   ----  ----  ----  ----  -----
+                                     2     3           2   4 2
+                      3 1    3     3 3   3 2   3 2     1   3 1
+      1   2 1   2     2 3    2 3   2 2   2 3   2 1   2 2   2 4
+    1 1   1 2   1 1   1 2    1 1   1 1   1 1   1 3   1 1   1 3
+    
+    : rot >r swap r> swap ;
+    : -rot swap >r swap r> ;
+    : nip swap drop ;
+    : over >r dup r> swap ;
+    : tuck dup >r swap r> ;
+    : -rot rot rot ;
+    : 2dup over over ;
+    : 2swap >r -rot r> -rot ;
+
+    Ejemplos:
+    
+    (a b -- (a+b)(a-b))         2dup + -rot - *
+    (a b -- (a+b)^2(a-b))       2dup + dup * -rot - *
+    (a b -- (a-1)(b+1))         1+ swap 1- *
+    (a b -- (a+5)/(b-6))        6 - swap 5 + swap /
+    (a b -- (a+9)(a-b^2))       2dup dup * - nip swap 9 + swap /
+    (a b c -- b^2-4*a*c))       swap dup * >r 4 * * r> swap -
+    (x -- 1+x+x^2)              dup dup * 1 + +
+    (x -- 1+x^2/2-x^4/24)       dup 2dup 2dup * * * 24 / >r * 2 / 1 + r> negate +
+    
+    (a+b)(a-b)                  a b + a b - *
+    (a+b)^2(a-b)                a b + a b + * a b - *
+    (a-1)(a+1)                  a 1- a 1+ *
+    (a+5)/(b-6)                 a 5 + b 6 - /
+    (a+9)(a-b^2)                a 9 + a b b * - *
+    b^2 -4*a*c                  b b * 4 a c * * -
+    1+x+x^2                     1 x x x * + +
+    1+x^2/2-x^4/24              1 x x * 2 / + x x x x * * * 24 / +   
+
+2.- EXTENDER VOCABULARIO
+========================
+
+    : <nombre> <instrucciones> ;
+    
+    : cuadrado dup * ;                      \ calcula cuadrado
+    : mensaje ." Hola aprendiz de Forth" ;  \ emite mensaje
+    : suma_n 0 swap 0 ?do I + loop ;        \ suma 0+1+2+3+...+(n-1)
+
+2.- BUCLES Y CONDICIONALES
+==========================
+
+    <n> <m> do ... loop
+    <n> <m> ?do ... loop
+    <n> <m> do | ?do ... +loop
+    <flag> if ... else ... then
+    begin ... again
+    begin ... <flag> until
+    begin ... <flag> while ... repeat
+    
+    exit                    \ sale de la palabra en curso
+    leave                   \ sale del bucle actual
+    unloop exit             \ sale del bucle y la definicion actual 
+    
+3.- DECLARACION VARIABLES Y CONSTANTES
+======================================
+
+    variable <nombre>
+    <valor> constant <nombre>
+    
+4.- RESERVAR Y USAR MEMORIA
+===========================
+
+    Crear
+    -----
+    
+    create <nombre> <unidades> <clase> allot
+    ej. create vector 10 cells allot
+        create cadena 20 chars allot
+        
+    Almacenar
+    ---------
+    
+    <valor> <nombre> <desplazamiento> !
+    ej. 10 vector 7 cells + !
+        32 cadena 0 chars + !
+        
+    Acceder
+    -------
+    
+    <nombre> <desplazamiento> @
+    ej. vector 0 cells + @
+        cadena 3 chars + @
+        
+    Crear series de constantes
+    --------------------------
+    
+    create <nombre> <valor> , <valor> , <valor> ... ,
+    ej. create valores 1 , 2 , 45 , 7 , 
+    
+
+
+5.- ENTRADA Y SALIDA
+====================
+    
+    <valor> emit            \ imprime caracter; ej.  65 emit 
+    char <caracter> emit    \ imprime caracter; ej.  char a emit
+    [char]                  \ caracter a pila desde definicion
+    .
+    .r
+    ." cadena literal"
+    .( <caracter>)
+    key                     \ lee de teclado
+    page                    \ limpia pantalla
+    at-xy                   \ posiciona cursor
+    ms                      \ espera milisegundos
+    space                   \ imprime espacio
+    spaces                  \ imprime espacios
+    base, decimal, hex 
+    dump
+    
+6.- PILA DE RETORNO
+===================
+
+    >r
+    r>
+    r@
+    2>r
+    2r>
+    2r@
+    
+7.- CARACTERES
+==============
+
+    c,                      \ create trio char a c, char b c, char c c,
+    c@                      \ trio c@ emit trio 1+ c@ emit trio 2 + c@ emit
+    c!                      \ create cadena 20 chars allot
+    chars                   \ cadena 12 + X c!
+     
+
+8.- CADENAS
+===========
+
+    S" texto" ( -- direccion longitud ) \ constante de cadena
+    type ( direccion longitud -- )      \ imprime cadena
+    move ( origen destino n -- )        \ mueve n bytes de origen a destino
+    accept ( direccion u -- n )         \ toma de tecla hasta u caracteres
+                                        \ y los deja en la direccion indicada
+                                        \ y en la pila el numero de bytes
+                                        \ introducidos
+
+9.- CREATE...DOES>, la perla de Forth
+=====================================
+  
+: palabra-definicion create <codigo-c> does> <codigo-e>
+
+<codigo-c> son las operaciones que se realizan en
+tiempo de creacion, mientras que <codigo-e> son las
+acciones que se realizan en tiempo de ejecucion. De
+esta forma pueden crearse tipos de datos de una forma
+especifica y definir tambien la forma en que se 
+comportaran. Conceptualmente, es parecido a la 
+definicion de objetos en lenguajes OO. Por ejemplo,
+una definicion de VARIABLE que cree una entrada y
+la inicie con valor 0 puede ser
+
+: VARIABLE CREATE 0 , DOES> ;
+VARIABLE LV
+
+Otros ejemplos
+
+: CHARACTERS CREATE DUP , ALLOT DOES> CELL+ SWAP @ ;
+20 CHARACTERS MANGO
+
+: STRING CREATE ALLOT DOES> + ;
+20 STRING REM
+
+Este ultimo ejemplo es interesante. En tiempo de
+ejecucion, DOES> coloca en la pila la direccion
+de REM, de manera que la frase
+
+6 REM c@ 
+
+trae a la pila el elemento 6 de la cadena
+
+10.- MISCELANEA
+===============
+
+['] dentro de una definicion compila la direccion de la siguiente
+    palabra que se encuentre
+    
+<# inicia el proceso de conversion numerica de un entero doble
+
+#> termina el proceso de conversion de un entero doble, y deja
+   en la pila los argumentos que precisa TYPE
+#  genera un digito en el proceso de conversion
+
+#S genera el resto de digitos que queden
+
+[CHAR] x pone en la pila el codigo ASCII del caracter x
+
+HOLD inserta el codigo ASCII en la cadena donde se esta
+     guardando la conversion numerica
+
+     ej.: para dividir dos enteros e imprimir el resultado
+     con tres cifras decimales:
+     : div swap 1000 * swap / ;
+     : print# <# # # # [CHAR] , HOLD #S #> type ;
+
+
+11.- NUMEROS GRANDES, Y SIN SIGNO
+=================================
+
+    u  indica numeros sin signo
+    ud indica numeros sin signo de longitud doble
+    
+    Para operaciones con numeros sin signo:
+    
+    U.
+    UM*      (u1 u2 -- ud)
+    UM/MOD   (ud u1 -- u2 u3)
+    U<       (u1 u2 -- f)
+
+    Los enteros de longitud doble se reconocen porque
+    incorporan algun '.', p. ej. 2.000.000
+    
+    D.R
+    D+
+    D-
+    DNEGATE
+    DMAX
+    DMIN
+    D=
+    D0=
+    D<
+    DU<
+
+    Los siguientes operadores saben como tratar cuando los operandos
+    tienen tipos distintos
+    
+    M+     (d n -- d-suma)
+    SM/REM (d n1 -- n2 n3)
+    FM/MOD (d n1 -- n2 n3)
+    M*     (n1 n2 -- d-producto)
+    M*/    (d +n1 n2 -- d-resultado)
+      
+12.- EL MAPA DE MEMORIA Y OTRAS INTERIORIDADES
+==============================================
+
+    +----------------------------+
+    |     nucleo de forth        |
+    +----------------------------+
+    |   variables del sistema    |
+    +----------------------------+
+    |   definiciones cargadas    |
+    +----------------------------+
+    |  diccionario del usuario   |
+    +------------- --------------+
+    |             |              |
+    |             v              |
+    |                            |
+    +----------------------------+
+    |            pad             |
+    +----------------------------+
+    |             ^              |
+    ...           |              ...
+    +----------------------------+
+    |           PILA             |
+    +----------------------------+
+    |            tib             |
+    +----------------------------+
+                  |
+                  v
+                  ^
+                  |
+    +----------------------------+
+    |           PILA R           |
+    +----------------------------+
+    |      variables usuario     |
+    +----------------------------+
+    |          buffers           |
+    +----------------------------+       
+
+    (*) Hay algunas variables de usuario que permiten acceder
+        a puntos del mapa:
+        
+            SP0   base de la pila
+            SP@   tope de la pila
+            TIB   buffer de entrada del terminal
+            #TIB  numero de bytes almacenados en TIB
+            CP    puntero a siguiente celda libre en el diccionario
+            HERE  primera posicion libre tras el diccionario
+                  : HERE CP @ ;
+            PAD   buffer para operaciones temporales
+                  : PAD HERE 400 + ;
+
+    (*) El sistema Forth ejecuta ininterrumpidamente un bucle.
+        Ese bucle consiste en tomar una palabra. Si se encuentra
+        en el diccionario, la ejecuta, si no se encuentra en
+        el diccionario, trata de convertirla en un numero.
+        Si lo consigue, lo coloca en la pila. Si no lo consigue
+        emite un mensaje de error. Esta operacion la realiza
+        una palabra de Forth llamada INTERPRET, que a su vez
+        consta de componentes menores.
+        
+    (*) De los componentes de INTERPRET, uno de ellos es ',
+        que coloca en la pila la direccion del codigo de la
+        siguiente palabra que se encuentre en la corriente de
+        entrada, y EXECUTE, que ejecuta dicho codigo. Por ejemplo,
+        
+        : *2 2 * ;
+        
+        3 *2 .            \ estas dos frases tienen el
+        3 ' *2 EXECUTE .  \ mismo significado, y conducen 
+                          \ al mismo resultado
+                          
+    (*) Esto puede emplearse para usar ejecucion vectorizada,
+        que se basa en que un puntero puede guardar en
+        distintos momentos distintas direcciones de funciones
+        para ejecutar.
+        
+        : ^2 dup * ;
+        : ^3 dup dup * * ;
+        
+        ' ^2 variable puntero !
+        puntero @ EXECUTE
+        ' ^3 puntero !
+        puntero @ EXECUTE
+        
+        
+    (*) ' coloca en la pila la direccion del codigo ejecutable
+        de una palabra. Si en lugar de eso se quiere compilar
+        esta direccion dentro de una palabra, se usa [']
+        
+    (*) El diccionario se implementa como una lista simple
+        enlazada, desde la ultima entrada hacia atras. Cada
+        entrada del diccionario contiene
+        
+            - numero de bytes del nombre de la palabra
+            - nombre de la palabra
+            - puntero a la definicion anterior
+            - puntero al codigo asociado a la palabra
+            - datos
+            
+        El primer campo incluye un 'bit de precedencia'
+        que indica si la palabra, en tiempo de compilacion,
+        ha de ser ejecutada o simplemente compilada. El codigo
+        asociado a una palabra es el mismo para todas la
+        palabras del mismo tipo: todas las variables comparten
+        un codigo comun, todas las constantes otro, etc.
+        
+    (*) La entrada de diccionario de una definicion de palabra
+        contiene en su cuerpo las direcciones del codigo
+        asociado a cada palabra que esta contenida en la
+        definicion. ; compila una palabra especial, EXIT,
+        de forma que el interprete de direcciones termina la
+        palabra actual y busca la direccion de retorno que
+        hubiese en la pila R. Cuando ya no hay direcciones de 
+        retorno, termina el interprete, y nos encontramos
+        al final de la definicion de la palabra QUIT, cuya
+        implementacion es
+        
+            : QUIT BEGIN 
+                   (limpiar pila de retorno)
+                   (aceptar entrada)
+                   INTERPRET
+                   ." ok " CR
+                   AGAIN
+                   
+
+14.- CONTROL DEL COMPILADOR
+===========================
+
+    (*) El bit de precedencia se puede activar explicitamente
+        mediante la palabra IMMEDIATE. Por ejemplo:
+        
+        : di-hola ." hola" ; IMMEDIATE
+        : saludos di-hola ." yo hablo Forth" ;
+        
+        Siendo di-hola una palabra con su bit de precedencia
+        activado, cuando el compilador la encuentra en 'saludos'
+        NO compila su direccion, sino que la ejecuta directamente.
+        
+    (*) Otro ejemplo es la palabra BEGIN. Esta palabra ha de
+        encontrarse dentro de una definicion. Durante el proceso
+        de compilacion, BEGIN se ejecuta inmediatamente, y
+        deja en la pila la direccion HERE. Tarde o temprano,
+        se encontrara un UNTIL o REPEAT y estas palabras
+        tendran que encontrar de algun modo la direccion de
+        retorno. Asi pues, BEGIN es tan simple como
+        
+        : BEGIN HERE ; IMMEDIATE
+        
+    (*) Cuando una palabra con el bit de precedencia activado
+        se llama dentro de una definicion, se ejecuta inmediatamente
+        y no deja rastro en la palabra que se esta compilando.
+        Ahora bien, a veces es preciso dejar un rastro. Por ejemplo,
+        DO tiene que dejar en la pila R un indice y un limite,
+        ademas de dejar en la pila un HERE al que han de volver
+        LOOP o +LOOP si es preciso. La palabra que se encarga de
+        dejar el indice y el limite en la pila R se llama 2>R,
+        o (DO), y como esta parte ha de ejecutarse despues,
+        cuando se llame a la palabra compilada y con los valores
+        que haya entonces en la pila, se identifica con otra
+        palabra, POSTPONE, que lo unico que hace es encontrar la
+        direccion de la siguiente palabra que encuentre. Entonces,
+        la definicion de DO es
+        
+        : DO POSTPONE 2>R HERE ; IMMEDIATE
+
+        POSTPONE puede verse como la palabra antagonica a
+        IMMEDIATE. Cuando se encuentra en una definicion,
+        compila la direccion de la siguiente palabra. La utilidad
+        de POSTPONE implica que es necesario conocer que palabras
+        han sido compiladas como IMMEDIATE. Ejemplo:
+
+        >: hola ." hola mundo " ; immediate
+        >: adios hola ." adios mundo" ;
+        > hola
+        >: adios2 postpone hola ." adios mundo" ;
+        > hola2
+
+    (*) Cuando una palabra esta siendo compilada, las busquedas
+        de palabras ya definidas en el diccionario comienzan
+        con la palabra anterior a la que se esta compilando. De
+        esta forma se evita que la definicion de una palabra
+        que tiene el mismo nombre que otra definida anteriormente
+        bloquee a esta ultima. Pero hay situaciones en que se
+        requiere que la palabra en proceso de compilacion 
+        sea accesible inmediatamente. De eso se ocupa la
+        palabra REVEAL. Por ejemplo:
+
+        : ; postpone exit reveal postpone [ ; immediate
+
+        exit y [ son palabras inmediatas, de forma que es
+        preciso usar postpone para que sean compiladas.
+        '[' sale del modo compilacion y vuelve al modo de
+        interprete
+        
+        
+
+15.- EL BUCLE DE EJECUCION, A GRANDES RASGOS
+============================================
+
+    El sistema Forth ejecuta ininterrumpidamente un bucle como
+    el siguiente:
+        
+    while (1){
+        - limpiar las pilas
+        - aceptar una entrada
+        - poner PC a 0
+        - interpretar la entrada
+    }
+    
+    donde PC es un puntero a codigo en algun lugar del diccionario
+    
+    Respecto al ultimo punto, el interprete de la cadena de entrada,
+    es a su vez un bucle con esta forma:
+    
+    while (!fin){
+        if (PC==0){
+            - obtener palabra siguiente
+            - si es un numero, apilarlo
+            - si es un operador, aplicarlo
+            - si es una palabra, apuntar PC a su codigo
+        } else
+        {
+            - si apunta a un literal, apilarlo y actualizar PC
+            - si apunta a un operador, aplicarlo y actualizar PC
+            - si es una palabra
+                : guardar direccion de retorno
+                : actualizar PC
+        }
+    }
+
+16.- FRAGMENTOS DE FORTH ESCRITOS EN FORTH
+==========================================
+
+    \ la palabra ;
+    : ; POSTPONE EXIT REVEAL POSTPONE [ ; IMMEDIATE
+    
+    \ la palabra DO
+    : DO POSTPONE 2>R HERE ; IMMEDIATE
+    
+    \ la palabra BEGIN
+    : BEGIN HERE ; IMMEDIATE
+    
+    \ el bucle principal
+    
+    : QUIT BEGIN 
+           (limpiar pila de retorno)
+           (aceptar entrada)
+           INTERPRET
+           ." ok " CR
+           AGAIN ;
+                   
+    \ el interprete
+    : INTERPRET BEGIN
+            BL FIND IF EXECUTE ?STACK ABORT" Stack empty"
+                  ELSE NUMBER
+                  THEN 
+      AGAIN ;
+      
+    \ el compilador
+    : ] BEGIN
+            BL FIND DUP 
+            IF 
+                -1 = IF EXECUTE ?STACK ABORT" Stack empty"
+                   ELSE ,
+                   THEN  
+          ELSE  DROP (NUMBER) POSTPONE LITERAL
+          THEN       
+      AGAIN ;
+    
+
+17.- DIRECCIONES
+================
+
+    www.forth.org
+    kristopherjohnson.net/cgi-bin/twiki/view/Main/StartingForth
+    forth.gsfc.nasa.gov/
+
+
+    
