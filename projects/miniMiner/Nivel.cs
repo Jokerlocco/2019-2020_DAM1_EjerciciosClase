@@ -11,9 +11,9 @@ namespace MiniMiner
         private int margenIzqdo = 0, margenSuperior = 0;
 
         private Sprite ladrillo, suelo, arbol, llave;
-        protected List<Sprite> paredesSuelos = new List<Sprite>();
-        protected List<Sprite> llaves = new List<Sprite>();
-        protected List<Sprite> obstaculos = new List<Sprite>();
+        protected List<Sprite> paredesSuelos;
+        protected List<Sprite> llaves;
+        protected List<Sprite> obstaculos;
 
         protected string[] datosNivel =
             new string[altoMapa];
@@ -29,6 +29,10 @@ namespace MiniMiner
 
         public void Reiniciar()
         {
+            paredesSuelos = new List<Sprite>();
+            llaves = new List<Sprite>();
+            obstaculos = new List<Sprite>();
+
             for (int fila = 0; fila < altoMapa; fila++)
             {
                 for (int colum = 0; colum < anchoMapa; colum++)
@@ -78,10 +82,25 @@ namespace MiniMiner
                 {
                     llaves.RemoveAt(i);
                     puntos += 10;
+                    break;
                 }
             }
             return puntos;
         }
+
+        public bool HayColisionesMortales(Sprite personaje)
+        {
+            bool tocaAlgoNocivo = false;
+            for (int i = 0; i < obstaculos.Count; i++)
+            {
+                if (personaje.ColisionaCon(obstaculos[i]))
+                {
+                    tocaAlgoNocivo = true;
+                }
+            }
+            return tocaAlgoNocivo;
+        }
+
 
         public string GetNombre()
         {

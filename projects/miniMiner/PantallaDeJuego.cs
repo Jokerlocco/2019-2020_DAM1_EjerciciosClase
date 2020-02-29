@@ -27,7 +27,18 @@ namespace MiniMiner
             enemigo = new Enemigo(Content);
             nivel01 = new Nivel01(Content);
             marcador = new Marcador(Content);
+
+            Reiniciar();
+        }
+
+        public void Reiniciar()
+        {
+            Terminado = false;
+            nivel01.Reiniciar();
+            personaje.Vidas = 3;
+            marcador.SetVidas(personaje.Vidas);
             marcador.SetNombreNivel(nivel01.GetNombre());
+            marcador.ReiniciarPuntos();
         }
 
         public void Actualizar(GameTime gameTime)
@@ -87,6 +98,19 @@ namespace MiniMiner
             if (puntosEnEsteFotograma > 0)
             {
                 marcador.IncrementarPuntos(puntosEnEsteFotograma);
+            }
+
+            if ((personaje.ColisionaCon(enemigo)) ||
+                (nivel01.HayColisionesMortales(personaje)))
+            {
+                personaje.Vidas--;
+                personaje.MoverAPosicionInicial();
+                marcador.SetVidas(personaje.Vidas);
+
+                if (personaje.Vidas <= 0)
+                {
+                    Terminado = true;
+                }
             }
         }
 

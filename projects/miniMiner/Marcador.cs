@@ -6,8 +6,9 @@ namespace MiniMiner
 {
     class Marcador
     {
-        string nombreDeNivel;
-        int puntosAMostrar;
+        private string nombreDeNivel;
+        private int puntosAMostrar;
+        private int vidas;
         private SpriteFont fuente;
 
         public Marcador(ContentManager Content)
@@ -18,6 +19,11 @@ namespace MiniMiner
         public void SetNombreNivel(string nombre)
         {
             nombreDeNivel = nombre;
+        }
+
+        public void SetVidas(int vidas)
+        {
+            this.vidas = vidas;
         }
 
         public void ReiniciarPuntos()
@@ -38,6 +44,9 @@ namespace MiniMiner
             spritebatch.DrawString(fuente,
                 "Puntos: " + puntosAMostrar,
                 new Vector2(400, 650), Color.White);
+            spritebatch.DrawString(fuente,
+                "Vidas: " + vidas,
+                new Vector2(400, 700), Color.White);
         }
     }
 }

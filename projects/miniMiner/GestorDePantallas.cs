@@ -62,7 +62,10 @@ namespace MiniMiner
                 case MODO.BIENVENIDA: bienvenida.Actualizar(gameTime); break;
             }
             if (juego.Terminado)
+            {
                 modoActual = MODO.BIENVENIDA;
+                juego.Reiniciar();
+            }
 
             base.Update(gameTime);
         }

@@ -6,12 +6,13 @@ namespace MiniMiner
 {
     class Personaje : Sprite
     {
-
+        public int Vidas { get; set; }
         public Personaje(ContentManager Content)
             : base (500, 300, "personaje", Content)
         {
             VelocX = 200;
             VelocY = 200;
+            Vidas = 3;
         }
 
         public void MoverDerecha(GameTime gameTime)

@@ -12,12 +12,15 @@ namespace MiniMiner
         public float VelocY { get; set; }
         public bool Activo { get; set; }
         private Texture2D imagen;
+
         protected int cantidadDeFotogramas;
         private Texture2D[][] secuencia;
         protected int fotogramaActual;
         protected int tiempoEnCadaFotograma;
         protected int tiempoHastaSiguienteFotograma;
         protected bool haySecuencia;
+
+        protected float xInicial, yInicial;
 
         protected enum direcciones
         {
@@ -30,6 +33,8 @@ namespace MiniMiner
         {
             X = x;
             Y = y;
+            xInicial = x;
+            yInicial = y;
             imagen = Content.Load<Texture2D>(nombreImagen);
             Activo = true;
             haySecuencia = false;
@@ -39,6 +44,8 @@ namespace MiniMiner
         {
             X = x;
             Y = y;
+            xInicial = x;
+            yInicial = y;
             imagen = sprite.imagen;
             Activo = true;
             haySecuencia = false;
@@ -48,6 +55,8 @@ namespace MiniMiner
         {
             X = x;
             Y = y;
+            xInicial = x;
+            yInicial = y;
             Activo = true;
             secuencia = new Texture2D[sizeof(direcciones)][];
             CargarSecuencia(0, imagenes, Content);
@@ -68,6 +77,12 @@ namespace MiniMiner
             haySecuencia = true;
             cantidadDeFotogramas = imagenes.Length;
             direccionActual = direcc;
+        }
+
+        public void MoverAPosicionInicial()
+        {
+            X = xInicial;
+            Y = yInicial;
         }
 
         public void CambiarDireccion(byte nuevaDir)
