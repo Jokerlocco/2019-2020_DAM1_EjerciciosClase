@@ -12,6 +12,7 @@ namespace MiniMiner
         Personaje personaje;
         Enemigo enemigo;
         Nivel01 nivel01;
+        Marcador marcador;
 
         public bool Terminado { get; set; }
 
@@ -25,6 +26,8 @@ namespace MiniMiner
             personaje = new Personaje(Content);
             enemigo = new Enemigo(Content);
             nivel01 = new Nivel01(Content);
+            marcador = new Marcador(Content);
+            marcador.SetNombreNivel(nivel01.GetNombre());
         }
 
         public void Actualizar(GameTime gameTime)
@@ -80,7 +83,11 @@ namespace MiniMiner
 
         protected void ComprobarColisiones()
         {
-            // ...
+            int puntosEnEsteFotograma = nivel01.ComprobarPuntosPorItems(personaje);
+            if (puntosEnEsteFotograma > 0)
+            {
+                marcador.IncrementarPuntos(puntosEnEsteFotograma);
+            }
         }
 
         public void Dibujar(GameTime gameTime, SpriteBatch spriteBatch)
@@ -88,6 +95,7 @@ namespace MiniMiner
             nivel01.Dibujar(spriteBatch);
             personaje.Dibujar(spriteBatch);
             enemigo.Dibujar(spriteBatch);
+            marcador.Dibujar(spriteBatch);
         }
     }
 }

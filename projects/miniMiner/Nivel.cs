@@ -68,5 +68,24 @@ namespace MiniMiner
             foreach (Sprite llave in llaves)
                 llave.Dibujar(listaSprites);
         }
+
+        public int ComprobarPuntosPorItems(Sprite personaje)
+        {
+            int puntos = 0;
+            for (int i = 0; i < llaves.Count; i++)
+            {
+                if (llaves[i].ColisionaCon(personaje))
+                {
+                    llaves.RemoveAt(i);
+                    puntos += 10;
+                }
+            }
+            return puntos;
+        }
+
+        public string GetNombre()
+        {
+            return nombre;
+        }
     }
 }
