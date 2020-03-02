@@ -57,6 +57,10 @@ namespace MiniMiner
             {
                 gestor.modoActual = GestorDePantallas.MODO.JUEGO;
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.C))
+            {
+                gestor.modoActual = GestorDePantallas.MODO.CREDITOS;
+            }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 gestor.Terminar();
@@ -87,8 +91,10 @@ namespace MiniMiner
                 }
             spritebatch.DrawString(fuente, "1. Jugar",
                 new Vector2(400, 100), Color.White);
-            spritebatch.DrawString(fuente, "S. Salir",
+            spritebatch.DrawString(fuente, "C. Creditos",
                 new Vector2(400, 150), Color.White);
+            spritebatch.DrawString(fuente, "S. Salir",
+                new Vector2(400, 200), Color.White);
         }
 
     }

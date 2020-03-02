@@ -13,8 +13,9 @@ namespace MiniMiner
 
         PantallaDeBienvenida bienvenida;
         PantallaDeJuego juego;
+        PantallaDeCreditos creditos;
 
-        public enum MODO { BIENVENIDA, JUEGO };
+        public enum MODO { BIENVENIDA, JUEGO, CREDITOS };
         public MODO modoActual { get; set; }
 
         public GestorDePantallas()
@@ -27,6 +28,7 @@ namespace MiniMiner
 
             juego = new PantallaDeJuego(1024, 768);
             bienvenida = new PantallaDeBienvenida(this);
+            creditos = new PantallaDeCreditos(this);
 
             modoActual = MODO.BIENVENIDA;
         }
@@ -36,6 +38,7 @@ namespace MiniMiner
             spriteBatch = new SpriteBatch(GraphicsDevice);
             juego.CargarContenidos(Content);
             bienvenida.CargarContenidos(Content);
+            creditos.CargarContenidos(Content);
         }
 
         protected override void Update(GameTime gameTime)
@@ -60,6 +63,7 @@ namespace MiniMiner
             {
                 case MODO.JUEGO: juego.Actualizar(gameTime); break;
                 case MODO.BIENVENIDA: bienvenida.Actualizar(gameTime); break;
+                case MODO.CREDITOS: creditos.Actualizar(gameTime); break;
             }
             if (juego.Terminado)
             {
@@ -81,6 +85,7 @@ namespace MiniMiner
             {
                 case MODO.JUEGO: juego.Dibujar(gameTime, spriteBatch); break;
                 case MODO.BIENVENIDA: bienvenida.Dibujar(gameTime, spriteBatch); break;
+                case MODO.CREDITOS: creditos.Dibujar(gameTime, spriteBatch); break;
             }
 
             spriteBatch.End();
