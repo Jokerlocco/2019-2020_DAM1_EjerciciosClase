@@ -101,6 +101,24 @@ namespace MiniMiner
             return tocaAlgoNocivo;
         }
 
+        public bool EsPosibleMover(Sprite personaje, float incremX, float incremY)
+        {
+            Sprite personajeDesplazado = new Sprite(
+                (int) (personaje.X + incremX),
+                (int) (personaje.Y + incremY),
+                personaje);
+
+            bool hayColisiones = false;
+            for (int i = 0; i < paredesSuelos.Count; i++)
+            {
+                if (personajeDesplazado.ColisionaCon(paredesSuelos[i]))
+                {
+                    hayColisiones = true;
+                }
+            }
+            return ! hayColisiones;
+        }
+
 
         public string GetNombre()
         {

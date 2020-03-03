@@ -8,31 +8,39 @@ namespace MiniMiner
     {
         public int Vidas { get; set; }
         public Personaje(ContentManager Content)
-            : base (500, 300, "personaje", Content)
+            : base (500, 320, "personaje", Content)
         {
             VelocX = 200;
             VelocY = 200;
             Vidas = 3;
         }
 
-        public void MoverDerecha(GameTime gameTime)
+        public void MoverDerecha(GameTime gameTime, Nivel nivel)
         {
-            X += VelocX * (float) gameTime.ElapsedGameTime.TotalSeconds;
+            float desplazamiento = VelocX * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (nivel.EsPosibleMover(this, desplazamiento, 0))
+                X += desplazamiento;
         }
 
-        public void MoverIzquierda(GameTime gameTime)
+        public void MoverIzquierda(GameTime gameTime, Nivel nivel)
         {
-            X -= VelocX * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float desplazamiento = VelocX * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (nivel.EsPosibleMover(this, -desplazamiento, 0))
+                X -= desplazamiento;
         }
 
-        public void MoverArriba(GameTime gameTime)
+        public void MoverArriba(GameTime gameTime, Nivel nivel)
         {
-            Y -= VelocY * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float desplazamiento = VelocY * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (nivel.EsPosibleMover(this, 0, -desplazamiento))
+                Y -= desplazamiento;
         }
 
-        public void MoverAbajo(GameTime gameTime)
+        public void MoverAbajo(GameTime gameTime, Nivel nivel)
         {
-            Y += VelocY * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float desplazamiento = VelocY * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (nivel.EsPosibleMover(this, 0, desplazamiento))
+                Y += desplazamiento;
         }
     }
 }

@@ -67,28 +67,28 @@ namespace MiniMiner
                 || estadoGamePad.DPad.Right > 0
                 || estadoGamePad.ThumbSticks.Left.X > 0)
             {
-                personaje.MoverDerecha(gameTime);
+                personaje.MoverDerecha(gameTime, nivel01);
             }
 
             if (estadoTeclado.IsKeyDown(Keys.Left)
                 || estadoGamePad.DPad.Left > 0
                 || estadoGamePad.ThumbSticks.Left.X < 0)
             {
-                personaje.MoverIzquierda(gameTime);
+                personaje.MoverIzquierda(gameTime, nivel01);
             }
 
             if (estadoTeclado.IsKeyDown(Keys.Up)
                 || estadoGamePad.DPad.Up > 0
                 || estadoGamePad.ThumbSticks.Left.Y > 0)
             {
-                personaje.MoverArriba(gameTime);
+                personaje.MoverArriba(gameTime, nivel01);
             }
 
             if (estadoTeclado.IsKeyDown(Keys.Down)
                 || estadoGamePad.DPad.Down > 0
                 || estadoGamePad.ThumbSticks.Left.Y < 0)
             {
-                personaje.MoverAbajo(gameTime);
+                personaje.MoverAbajo(gameTime, nivel01);
             }
         }
 
