@@ -119,6 +119,11 @@ namespace MiniMiner
             return ! hayColisiones;
         }
 
+        public bool QuedaLlavesPorRecoger()
+        {
+            return llaves.Count > 0;
+        }
+
 
         public string GetNombre()
         {

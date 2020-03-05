@@ -11,7 +11,7 @@ namespace MiniMiner
     {
         Personaje personaje;
         Enemigo enemigo;
-        Nivel01 nivel01;
+        GestorDeNiveles gestorDeNiveles;
         Marcador marcador;
 
         public bool Terminado { get; set; }
@@ -25,7 +25,7 @@ namespace MiniMiner
         {
             personaje = new Personaje(Content);
             enemigo = new Enemigo(Content);
-            nivel01 = new Nivel01(Content);
+            gestorDeNiveles = new GestorDeNiveles(Content);
             marcador = new Marcador(Content);
 
             Reiniciar();
@@ -34,10 +34,10 @@ namespace MiniMiner
         public void Reiniciar()
         {
             Terminado = false;
-            nivel01.Reiniciar();
+            gestorDeNiveles.NivelActual.Reiniciar();
             personaje.Vidas = 3;
             marcador.SetVidas(personaje.Vidas);
-            marcador.SetNombreNivel(nivel01.GetNombre());
+            marcador.SetNombreNivel(gestorDeNiveles.NivelActual.GetNombre());
             marcador.ReiniciarPuntos();
         }
 
@@ -62,46 +62,55 @@ namespace MiniMiner
                     || estadoTeclado.IsKeyDown(Keys.Escape))
                 Terminado = true;
 
+            if (estadoTeclado.IsKeyDown(Keys.T) &&
+                    estadoTeclado.IsKeyDown(Keys.N))
+                gestorDeNiveles.AvanzarNivel();
+
             // ...
             if (estadoTeclado.IsKeyDown(Keys.Right)
                 || estadoGamePad.DPad.Right > 0
                 || estadoGamePad.ThumbSticks.Left.X > 0)
             {
-                personaje.MoverDerecha(gameTime, nivel01);
+                personaje.MoverDerecha(gameTime, gestorDeNiveles.NivelActual);
             }
 
             if (estadoTeclado.IsKeyDown(Keys.Left)
                 || estadoGamePad.DPad.Left > 0
                 || estadoGamePad.ThumbSticks.Left.X < 0)
             {
-                personaje.MoverIzquierda(gameTime, nivel01);
+                personaje.MoverIzquierda(gameTime, gestorDeNiveles.NivelActual);
             }
 
             if (estadoTeclado.IsKeyDown(Keys.Up)
                 || estadoGamePad.DPad.Up > 0
                 || estadoGamePad.ThumbSticks.Left.Y > 0)
             {
-                personaje.MoverArriba(gameTime, nivel01);
+                personaje.MoverArriba(gameTime, gestorDeNiveles.NivelActual);
             }
 
             if (estadoTeclado.IsKeyDown(Keys.Down)
                 || estadoGamePad.DPad.Down > 0
                 || estadoGamePad.ThumbSticks.Left.Y < 0)
             {
-                personaje.MoverAbajo(gameTime, nivel01);
+                personaje.MoverAbajo(gameTime, gestorDeNiveles.NivelActual);
             }
         }
 
         protected void ComprobarColisiones()
         {
-            int puntosEnEsteFotograma = nivel01.ComprobarPuntosPorItems(personaje);
+            int puntosEnEsteFotograma = gestorDeNiveles.NivelActual.ComprobarPuntosPorItems(personaje);
             if (puntosEnEsteFotograma > 0)
             {
                 marcador.IncrementarPuntos(puntosEnEsteFotograma);
+                if (! gestorDeNiveles.NivelActual.QuedaLlavesPorRecoger())
+                {
+                    gestorDeNiveles.NivelActual.Reiniciar();
+                    gestorDeNiveles.AvanzarNivel();
+                }
             }
 
             if ((personaje.ColisionaCon(enemigo)) ||
-                (nivel01.HayColisionesMortales(personaje)))
+                (gestorDeNiveles.NivelActual.HayColisionesMortales(personaje)))
             {
                 personaje.Vidas--;
                 personaje.MoverAPosicionInicial();
@@ -116,7 +125,7 @@ namespace MiniMiner
 
         public void Dibujar(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            nivel01.Dibujar(spriteBatch);
+            gestorDeNiveles.NivelActual.Dibujar(spriteBatch);
             personaje.Dibujar(spriteBatch);
             enemigo.Dibujar(spriteBatch);
             marcador.Dibujar(spriteBatch);

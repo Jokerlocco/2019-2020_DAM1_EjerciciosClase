@@ -32,7 +32,7 @@ namespace MiniMiner
         public void MoverArriba(GameTime gameTime, Nivel nivel)
         {
             float desplazamiento = VelocY * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (nivel.EsPosibleMover(this, 0, -desplazamiento))
+            //if (nivel.EsPosibleMover(this, 0, -desplazamiento))
                 Y -= desplazamiento;
         }
 
