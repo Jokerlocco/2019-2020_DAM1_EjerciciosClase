@@ -44,7 +44,7 @@ IMPOSIBLE
 
 using System;
 
-class EncryptBMP
+class SupermercadoSaludable
 {
     static void Main()
     {
