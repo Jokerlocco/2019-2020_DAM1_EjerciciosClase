@@ -42,6 +42,8 @@ IMPOSIBLE
 
 */
 
+// Nacho Cabanes, 14-Mar-2020
+
 using System;
 
 class SupermercadoSaludable
