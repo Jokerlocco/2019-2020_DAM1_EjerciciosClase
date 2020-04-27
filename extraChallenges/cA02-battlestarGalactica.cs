@@ -1,8 +1,6 @@
 //Pablo Conde - 24/04/2020
 //Source: Tuenti Contest 2019, Challenge 2
 
-// Nota: solución no correcta, falla con el segundo caso de prueba
-
 /*
 3
 7
