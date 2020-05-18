@@ -11,20 +11,22 @@ namespace Biblio2020
         private int fichaActual;
         private ListaDeLibros datos;
         private bool terminado;
+        ConsolaMejorada cm;
 
         public GestorDeLibros()
         {
             datos = new ListaDeLibros();
+            cm = new ConsolaMejorada();
             fichaActual = 0;
             terminado = false;
         }
 
         private void PrepararConsola()
         {
-            Console.SetWindowSize(80, 25);
-            Console.SetBufferSize(80, 25);
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.Clear();
+            Console.SetWindowSize(80, 25);
+            Console.SetBufferSize(80, 25);
         }
 
         /// <summary>
@@ -33,6 +35,10 @@ namespace Biblio2020
         public void Ejecutar()
         {
             PrepararConsola();
+            cm.DibujarVentana(20, 9, 40, 7, "ve");
+            cm.Escribir(32, 12, "Gestor de libros", "am");
+            Console.ReadKey(true);
+            cm.CambiarColorFondo("az");
             do
             {
                 Console.Clear();
@@ -67,10 +73,9 @@ namespace Biblio2020
             Console.WriteLine( " " + new string('-', 78));
 
             // Línea inferior, con opciones
-            Console.SetCursorPosition(0, 21);
-            Console.WriteLine(" " + new string('-', 78));
-            Console.WriteLine("            1- Anterior, 2-Posterior, 5-Añadir" +
-                ", 0-Terminar");
+            cm.Escribir(1, 21, new string('-', 78), "bl");
+            cm.Escribir(10, 22, "1 - Anterior    2-Posterior   5-Añadir" +
+                "    0-Terminar", "bl");
         }
 
         /// <summary>
@@ -97,23 +102,14 @@ namespace Biblio2020
             Console.WriteLine("Ubicación");
             Console.WriteLine("Observaciones");
 
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.SetCursorPosition(20, 5);
-            Console.WriteLine(l.Titulo);
-            Console.SetCursorPosition(20, 6);
-            Console.WriteLine(l.Autor);
-            Console.SetCursorPosition(20, 7);
-            Console.WriteLine(l.Editorial);
-            Console.SetCursorPosition(20, 8);
-            Console.WriteLine(l.Paginas);
-            Console.SetCursorPosition(20, 9);
-            Console.WriteLine(l.Categoria);
-            Console.SetCursorPosition(20, 10);
-            Console.WriteLine(l.Anyo);
-            Console.SetCursorPosition(20, 11);
-            Console.WriteLine(l.Ubicacion);
-            Console.SetCursorPosition(5, 13);
-            Console.WriteLine(l.Observaciones);
+            cm.Escribir(20, 5, l.Titulo, "gr");
+            cm.Escribir(20, 6, l.Autor, "gr");
+            cm.Escribir(20, 7, l.Editorial, "gr");
+            cm.Escribir(20, 8, l.Paginas.ToString(), "gr");
+            cm.Escribir(20, 9, l.Categoria, "gr");
+            cm.Escribir(20, 10, l.Anyo.ToString(), "gr");
+            cm.Escribir(20, 11, l.Ubicacion, "gr");
+            cm.Escribir(5, 13, l.Observaciones, "gr");
         }
 
         /// <summary>
@@ -154,22 +150,14 @@ namespace Biblio2020
             Console.WriteLine("Observaciones");
 
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.SetCursorPosition(20, 5);
             l.Titulo = Console.ReadLine();
-            Console.SetCursorPosition(20, 6);
-            l.Autor = Console.ReadLine();
-            Console.SetCursorPosition(20, 7);
-            l.Editorial = Console.ReadLine();
-            Console.SetCursorPosition(20, 8);
-            l.Paginas = Convert.ToInt32( Console.ReadLine() );
-            Console.SetCursorPosition(20, 9);
-            l.Categoria = Console.ReadLine();
-            Console.SetCursorPosition(20, 10);
-            l.Anyo = Convert.ToInt32( Console.ReadLine() );
-            Console.SetCursorPosition(20, 11);
-            l.Ubicacion = Console.ReadLine();
-            Console.SetCursorPosition(5, 13);
-            l.Observaciones = Console.ReadLine();
+            l.Autor = cm.Pedir(20, 6, 40, "");
+            l.Editorial = cm.Pedir(20, 7, 20, "");
+            l.Paginas = Convert.ToInt32( cm.Pedir(20, 8, 4, "") );
+            l.Categoria = cm.Pedir(20, 9, 30, ""); ;
+            l.Anyo = Convert.ToInt32(cm.Pedir(20, 10, 4, ""));
+            l.Ubicacion = cm.Pedir(20, 11, 40, "");
+            l.Observaciones = cm.Pedir(5, 13, 70, "");
 
             datos.Incluir(l);
         }

@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsolaMejorada.cs" />
     <Compile Include="GestorDeLibros.cs" />
     <Compile Include="Libro.cs" />
     <Compile Include="ListaDeLibros.cs" />
