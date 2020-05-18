@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Biblio2020
 {
@@ -39,9 +36,9 @@ namespace Biblio2020
             cm.DibujarVentana(20, 9, 40, 7, "ve");
             cm.Escribir(32, 12, "Gestor de libros", "am");
             Console.ReadKey(true);
-            cm.CambiarColorFondo("az");
             do
             {
+                cm.CambiarColorFondo("az");
                 Console.Clear();
                 DibujarMenus();
                 MostrarFicha(fichaActual);
@@ -65,8 +62,9 @@ namespace Biblio2020
                         case '4': Buscar(); break;
                         case '5': Anyadir(); break;
                         case '6': Modificar(); break;
-                        case '7': Modificar(); break;
+                        case '7': MostrarMenuListados(); break;
                         case 'B': case 'b': Borrar(); break;
+                        case 'L': case 'l': MostrarMenuListados(); break;
                         case '0': terminado = true; break;
                     }
             }
@@ -309,6 +307,36 @@ namespace Biblio2020
                 datos.Borrar(fichaActual);
             fichaActual--;
             cm.CambiarColorFondo("az");
+        }
+
+
+        /// <summary>
+        /// Muestra el menú de listados
+        /// </summary>
+        private void MostrarMenuListados()
+        {
+            Console.Clear();
+            cm.Escribir(10, 5, "Escoja una opción", "bl");
+            cm.Escribir(10, 7, "1. Todos los libros", "gr");
+            cm.Escribir(10, 8, "2. Libros de una cierta categoría", "gr");
+            cm.Escribir(10, 9, "0. Volver", "gr");
+
+            int opcion = Convert.ToInt32( cm.Pedir(15, 10, 1, "1") );
+            if (opcion == 0)
+                return;
+
+            List<string> lista;
+            if (opcion == 2)
+            {
+                cm.Escribir(10, 12, "¿Categoría (búsqueda exacta)?", "gr");
+                string categ = cm.Pedir(10, 13, 20, "");
+                lista = datos.ObtenerComoTextoPorCategoria(categ);
+            }
+            else
+                lista = datos.ObtenerTodosComoTexto();
+
+            VisorDeTexto visor = new VisorDeTexto(lista);
+            visor.Mostrar();
         }
     }
 }

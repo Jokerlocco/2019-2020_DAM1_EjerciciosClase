@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Biblio2020
 {
@@ -48,6 +44,11 @@ namespace Biblio2020
         public int CompareTo(Libro otro)
         {
             return Titulo.CompareTo(otro.Titulo);
+        }
+
+        public override string ToString()
+        {
+            return Titulo + " - " + Autor + "-" + Categoria;
         }
     }
 }

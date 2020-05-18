@@ -12,6 +12,13 @@ namespace Biblio2020
             Console.Write(texto);
         }
 
+        public void EscribirCentrado(int y, 
+            string texto, string color)
+        {
+            int x = 40 - texto.Length / 2;
+            Escribir(x, y, texto, color);
+        }
+
         public string Pedir(int x, int y, 
             int longitudMax, string textoInicial)
         {
@@ -39,7 +46,6 @@ namespace Biblio2020
                     if (textoTemporal.Length < longitudMax)
                         textoTemporal += tecla.KeyChar;
                 }
-
             }
             while (!terminado);
             return textoTemporal;
@@ -57,6 +63,13 @@ namespace Biblio2020
                     Console.Write(" ");
                 }
             }
+        }
+
+        public void DibujarVentana(string textoAviso,
+            string colorTexto, string colorFondo)
+        {
+            DibujarVentana(20, 8, 40, 8, colorFondo);
+            EscribirCentrado(12, textoAviso, colorTexto);
         }
 
         public void CambiarColor(string color)

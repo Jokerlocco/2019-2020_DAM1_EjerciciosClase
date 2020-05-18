@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Biblio2020
 {
@@ -86,6 +83,21 @@ namespace Biblio2020
             fichero.Close();
         }
 
+        public List<string> ObtenerTodosComoTexto()
+        {
+            List<string> resultados = new List<string>();
+            foreach (Libro l in lista)
+                resultados.Add(l.ToString());
+            return resultados;
+        }
 
+        public List<string> ObtenerComoTextoPorCategoria(string categ)
+        {
+            List<string> resultados = new List<string>();
+            foreach (Libro l in lista)
+                if (l.Categoria == categ)
+                    resultados.Add(l.ToString());
+            return resultados;
+        }
     }
 }
