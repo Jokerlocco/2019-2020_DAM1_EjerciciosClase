@@ -48,7 +48,7 @@ namespace Biblio2020
 
         public override string ToString()
         {
-            return Titulo + " - " + Autor + "-" + Categoria;
+            return Titulo + " - " + Autor + " - " + Categoria;
         }
     }
 }
