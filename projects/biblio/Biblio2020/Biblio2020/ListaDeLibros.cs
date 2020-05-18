@@ -25,6 +25,20 @@ namespace Biblio2020
         public void Incluir (Libro l)
         {
             lista.Add(l);
+            lista.Sort();
+            Guardar();
+        }
+
+        public void Modificar(Libro l, int posicion)
+        {
+            lista[posicion] = l;
+            lista.Sort();
+            Guardar();
+        }
+
+        public void Borrar(int n)
+        {
+            lista.RemoveAt(n);
             Guardar();
         }
 

@@ -1,12 +1,4 @@
 3
-It
-Stephen King
-
-1
-
-2000
-A1
-Primer libro de prueba
 Dr.No
 Ian Fleming
 
@@ -15,11 +7,19 @@ Ian Fleming
 1985
 
 Segunda prueba
-Prueba
-Autor de prueba
+It
+Stephen King
 Edit
 1
 
 2000
+A1
+Primer libro de prueba
+Prueba de libro
+Autor de prueba
+Editorial
+1
 
+2000
 
+Ejemplo de observaciones

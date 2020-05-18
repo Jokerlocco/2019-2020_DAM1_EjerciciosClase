@@ -11,6 +11,7 @@ namespace Biblio2020
         private int fichaActual;
         private ListaDeLibros datos;
         private bool terminado;
+        private string textoBusqueda=""; // Compartido, para conservar entre búsquedas
         ConsolaMejorada cm;
 
         public GestorDeLibros()
@@ -45,13 +46,29 @@ namespace Biblio2020
                 DibujarMenus();
                 MostrarFicha(fichaActual);
                 ConsoleKeyInfo tecla = Console.ReadKey(true);
-                switch(tecla.KeyChar)
-                {
-                    case '1': RetrocederAAnterior(); break;
-                    case '2': AvanzarAPosterior(); break;
-                    case '5': Anyadir(); break;
-                    case '0': terminado = true; break;
-                }
+                if (tecla.Key == ConsoleKey.F1)
+                    MostrarAyuda();
+                else if (tecla.Key == ConsoleKey.RightArrow)
+                    AvanzarAPosterior();
+                else if (tecla.Key == ConsoleKey.LeftArrow)
+                    RetrocederAAnterior();
+                else if (tecla.Key == ConsoleKey.Home)
+                    fichaActual = 0;
+                else if (tecla.Key == ConsoleKey.End)
+                    fichaActual = datos.Cantidad - 1;
+                else
+                    switch (tecla.KeyChar)
+                    {
+                        case '1': RetrocederAAnterior(); break;
+                        case '2': AvanzarAPosterior(); break;
+                        case '3': IrANumero(); break;
+                        case '4': Buscar(); break;
+                        case '5': Anyadir(); break;
+                        case '6': Modificar(); break;
+                        case '7': Modificar(); break;
+                        case 'B': case 'b': Borrar(); break;
+                        case '0': terminado = true; break;
+                    }
             }
             while (!terminado);
         }
@@ -74,8 +91,10 @@ namespace Biblio2020
 
             // Línea inferior, con opciones
             cm.Escribir(1, 21, new string('-', 78), "bl");
-            cm.Escribir(10, 22, "1 - Anterior    2-Posterior   5-Añadir" +
-                "    0-Terminar", "bl");
+            cm.Escribir(3, 22, 
+                "1-Anterior    2-Posterior   3-Número   4-Buscar   5-Añadir   6-Modificar", 
+                "bl");
+            cm.Escribir(15, 23, "7-Listados   B-Borrar   F1-Ayuda   0-Terminar", "bl");
         }
 
         /// <summary>
@@ -150,7 +169,7 @@ namespace Biblio2020
             Console.WriteLine("Observaciones");
 
             Console.ForegroundColor = ConsoleColor.Gray;
-            l.Titulo = Console.ReadLine();
+            l.Titulo = cm.Pedir(20, 5, 40, "");
             l.Autor = cm.Pedir(20, 6, 40, "");
             l.Editorial = cm.Pedir(20, 7, 20, "");
             l.Paginas = Convert.ToInt32( cm.Pedir(20, 8, 4, "") );
@@ -160,6 +179,136 @@ namespace Biblio2020
             l.Observaciones = cm.Pedir(5, 13, 70, "");
 
             datos.Incluir(l);
+        }
+
+
+        /// <summary>
+        /// Va a la ficha con un cierto número
+        /// </summary>
+        private void IrANumero()
+        {
+            cm.DibujarVentana(50, 10, 20, 7, "ro");
+            cm.Escribir(52, 13, "Ficha?", "bl");
+            try
+            {
+                int numero = Convert.ToInt32(cm.Pedir(60, 13, 4, "1")) - 1;
+            
+                if ((numero >= 0) && (numero < datos.Cantidad))
+                    fichaActual = numero;
+            }
+            catch(Exception)
+            {
+                cm.Escribir(20, 14, "Número no válido", "am");
+                Console.ReadKey(true);
+            }
+            cm.CambiarColorFondo("az");
+        }
+
+
+        /// <summary>
+        /// Va a la siguiente ficha que contiene un cierto texto
+        /// </summary>
+        private void Buscar()
+        {
+            int fichaDePartida = fichaActual;
+            cm.DibujarVentana(30, 10, 40, 7, "ro");
+            cm.Escribir(32, 12, "¿Texto a buscar?", "bl");
+            textoBusqueda = cm.Pedir(50, 12, 17, textoBusqueda);
+            bool encontrado = false;
+
+            while ((fichaActual < datos.Cantidad) && (! encontrado) )
+            {
+                if (datos.Get(fichaActual).Contiene(textoBusqueda))
+                    encontrado = true;
+                else
+                    fichaActual++;
+            }
+            if (!encontrado)
+            {
+                fichaActual--;
+                cm.Escribir(32, 13, "No encontrado", "am");
+                if (fichaDePartida != 0)
+                {
+                    cm.Escribir(32, 14, "¿Buscar desde el principio (s/n)?", "bl");
+                    ConsoleKeyInfo tecla = Console.ReadKey(true);
+                    if (tecla.Key == ConsoleKey.S)
+                    {
+                        fichaActual = 0;
+                        while ((fichaActual < fichaDePartida) && (!encontrado))
+                        {
+                            if (datos.Get(fichaActual).Contiene(textoBusqueda))
+                                encontrado = true;
+                            else
+                                fichaActual++;
+                        }
+                        if (!encontrado)
+                        {
+                            cm.Escribir(32, 15, "No encontrado", "am");
+                            Console.ReadKey(true);
+                        }
+                    }
+                }
+                else
+                    Console.ReadKey(true);
+            }
+
+            cm.CambiarColorFondo("az");
+        }
+
+
+        /// <summary>
+        /// Pide datos para una modificar una ficha y guarda los cambios
+        /// </summary>
+        private void Modificar()
+        {
+            Libro l = datos.Get(fichaActual);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            l.Titulo = cm.Pedir(20, 5, 40, l.Titulo);
+            l.Autor = cm.Pedir(20, 6, 40, l.Autor);
+            l.Editorial = cm.Pedir(20, 7, 20, l.Editorial);
+            l.Paginas = Convert.ToInt32(cm.Pedir(20, 8, 4, l.Paginas.ToString()));
+            l.Categoria = cm.Pedir(20, 9, 30, l.Categoria); ;
+            l.Anyo = Convert.ToInt32(cm.Pedir(20, 10, 4, l.Anyo.ToString()));
+            l.Ubicacion = cm.Pedir(20, 11, 40, l.Ubicacion);
+            l.Observaciones = cm.Pedir(5, 13, 70, l.Observaciones);
+
+            datos.Modificar(l, fichaActual);
+        }
+
+        /// <summary>
+        /// Muestra una ventana de ayuda simple
+        /// </summary>
+        private void MostrarAyuda()
+        {
+            cm.DibujarVentana(10, 3, 60, 18, "ro");
+            cm.Escribir(21, 5, "Ayuda básica", "bl");
+
+            cm.Escribir(21, 7, "Pulsa 1 o 2 para moverte entre las fichas", "gr");
+            cm.Escribir(21, 8, "Usa 3 para ir a la ficha con un cierto número", "gr");
+            cm.Escribir(21, 9, "Usa 4 para buscar un cierto texto", "gr");
+            cm.Escribir(21, 10, "Añade una nueva ficha con 5", "gr");
+            cm.Escribir(21, 11, "Modifica la ficha actual con 6", "gr");
+            cm.Escribir(21, 12, "Usa B para borrar la ficha actual", "gr");
+            cm.Escribir(21, 13, "Con 7 podrás acceder a listados avanzados", "gr");
+
+            cm.Escribir(21, 15, "(Los datos seguardan automáticamente)", "gr");
+
+            Console.ReadKey(true);
+            cm.CambiarColorFondo("az");
+        }
+
+        /// <summary>
+        /// Va a la siguiente ficha que contiene un cierto texto
+        /// </summary>
+        private void Borrar()
+        {
+            cm.DibujarVentana(50, 10, 20, 7, "ro");
+            cm.Escribir(52, 13, "¿Borrar (s/n)?", "bl");
+            ConsoleKeyInfo tecla = Console.ReadKey(true);
+            if (tecla.Key == ConsoleKey.S)
+                datos.Borrar(fichaActual);
+            fichaActual--;
+            cm.CambiarColorFondo("az");
         }
     }
 }

@@ -19,9 +19,10 @@ namespace Biblio2020
             string textoTemporal = textoInicial;
             do
             {
-                Console.SetCursorPosition(x, y);
+                Console.SetCursorPosition(x-1, y);
                 Console.Write("[" + textoTemporal.PadRight(
                     longitudMax, '·') + "]");
+                Console.SetCursorPosition(x+textoTemporal.Length, y);
                 ConsoleKeyInfo tecla = Console.ReadKey(true);
                 if (tecla.Key == ConsoleKey.Enter)
                 {

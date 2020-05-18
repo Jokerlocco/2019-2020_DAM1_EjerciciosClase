@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Biblio2020
 {
-    class Libro
+    class Libro : IComparable<Libro>
     {
         public string Titulo { get; set; }
         public string Autor { get; set; }
@@ -22,8 +22,8 @@ namespace Biblio2020
         }
 
         public Libro(string titulo, string autor, string editorial,
-        int paginas, string categoria, int anyo,
-        string ubicacion, string observaciones)
+            int paginas, string categoria, int anyo,
+            string ubicacion, string observaciones)
         {
             Titulo = titulo;
             Autor = autor;
@@ -33,6 +33,21 @@ namespace Biblio2020
             Anyo = anyo;
             Ubicacion = ubicacion;
             Observaciones = observaciones;
+        }
+
+        public bool Contiene(string texto)
+        {
+            return Titulo.ToUpper().Contains(texto.ToUpper())
+                || Autor.ToUpper().Contains(texto.ToUpper())
+                || Editorial.ToUpper().Contains(texto.ToUpper())
+                || Categoria.ToUpper().Contains(texto.ToUpper())
+                || Ubicacion.ToUpper().Contains(texto.ToUpper())
+                || Observaciones.ToUpper().Contains(texto.ToUpper());
+        }
+
+        public int CompareTo(Libro otro)
+        {
+            return Titulo.CompareTo(otro.Titulo);
         }
     }
 }
