@@ -1,72 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 
 namespace ColeccMP3
 {
     public partial class Form1 : Form
     {
         FormEditar formEditar;
-        List<MP3> datos;
+        FormVisualizar formVisualizar;
+        ListaMP3 datos;
 
         public Form1()
         {
             InitializeComponent();
             formEditar = new FormEditar();
-            datos = Cargar();
-            RefrescarGrid(datos);
-        }
-
-        private List<MP3> Cargar()
-        {
-            List<MP3> datos = new List<MP3>();
-
-            if (!File.Exists("mp3.xml"))
-            {
-                return datos;
-            }
-
-            try
-            {
-                XmlSerializer formatter = new XmlSerializer(datos.GetType());
-                Stream stream = new FileStream("mp3.xml",
-                    FileMode.Open, FileAccess.Read, FileShare.Read);
-                datos = (List<MP3>)formatter.Deserialize(stream);
-                stream.Close();
-                return datos;
-            }
-            catch (IOException)
-            {
-                Console.WriteLine("Error de lectura");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error: " + e.Message);
-            }
-
-            return datos;
-        }
-
-        private static void Guardar(List<MP3> datos)
-        {
-            try
-            {
-                XmlSerializer formatter = new XmlSerializer(datos.GetType());
-                FileStream stream = new FileStream("mp3.xml", FileMode.Create,
-                        FileAccess.Write, FileShare.None);
-                formatter.Serialize(stream, datos);
-                stream.Close();
-            }
-            catch (IOException)
-            {
-                Console.WriteLine("Error de escritura");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error: " + e.Message);
-            }
+            formVisualizar = new FormVisualizar();
+            datos = new ListaMP3();
+            RefrescarGrid(datos.Datos);
         }
 
         private void RefrescarGrid(List<MP3> datos)
@@ -104,9 +54,9 @@ namespace ColeccMP3
                     l.Fecha = DateTime.Today;
                 }
 
-                datos.Add(l);
-                RefrescarGrid(datos);
-                Guardar(datos);
+                datos.Incluir(l);
+                RefrescarGrid(datos.Datos);
+                datos.Guardar();
             }
         }
 
@@ -117,7 +67,15 @@ namespace ColeccMP3
 
         private void acercaDeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Acerca de...", "ColeccMP3, por Nacho");
+            MessageBox.Show("Acerca de...", "ColeccMP3, por Nacho");      
         }
+
+
+        private void vistaDetalladaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            formVisualizar.ShowDialog();
+            RefrescarGrid(datos.Datos);
+        }
+
     }
 }
