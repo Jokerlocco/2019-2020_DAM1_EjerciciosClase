@@ -87,10 +87,32 @@ namespace ColeccMP3
                 }
             }
 
+            // Y llamada recursiva para comprobar subcarpetas
             foreach (string dir in Directory.GetDirectories(carpeta))
             {
                 tomarFicherosDeCarpeta(dir, datos);
             }
+        }
+
+        private void graficoPorCategoríasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SortedList<string, int> datosCategorias = new SortedList<string, int>();
+            foreach (MP3 mp3 in datos.Datos)
+            {
+                string categ = mp3.Categoria;
+                if (categ == "") categ = "(Sin categoría)";
+                if (datosCategorias.ContainsKey(categ))
+                {
+                    datosCategorias[categ]++;
+                }
+                else
+                {
+                    datosCategorias[categ] = 1;
+                }
+            }
+            FormGrafico graf = new FormGrafico();
+            graf.SetDatos(datosCategorias);
+            graf.ShowDialog();
         }
     }
 }

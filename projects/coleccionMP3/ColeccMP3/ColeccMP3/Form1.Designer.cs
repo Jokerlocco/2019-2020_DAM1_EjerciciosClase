@@ -33,14 +33,15 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.archivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nuevoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importarDesdeCarpetaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.salirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.verToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vistaDetalladaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ayudaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.acercaDeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btDetalles = new System.Windows.Forms.Button();
-            this.importarDesdeCarpetaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.gráficoPorCategoríasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -99,6 +100,13 @@
             this.nuevoToolStripMenuItem.Text = "&Nuevo";
             this.nuevoToolStripMenuItem.Click += new System.EventHandler(this.btNuevoRegistro_Click);
             // 
+            // importarDesdeCarpetaToolStripMenuItem
+            // 
+            this.importarDesdeCarpetaToolStripMenuItem.Name = "importarDesdeCarpetaToolStripMenuItem";
+            this.importarDesdeCarpetaToolStripMenuItem.Size = new System.Drawing.Size(240, 26);
+            this.importarDesdeCarpetaToolStripMenuItem.Text = "&Importar desde carpeta";
+            this.importarDesdeCarpetaToolStripMenuItem.Click += new System.EventHandler(this.importarDesdeCarpetaToolStripMenuItem_Click);
+            // 
             // salirToolStripMenuItem
             // 
             this.salirToolStripMenuItem.Name = "salirToolStripMenuItem";
@@ -109,7 +117,8 @@
             // verToolStripMenuItem
             // 
             this.verToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.vistaDetalladaToolStripMenuItem});
+            this.vistaDetalladaToolStripMenuItem,
+            this.gráficoPorCategoríasToolStripMenuItem});
             this.verToolStripMenuItem.Name = "verToolStripMenuItem";
             this.verToolStripMenuItem.Size = new System.Drawing.Size(42, 24);
             this.verToolStripMenuItem.Text = "&Ver";
@@ -147,12 +156,12 @@
             this.btDetalles.UseVisualStyleBackColor = true;
             this.btDetalles.Click += new System.EventHandler(this.vistaDetalladaToolStripMenuItem_Click);
             // 
-            // importarDesdeCarpetaToolStripMenuItem
+            // gráficoPorCategoríasToolStripMenuItem
             // 
-            this.importarDesdeCarpetaToolStripMenuItem.Name = "importarDesdeCarpetaToolStripMenuItem";
-            this.importarDesdeCarpetaToolStripMenuItem.Size = new System.Drawing.Size(240, 26);
-            this.importarDesdeCarpetaToolStripMenuItem.Text = "&Importar desde carpeta";
-            this.importarDesdeCarpetaToolStripMenuItem.Click += new System.EventHandler(this.importarDesdeCarpetaToolStripMenuItem_Click);
+            this.gráficoPorCategoríasToolStripMenuItem.Name = "gráficoPorCategoríasToolStripMenuItem";
+            this.gráficoPorCategoríasToolStripMenuItem.Size = new System.Drawing.Size(232, 26);
+            this.gráficoPorCategoríasToolStripMenuItem.Text = "Gráfico por categorías";
+            this.gráficoPorCategoríasToolStripMenuItem.Click += new System.EventHandler(this.graficoPorCategoríasToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -189,6 +198,7 @@
         private System.Windows.Forms.Button btDetalles;
         private System.Windows.Forms.ToolStripMenuItem importarDesdeCarpetaToolStripMenuItem;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.ToolStripMenuItem gráficoPorCategoríasToolStripMenuItem;
     }
 }
 
