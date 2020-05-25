@@ -14,6 +14,7 @@ namespace ColeccMP3
     {
         int fichaActual;
         ListaMP3 datos;
+        FormEditar formEditar;
 
         public string Titulo
         {
@@ -62,6 +63,7 @@ namespace ColeccMP3
         {
             InitializeComponent();
             datos = new ListaMP3();
+            formEditar = new FormEditar();
             fichaActual = 0;
         }
 
@@ -116,33 +118,77 @@ namespace ColeccMP3
 
         private void btUltimo_Click(object sender, EventArgs e)
         {
-            fichaActual = datos.Cantidad - 1;
+            if (datos.Cantidad > 0)
+                fichaActual = datos.Cantidad - 1;
             Refrescar();
         }
 
         private void btNumero_Click(object sender, EventArgs e)
         {
-
+            string numeroStr = Microsoft.VisualBasic.Interaction.InputBox(
+                "¿Número de ficha?", "Ir a", "1");
+            try
+            {
+                int numero = Convert.ToInt32(numeroStr);
+                if ((numero > 0) && (numero <= datos.Cantidad))
+                {
+                    fichaActual = numero - 1;
+                    Refrescar();
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error", "Número no válido");
+            }
         }
 
         private void btBuscar_Click(object sender, EventArgs e)
         {
+            int fichaDePartida = fichaActual;
+            bool encontrado = false;
+            string textoBusqueda = Microsoft.VisualBasic.Interaction.InputBox(
+                "¿Texto a buscar?", "Buscar", "");
 
+            while ((fichaActual < datos.Cantidad) && (!encontrado))
+            {
+                if (datos.Get(fichaActual).Contiene(textoBusqueda))
+                    encontrado = true;
+                else
+                    fichaActual++;
+            }
+            if (!encontrado)
+            {
+                fichaActual = fichaDePartida;
+                MessageBox.Show("No encontrado");
+            }
+            Refrescar();
         }
 
         private void btAnadir_Click(object sender, EventArgs e)
         {
-
+            Anadir(datos);
+            Refrescar();
         }
 
         private void btEditar_Click(object sender, EventArgs e)
         {
-
+            Modificar(datos, fichaActual);
+            Refrescar();
         }
 
         private void btBorrar_Click(object sender, EventArgs e)
         {
-
+            DialogResult respuesta = MessageBox.Show(
+                "¿Desea borrar esta ficha?", "Borrar",
+                MessageBoxButtons.YesNo);
+            if (respuesta == DialogResult.Yes)
+            {
+                datos.Borrar(fichaActual);
+                if (fichaActual >= datos.Cantidad)
+                    fichaActual = datos.Cantidad - 1;
+                Refrescar();
+                MessageBox.Show("Borrado");
+            }
         }
 
         private void btAceptar_Click(object sender, EventArgs e)
@@ -153,6 +199,87 @@ namespace ColeccMP3
         private void btCancelar_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        public void Anadir(ListaMP3 datos)
+        {
+            formEditar.Limpiar();
+            formEditar.Text = "Modificar";
+            DialogResult resultadoEdicion = formEditar.ShowDialog();
+            if (resultadoEdicion != DialogResult.Cancel)
+            {
+                MP3 l = new MP3();
+                l.Artista = formEditar.Artista;
+                l.Titulo = formEditar.Titulo;
+                l.Fichero = formEditar.Fichero;
+                l.Categoria = formEditar.Categoria;
+                l.Ubicacion = formEditar.Ubicacion;
+                try
+                {
+                    l.TamanyoKB = Convert.ToInt32(formEditar.TamanyoKB);
+                }
+                catch (Exception)
+                {
+                    l.TamanyoKB = 0;
+                }
+                try
+                {
+                    l.Fecha = Convert.ToDateTime(formEditar.Fecha);
+                }
+                catch (Exception)
+                {
+                    l.Fecha = DateTime.Today;
+                }
+
+                Cursor = Cursors.WaitCursor;
+                datos.Incluir(l);
+                datos.Guardar();
+                Cursor = Cursors.Default;
+            }
+        }
+
+        public void Modificar(ListaMP3 datos, int n)
+        {
+            formEditar.Artista = datos.Get(n).Artista;
+            formEditar.Titulo = datos.Get(n).Titulo;
+            formEditar.Fichero = datos.Get(n).Fichero;
+            formEditar.Categoria = datos.Get(n).Categoria;
+            formEditar.Ubicacion = datos.Get(n).Ubicacion;
+            formEditar.TamanyoKB = datos.Get(n).TamanyoKB.ToString();
+            formEditar.Fecha = datos.Get(n).Fecha.ToString();
+            formEditar.Text = "Editar";
+
+            DialogResult resultadoEdicion = formEditar.ShowDialog();
+            if (resultadoEdicion != DialogResult.Cancel)
+            {
+                MP3 l = new MP3();
+                l.Artista = formEditar.Artista;
+                l.Titulo = formEditar.Titulo;
+                l.Fichero = formEditar.Fichero;
+                l.Categoria = formEditar.Categoria;
+                l.Ubicacion = formEditar.Ubicacion;
+                try
+                {
+                    l.TamanyoKB = Convert.ToInt32(formEditar.TamanyoKB);
+                }
+                catch (Exception)
+                {
+                    l.TamanyoKB = 0;
+                }
+                try
+                {
+                    l.Fecha = Convert.ToDateTime(formEditar.Fecha);
+                }
+                catch (Exception)
+                {
+                    l.Fecha = DateTime.Today;
+                }
+
+                Cursor = Cursors.WaitCursor;
+                datos.Modificar(l, n);
+                datos.Guardar();
+                Cursor = Cursors.Default;
+            }
         }
     }
 }

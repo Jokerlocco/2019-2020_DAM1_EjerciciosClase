@@ -17,5 +17,15 @@ namespace ColeccMP3
             return String.Compare(this.Titulo,
                     otro.Titulo, true);
         }
+
+        public bool Contiene(string texto)
+        {
+            return Titulo.ToUpper().Contains(texto.ToUpper())
+                || Artista.ToUpper().Contains(texto.ToUpper())
+                || Fichero.ToUpper().Contains(texto.ToUpper())
+                || Categoria.ToUpper().Contains(texto.ToUpper())
+                || Ubicacion.ToUpper().Contains(texto.ToUpper());
+        }
+
     }
 }

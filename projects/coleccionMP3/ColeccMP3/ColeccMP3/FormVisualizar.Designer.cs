@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormVisualizar));
-            this.btCancelar = new System.Windows.Forms.Button();
             this.btAceptar = new System.Windows.Forms.Button();
             this.tbFecha = new System.Windows.Forms.TextBox();
             this.lbFecha = new System.Windows.Forms.Label();
@@ -61,19 +60,6 @@
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btCancelar
-            // 
-            this.btCancelar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btCancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btCancelar.Location = new System.Drawing.Point(326, 277);
-            this.btCancelar.Margin = new System.Windows.Forms.Padding(4);
-            this.btCancelar.Name = "btCancelar";
-            this.btCancelar.Size = new System.Drawing.Size(100, 28);
-            this.btCancelar.TabIndex = 39;
-            this.btCancelar.Text = "Cancelar";
-            this.btCancelar.UseVisualStyleBackColor = true;
-            this.btCancelar.Click += new System.EventHandler(this.btCancelar_Click);
-            // 
             // btAceptar
             // 
             this.btAceptar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -81,9 +67,9 @@
             this.btAceptar.Location = new System.Drawing.Point(208, 278);
             this.btAceptar.Margin = new System.Windows.Forms.Padding(4);
             this.btAceptar.Name = "btAceptar";
-            this.btAceptar.Size = new System.Drawing.Size(100, 28);
+            this.btAceptar.Size = new System.Drawing.Size(218, 28);
             this.btAceptar.TabIndex = 38;
-            this.btAceptar.Text = "Aceptar";
+            this.btAceptar.Text = "Volver a vista de tabla";
             this.btAceptar.UseVisualStyleBackColor = true;
             this.btAceptar.Click += new System.EventHandler(this.btAceptar_Click);
             // 
@@ -367,7 +353,6 @@
             this.ClientSize = new System.Drawing.Size(467, 351);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.btCancelar);
             this.Controls.Add(this.btAceptar);
             this.Controls.Add(this.tbFecha);
             this.Controls.Add(this.lbFecha);
@@ -396,8 +381,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btCancelar;
         private System.Windows.Forms.Button btAceptar;
         private System.Windows.Forms.TextBox tbFecha;
         private System.Windows.Forms.Label lbFecha;

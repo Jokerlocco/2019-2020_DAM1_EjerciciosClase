@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace ColeccMP3
 {
-    class ListaMP3
+    public class ListaMP3
     {
         List<MP3> lista;
         public int Cantidad { get { return lista.Count; } }
@@ -45,6 +45,11 @@ namespace ColeccMP3
             Guardar();
         }
 
+        // Forma alternativa de ordenar, no usado en este momento
+        public void Ordenar()
+        {
+            lista.Sort((x, y) => x.Titulo.CompareTo(y.Titulo));
+        }
 
         public int Cargar()
         {
