@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 
 namespace MiniSnake
@@ -46,6 +48,8 @@ namespace MiniSnake
         int puntos = 0;
         SpriteFont fuente;
         int fotogramasPorSegundo = 3;
+        Song musicaDeFondo;
+        SoundEffect recogerManzana;
 
         public Game1()
         {
@@ -104,6 +108,10 @@ namespace MiniSnake
             ladrillo = Content.Load<Texture2D>("brick");
             manzana = Content.Load<Texture2D>("apple");
             fuente = Content.Load<SpriteFont>("arial");
+            musicaDeFondo = Content.Load<Song>("sonidoFondo");
+            recogerManzana = Content.Load<SoundEffect>("blob");
+            MediaPlayer.Play(musicaDeFondo);
+            MediaPlayer.IsRepeating = true;
         }
 
         /// <summary>
@@ -179,6 +187,7 @@ namespace MiniSnake
                             40, 40)))
                 {
                     manzanas.RemoveAt(i);
+                    recogerManzana.CreateInstance().Play();
                     puntos += 10;
 
                     float xUltima = posicSegmentos[posicSegmentos.Count - 1].X;
