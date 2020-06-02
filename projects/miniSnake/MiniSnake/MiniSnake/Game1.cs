@@ -11,11 +11,15 @@ namespace MiniSnake
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Texture2D serpiente;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
+            graphics.ApplyChanges();
         }
 
         /// <summary>
@@ -41,6 +45,7 @@ namespace MiniSnake
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            serpiente = Content.Load<Texture2D>("ball");
         }
 
         /// <summary>
@@ -73,9 +78,13 @@ namespace MiniSnake
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear( new Color(30, 30, 30) );
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            spriteBatch.Draw(serpiente,
+                new Rectangle(300, 200, 40, 40),
+                Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
