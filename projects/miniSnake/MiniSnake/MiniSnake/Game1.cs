@@ -15,8 +15,9 @@ namespace MiniSnake
         Texture2D serpiente;
         Texture2D ladrillo;
         Texture2D manzana;
-        double x, y;
-        int velocidad = 120;
+        List<Vector2> posicSegmentos = new List<Vector2>();
+        int velocidad = 40;
+        int velocidadX = 40, velocidadY = 0;
         int columnas = 1280 / 40;
         int filas = 720 / 40;
         string[] nivel =
@@ -44,6 +45,7 @@ namespace MiniSnake
         List<Rectangle> manzanas = new List<Rectangle>();
         int puntos = 0;
         SpriteFont fuente;
+        int fotogramasPorSegundo = 3;
 
         public Game1()
         {
@@ -52,8 +54,7 @@ namespace MiniSnake
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
             graphics.ApplyChanges();
-            x = 300;
-            y = 200;
+            posicSegmentos.Add(new Vector2(300, 200));
 
             for (int fila = 0; fila < filas; fila++)
             {
@@ -72,6 +73,9 @@ namespace MiniSnake
                 }
             }
 
+            IsFixedTimeStep = true;
+            TargetElapsedTime = System.TimeSpan.FromSeconds(
+                1.0f / fotogramasPorSegundo);
         }
 
         /// <summary>
@@ -123,32 +127,67 @@ namespace MiniSnake
 
             // Comprobación de teclas
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                x += velocidad * gameTime.ElapsedGameTime.TotalSeconds;
+            {
+                velocidadX = velocidad;
+                velocidadY = 0;
+            }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                x -= velocidad * gameTime.ElapsedGameTime.TotalSeconds;
+            {
+                velocidadX = -velocidad;
+                velocidadY = 0;
+            }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                y -= velocidad * gameTime.ElapsedGameTime.TotalSeconds;
+            {
+                velocidadX = 0;
+                velocidadY = -velocidad;
+            }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                y += velocidad * gameTime.ElapsedGameTime.TotalSeconds;
+            {
+                velocidadX = 0;
+                velocidadY = velocidad;
+            }
+
+            for (int i = posicSegmentos.Count - 1; i >= 1; i--)
+                posicSegmentos[i] = posicSegmentos[i - 1];
+
+            posicSegmentos[0] = new Vector2(
+                    (float)(posicSegmentos[0].X +
+                        velocidadX),
+                    (float)(posicSegmentos[0].Y +
+                        velocidadY));
 
             // Comprobación de colisiones
-            foreach(Rectangle r in obstaculos)
+            foreach (Rectangle r in obstaculos)
             {
                 if (r.Intersects(
-                        new Rectangle((int)x, (int)y, 40, 40)))
+                        new Rectangle(
+                            (int) posicSegmentos[0].X, 
+                            (int) posicSegmentos[0].Y, 
+                            40, 40)))
                     Exit();
             }
 
             for (int i = 0; i < manzanas.Count; i++)
             {
                 if (manzanas[i].Intersects(
-                        new Rectangle((int)x, (int)y, 40, 40)))
+                        new Rectangle(
+                            (int) posicSegmentos[0].X, 
+                            (int) posicSegmentos[0].Y, 
+                            40, 40)))
                 {
                     manzanas.RemoveAt(i);
                     puntos += 10;
+
+                    float xUltima = posicSegmentos[posicSegmentos.Count - 1].X;
+                    float yUltima = posicSegmentos[posicSegmentos.Count - 1].Y;
+
+                    posicSegmentos.Add(
+                        new Vector2(
+                            xUltima - System.Math.Sign(velocidadX) * 40,
+                            yUltima - System.Math.Sign(velocidadY) * 40));
                 }
             }
 
@@ -188,10 +227,10 @@ namespace MiniSnake
                 new Vector2(400, 300),
                 Color.Yellow);
 
-            spriteBatch.Draw(serpiente,
-                new Rectangle((int) x, (int) y, 40, 40),
-                Color.White);
-            
+            foreach (Vector2 pos in posicSegmentos)
+                spriteBatch.Draw(serpiente,
+                    new Rectangle((int)pos.X, (int)pos.Y, 40, 40),
+                    Color.White);
 
             spriteBatch.End();
 
