@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace MiniSnake
 {
@@ -12,8 +13,33 @@ namespace MiniSnake
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D serpiente;
+        Texture2D ladrillo;
         double x, y;
         int velocidad = 120;
+        int columnas = 1280 / 40;
+        int filas = 720 / 40;
+        string[] nivel =
+        {
+            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "X                 X            X",
+            "X                 X            X",
+            "X                              X",
+            "XXXXXXXX                X      X",
+            "X                       X      X",
+            "X                       X      X",
+            "X                              X",
+            "X                              X",
+            "X       XXXXXXXXXXXXXXXXXX     X",
+            "X                   X          X",
+            "X                   X          X",
+            "X                   X          X",
+            "X                              X",
+            "X     X                        X",
+            "X     X                        X",
+            "X     X                        X",
+            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        };
+        List<Rectangle> obstaculos = new List<Rectangle>();
 
         public Game1()
         {
@@ -24,6 +50,19 @@ namespace MiniSnake
             graphics.ApplyChanges();
             x = 300;
             y = 200;
+
+            for (int fila = 0; fila < filas; fila++)
+            {
+                for (int columna = 0; columna < columnas; columna++)
+                {
+                    if (nivel[fila][columna] == 'X')
+                    {
+                        obstaculos.Add(
+                            new Rectangle(columna * 40, fila * 40, 40, 40));
+                    }
+                }
+            }
+
         }
 
         /// <summary>
@@ -48,8 +87,8 @@ namespace MiniSnake
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
             serpiente = Content.Load<Texture2D>("ball");
+            ladrillo = Content.Load<Texture2D>("brick");
         }
 
         /// <summary>
@@ -71,7 +110,7 @@ namespace MiniSnake
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            // Comprobación de teclas
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
                 x += velocidad * gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -83,6 +122,14 @@ namespace MiniSnake
 
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 y += velocidad * gameTime.ElapsedGameTime.TotalSeconds;
+
+            // Comprobación de colisiones
+            foreach(Rectangle r in obstaculos)
+            {
+                if (r.Intersects(
+                        new Rectangle((int)x, (int)y, 40, 40)))
+                    Exit();
+            }
 
             base.Update(gameTime);
         }
@@ -96,6 +143,18 @@ namespace MiniSnake
             GraphicsDevice.Clear( new Color(30, 30, 30) );
 
             spriteBatch.Begin();
+
+            for (int fila = 0; fila < filas; fila++)
+            {
+                for (int columna = 0; columna < columnas; columna++)
+                {
+                    if (nivel[fila][columna] == 'X')
+                        spriteBatch.Draw(ladrillo,
+                            new Rectangle(columna * 40, fila *40, 40, 40),
+                            Color.White);
+                }
+            }
+
             spriteBatch.Draw(serpiente,
                 new Rectangle((int) x, (int) y, 40, 40),
                 Color.White);
