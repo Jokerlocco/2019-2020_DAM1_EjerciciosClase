@@ -12,6 +12,8 @@ namespace MiniSnake
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D serpiente;
+        double x, y;
+        int velocidad = 120;
 
         public Game1()
         {
@@ -20,6 +22,8 @@ namespace MiniSnake
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
             graphics.ApplyChanges();
+            x = 300;
+            y = 200;
         }
 
         /// <summary>
@@ -68,6 +72,17 @@ namespace MiniSnake
                 Exit();
 
             // TODO: Add your update logic here
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                x += velocidad * gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                x -= velocidad * gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                y -= velocidad * gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                y += velocidad * gameTime.ElapsedGameTime.TotalSeconds;
 
             base.Update(gameTime);
         }
@@ -82,7 +97,7 @@ namespace MiniSnake
 
             spriteBatch.Begin();
             spriteBatch.Draw(serpiente,
-                new Rectangle(300, 200, 40, 40),
+                new Rectangle((int) x, (int) y, 40, 40),
                 Color.White);
             spriteBatch.End();
 
