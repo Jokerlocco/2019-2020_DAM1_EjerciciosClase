@@ -14,6 +14,7 @@ namespace MiniSnake
         SpriteBatch spriteBatch;
         Texture2D serpiente;
         Texture2D ladrillo;
+        Texture2D manzana;
         double x, y;
         int velocidad = 120;
         int columnas = 1280 / 40;
@@ -21,12 +22,12 @@ namespace MiniSnake
         string[] nivel =
         {
             "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-            "X                 X            X",
+            "X        M        X            X",
             "X                 X            X",
             "X                              X",
             "XXXXXXXX                X      X",
             "X                       X      X",
-            "X                       X      X",
+            "X              M        X      X",
             "X                              X",
             "X                              X",
             "X       XXXXXXXXXXXXXXXXXX     X",
@@ -34,12 +35,15 @@ namespace MiniSnake
             "X                   X          X",
             "X                   X          X",
             "X                              X",
-            "X     X                        X",
-            "X     X                        X",
+            "X     X        M               X",
+            "X     X                 M      X",
             "X     X                        X",
             "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
         };
         List<Rectangle> obstaculos = new List<Rectangle>();
+        List<Rectangle> manzanas = new List<Rectangle>();
+        int puntos = 0;
+        SpriteFont fuente;
 
         public Game1()
         {
@@ -58,6 +62,11 @@ namespace MiniSnake
                     if (nivel[fila][columna] == 'X')
                     {
                         obstaculos.Add(
+                            new Rectangle(columna * 40, fila * 40, 40, 40));
+                    }
+                    if (nivel[fila][columna] == 'M')
+                    {
+                        manzanas.Add(
                             new Rectangle(columna * 40, fila * 40, 40, 40));
                     }
                 }
@@ -89,6 +98,8 @@ namespace MiniSnake
 
             serpiente = Content.Load<Texture2D>("ball");
             ladrillo = Content.Load<Texture2D>("brick");
+            manzana = Content.Load<Texture2D>("apple");
+            fuente = Content.Load<SpriteFont>("arial");
         }
 
         /// <summary>
@@ -131,6 +142,16 @@ namespace MiniSnake
                     Exit();
             }
 
+            for (int i = 0; i < manzanas.Count; i++)
+            {
+                if (manzanas[i].Intersects(
+                        new Rectangle((int)x, (int)y, 40, 40)))
+                {
+                    manzanas.RemoveAt(i);
+                    puntos += 10;
+                }
+            }
+
             base.Update(gameTime);
         }
 
@@ -155,9 +176,23 @@ namespace MiniSnake
                 }
             }
 
+            foreach (Rectangle r in manzanas)
+            {
+                spriteBatch.Draw(manzana,
+                    r,
+                    Color.White);
+            }
+
+            spriteBatch.DrawString(fuente,
+                "Puntos: " + puntos,
+                new Vector2(400, 300),
+                Color.Yellow);
+
             spriteBatch.Draw(serpiente,
                 new Rectangle((int) x, (int) y, 40, 40),
                 Color.White);
+            
+
             spriteBatch.End();
 
             base.Draw(gameTime);
